@@ -1,10 +1,14 @@
 import argparse
 import logging
 import re
+import time
 from pathlib import Path
 
 import whisperx
 from tqdm import tqdm
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def transcribe_whisperx(
@@ -13,11 +17,11 @@ def transcribe_whisperx(
     audio_path,
     batch_size=24,
 ):
-    logging.info(f"Transcribing {audio_path} with batch size {batch_size}")
+    logger.info(f"Transcribing {audio_path} with batch size {batch_size}")
     result = model.transcribe(
         audio, batch_size=batch_size, num_workers=0, print_progress=False, combined_progress=False
     )
-    logging.info(f"Finished transcribing {audio_path}.")
+    logger.info(f"Finished transcribing {audio_path}.")
 
     return result
 
@@ -31,7 +35,7 @@ def align_whisperx(
     device="cuda",
     add_whitespace=True,
 ):
-    logging.info(f"Aligning {audio_path}.")
+    logger.info(f"Aligning {audio_path}.")
     if add_whitespace:
         for i, segment in enumerate(result["segments"]):
             result["segments"][i]["text"] = add_whitespace_to_punctuation(segment["text"])
@@ -46,7 +50,7 @@ def align_whisperx(
         print_progress=False,
         combined_progress=False,
     )
-    logging.info(f"Finished aligning {audio_path}.")
+    logger.info(f"Finished aligning {audio_path}.")
 
     return result
 
@@ -66,7 +70,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--audio_dir",
-        default="data",
+        default="data/sv",
         type=str,
         required=False,
         help="Directory containing audio files to transcribe.",
@@ -76,13 +80,16 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    audio_paths = list(Path(args.audio_dir).glob("**/*.wav"))
+    audio_paths = list(Path(args.audio_dir).glob("**/*"))
     model_name = "KBLab/kb-whisper-large"
     device = "cuda"
     condition_on_previous_text = False
     no_speech_threshold = 0.6
     log_prob_threshold = -1.0
     without_timestamps = True
+
+    # Time
+    start_time = time.time()
 
     for audio_path in audio_paths:
         audio = whisperx.load_audio(audio_path, sr=16000)
@@ -92,17 +99,17 @@ if __name__ == "__main__":
             device=device,
             compute_type="float16",
             language="sv",
-            asr_options=dict(
-                beam_size=5,
-                condition_on_previous_text=condition_on_previous_text,
-                no_speech_threshold=no_speech_threshold,
-                log_prob_threshold=log_prob_threshold,
-                without_timestamps=without_timestamps,
-                max_initial_timestamp=1.0,
-                max_new_tokens=200,
-                word_timestamps=False,
-            ),
-            vad_options=dict(vad_onset=0.500, vad_offset=0.363),
+            asr_options={
+                "beam_size": 5,
+                "condition_on_previous_text": condition_on_previous_text,
+                "no_speech_threshold": no_speech_threshold,
+                "log_prob_threshold": log_prob_threshold,
+                "without_timestamps": without_timestamps,
+                "max_initial_timestamp": 1.0,
+                "max_new_tokens": 200,
+                "word_timestamps": False,
+            },
+            vad_options={"vad_onset": 0.500, "vad_offset": 0.363},
         )
         model_align, model_metadata = whisperx.load_align_model(
             language_code="sv", device="cuda", model_name="KBLab/wav2vec2-large-voxrex-swedish"
@@ -122,3 +129,6 @@ if __name__ == "__main__":
             metadata=model_metadata,
             result=result,
         )
+
+    end_time = time.time()
+    logger.info(f"Transcribed {len(audio_paths)} files in {end_time - start_time}")

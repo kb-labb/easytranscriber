@@ -1,107 +1,237 @@
+"""
+Transcription script using CTranslate2 with dataloaders.
+
+This script mirrors the workflow in transcribe_vad.py but uses CTranslate2
+for inference instead of HuggingFace transformers. It supports both the
+easyalign AudioFileDataset and the streaming StreamingAudioFileDataset.
+"""
+
+import logging
+import time
 from pathlib import Path
 
 import ctranslate2
-import soundfile as sf
 import torch
-from easyalign.data.collators import audiofile_collate_fn, transcribe_collate_fn
+from easyalign.data.collators import audiofile_collate_fn, metadata_collate_fn
 from easyalign.data.dataset import AudioFileDataset, JSONMetadataDataset
-from transformers import WhisperProcessor
+from easyalign.pipelines import alignment_pipeline, emissions_pipeline, vad_pipeline
+from easyalign.text.normalization import SpanMapNormalizer
+from easyalign.vad.pyannote import load_vad_model
+from transformers import AutoModelForCTC, Wav2Vec2Processor, WhisperProcessor
 
-audio, sample_rate = sf.read("data/YS_sr_p1_2003-09-02_0525_0600.wav")
-# Compute the features of the first 30 seconds of audio.
-processor = WhisperProcessor.from_pretrained("KBLab/kb-whisper-large")
-# inputs = processor(audio, return_tensors="np", sampling_rate=16000)
-# features = ctranslate2.StorageView.from_array(inputs.input_features)
+from easywhisper.asr.ct2 import transcribe
+from easywhisper.data import StreamingAudioFileDataset
 
-model = ctranslate2.models.Whisper("models/kb-whisper-large", device="cuda")
-
-json_dataset = JSONMetadataDataset(json_paths=list(Path("output/vad").rglob("*.json")))
-
-file_dataset = AudioFileDataset(
-    metadata=json_dataset,
-    processor=processor,
-    sample_rate=16000,
-    chunk_size=30,
-    alignment_strategy="chunk",
-)
-
-file_dataloader = torch.utils.data.DataLoader(
-    file_dataset,
-    batch_size=1,
-    shuffle=False,
-    collate_fn=audiofile_collate_fn,
-    num_workers=2,
-    prefetch_factor=2,
-)
-
-# dataset = next(iter(file_dataloader))
-
-prompt = processor.tokenizer.convert_tokens_to_ids(
-    [
-        "<|startoftranscript|>",
-        "<|transcribe|>",
-        "<|notimestamps|>",  # Remove this token to generate timestamps.
-    ]
-)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-for dataset in file_dataloader:
-    slice_dataset = dataset[0]["dataset"]
+def text_normalizer(text: str) -> str:
+    """
+    Normalize text for forced alignment.
 
-    feature_dataloader = torch.utils.data.DataLoader(
-        slice_dataset,
-        batch_size=8,
-        shuffle=False,
-        pin_memory=True,
-        collate_fn=transcribe_collate_fn,
-        num_workers=2,
+    Removes punctuation, normalizes whitespace, and lowercases text
+    to prepare it for alignment with wav2vec2.
+    """
+    normalizer = SpanMapNormalizer(text)
+    normalizer.transform(r"\(.*?\)", "")  # Remove parentheses and their content
+    normalizer.transform(r"\s[^\w\s]\s", " ")  # Remove punctuation between whitespace
+    normalizer.transform(r"[^\w\s]", "")  # Remove punctuation and special characters
+    normalizer.transform(r"\s+", " ")  # Normalize whitespace to a single space
+    normalizer.transform(r"^\s+|\s+$", "")  # Strip leading and trailing whitespace
+    normalizer.transform(r"\w+", lambda m: m.group().lower())
+
+    mapping = normalizer.get_token_map()
+    normalized_tokens = [item["normalized_token"] for item in mapping]
+    return normalized_tokens, mapping
+
+
+if __name__ == "__main__":
+    # Configuration
+    AUDIO_DIR = "data/sv"
+    VAD_OUTPUT_DIR = "output/vad"
+    TRANSCRIPTION_OUTPUT_DIR = "output/transcriptions"
+    EMISSIONS_OUTPUT_DIR = "output/emissions"
+    ALIGNMENT_OUTPUT_DIR = "output/alignments"
+    MODEL_PATH = "models/kb-whisper-large"
+    HF_MODEL_ID = "KBLab/kb-whisper-large"
+    WAV2VEC2_MODEL_ID = "KBLab/wav2vec2-large-voxrex-swedish"
+    LANGUAGE = "sv"
+    USE_STREAMING = True  # Set to False to use AudioFileDataset from easyalign
+
+    # Audio files to process (can be modified to accept CLI args)
+    audio_files = [file.name for file in Path(AUDIO_DIR).glob("*")]
+
+    # =========================================================================
+    # Step 1: Run VAD to get speech segments
+    # =========================================================================
+    logger.info("Loading VAD model...")
+    model_vad = load_vad_model()
+
+    logger.info("Running VAD pipeline...")
+    vad_outputs = vad_pipeline(
+        model=model_vad,
+        audio_paths=audio_files,
+        audio_dir=AUDIO_DIR,
+        speeches=None,
+        chunk_size=30,
+        sample_rate=16000,
+        metadata=None,
+        batch_size=1,
+        num_workers=1,
         prefetch_factor=2,
+        save_json=True,
+        save_msgpack=False,
+        output_dir=VAD_OUTPUT_DIR,
     )
-    for batch in feature_dataloader:
-        features = batch["features"].numpy()
-        batch_size = features.shape[0]
-        features = ctranslate2.StorageView.from_array(features)
-        outputs = model.generate(features, [prompt] * batch_size, beam_size=5)
-        sequences = [result.sequences_ids[0] for result in outputs]
-        transcription = processor.batch_decode(sequences, skip_special_tokens=True)
-        print("Transcription: %s" % transcription)
 
-# Detect the language.
-results = model.detect_language(features)
-language, probability = results[0][0]
-print("Detected language %s with probability %f" % (language, probability))
+    # =========================================================================
+    # Step 2: Load CTranslate2 model and processor
+    # =========================================================================
+    logger.info(f"Loading CTranslate2 model from {MODEL_PATH}...")
+    model = ctranslate2.models.Whisper(MODEL_PATH, device="cuda")
 
+    logger.info(f"Loading processor from {HF_MODEL_ID}...")
+    processor = WhisperProcessor.from_pretrained(HF_MODEL_ID)
 
-# Describe the task in the prompt.
-# See the prompt format in https://github.com/openai/whisper.
-prompt = processor.tokenizer.convert_tokens_to_ids(
-    [
-        "<|startoftranscript|>",
-        language,
-        "<|transcribe|>",
-        "<|notimestamps|>",  # Remove this token to generate timestamps.
-    ]
-)
+    # =========================================================================
+    # Step 3: Create dataset and dataloader
+    # =========================================================================
 
-results = model.generate(
-    features,
-    [prompt],
-    beam_size=5,
-    patience=1.0,
-    num_hypotheses=1,
-    length_penalty=1.0,
-    repetition_penalty=1.0,
-    no_repeat_ngram_size=0,
-    max_length=448,
-    return_scores=False,
-    return_logits_vocab=False,
-    return_no_speech_prob=False,
-    max_initial_timestamp_index=0,
-    suppress_blank=True,
-    suppress_tokens=[-1],
-    sampling_topk=1,
-    sampling_temperature=1,
-)
-transcription = processor.decode(results[0].sequences_ids[0])
+    # Time with time
+    start_time = time.time()
 
-print("Transcription: %s" % transcription)
+    json_dataset = JSONMetadataDataset(json_paths=list(Path(VAD_OUTPUT_DIR).rglob("*.json")))
+
+    if USE_STREAMING:
+        # Use the streaming dataset that reads chunks on-demand via ffmpeg
+        logger.info("Using StreamingAudioFileDataset for memory-efficient loading...")
+        file_dataset = StreamingAudioFileDataset(
+            metadata=json_dataset,
+            processor=processor,
+            audio_dir=AUDIO_DIR,
+            sample_rate=16000,
+            chunk_size=30,
+            alignment_strategy="chunk",
+        )
+
+        file_dataloader = torch.utils.data.DataLoader(
+            file_dataset,
+            batch_size=1,
+            shuffle=False,
+            collate_fn=audiofile_collate_fn,
+            num_workers=2,
+            prefetch_factor=2,
+        )
+    else:
+        # Use the easyalign AudioFileDataset
+        logger.info("Using AudioFileDataset from easyalign...")
+        file_dataset = AudioFileDataset(
+            metadata=json_dataset,
+            processor=processor,
+            sample_rate=16000,
+            chunk_size=30,
+            alignment_strategy="chunk",
+        )
+
+        file_dataloader = torch.utils.data.DataLoader(
+            file_dataset,
+            batch_size=1,
+            shuffle=False,
+            collate_fn=audiofile_collate_fn,
+            num_workers=2,
+            prefetch_factor=2,
+        )
+
+    # =========================================================================
+    # Step 4: Transcribe
+    # =========================================================================
+    logger.info("Starting transcription...")
+    transcribe(
+        model=model,
+        processor=processor,
+        file_dataloader=file_dataloader,
+        batch_size=16,
+        output_dir=TRANSCRIPTION_OUTPUT_DIR,
+        language=LANGUAGE,
+        task="transcribe",
+        beam_size=5,
+    )
+
+    logger.info(f"Transcription complete! Output saved to {TRANSCRIPTION_OUTPUT_DIR}")
+
+    # =========================================================================
+    # Step 5: Compute wav2vec2 emissions for alignment
+    # =========================================================================
+    logger.info(f"Loading wav2vec2 model from {WAV2VEC2_MODEL_ID}...")
+    model_w2v = AutoModelForCTC.from_pretrained(WAV2VEC2_MODEL_ID).to("cuda").half()
+    processor_w2v = Wav2Vec2Processor.from_pretrained(WAV2VEC2_MODEL_ID)
+
+    json_dataset = JSONMetadataDataset(
+        json_paths=list(Path(TRANSCRIPTION_OUTPUT_DIR).rglob("*.json"))
+    )
+
+    logger.info("Computing emissions...")
+    emissions_output = emissions_pipeline(
+        model=model_w2v,
+        processor=processor_w2v,
+        metadata=json_dataset,
+        audio_dir=AUDIO_DIR,
+        sample_rate=16000,
+        chunk_size=30,
+        alignment_strategy="chunk",
+        batch_size_files=1,
+        num_workers_files=2,
+        prefetch_factor_files=2,
+        batch_size_features=4,
+        num_workers_features=4,
+        save_json=True,
+        save_msgpack=False,
+        save_emissions=True,
+        return_emissions=True,
+        output_dir=EMISSIONS_OUTPUT_DIR,
+    )
+
+    logger.info(f"Emissions saved to {EMISSIONS_OUTPUT_DIR}")
+
+    # =========================================================================
+    # Step 6: Run forced alignment
+    # =========================================================================
+    logger.info("Running forced alignment...")
+    json_dataset = JSONMetadataDataset(json_paths=list(Path(EMISSIONS_OUTPUT_DIR).rglob("*.json")))
+    audiometa_loader = torch.utils.data.DataLoader(
+        json_dataset,
+        batch_size=1,
+        num_workers=4,
+        prefetch_factor=2,
+        collate_fn=metadata_collate_fn,
+    )
+
+    alignments = alignment_pipeline(
+        dataloader=audiometa_loader,
+        text_normalizer=text_normalizer,
+        processor=processor_w2v,
+        tokenizer=None,
+        emissions_dir=EMISSIONS_OUTPUT_DIR,
+        output_dir=ALIGNMENT_OUTPUT_DIR,
+        alignment_strategy="chunk",
+        start_wildcard=True,
+        end_wildcard=True,
+        blank_id=0,
+        word_boundary="|",
+        chunk_size=30,
+        ndigits=5,
+        indent=2,
+        save_json=True,
+        save_msgpack=False,
+        return_alignments=True,
+        delete_emissions=False,
+        remove_wildcards=True,
+        device="cuda",
+    )
+
+    # Time with time
+    end_time = time.time()
+    logger.info(f"Alignment complete! Output saved to {ALIGNMENT_OUTPUT_DIR}")
+    logger.info(f"Processed {len(alignments)} audio files with word-level alignments.")
+    logger.info(f"Time taken: {end_time - start_time}")
