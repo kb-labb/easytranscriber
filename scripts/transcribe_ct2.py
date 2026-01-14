@@ -1,6 +1,7 @@
 import subprocess
 
 import ctranslate2
+import numpy as np
 import soundfile as sf
 from faster_whisper import WhisperModel
 from transformers import WhisperProcessor
@@ -23,7 +24,7 @@ subprocess.run(
 )
 
 
-audio, sample_rate = sf.read("data/statsminister.wav")
+audio, sample_rate = sf.read("data/sv/statsminister.wav")
 
 
 # Compute the features of the first 30 seconds of audio.
@@ -50,7 +51,13 @@ prompt = processor.tokenizer.convert_tokens_to_ids(
     ]
 )
 
-results = model.generate(features, [prompt])
+results = model.generate(features, [prompt], return_logits_vocab=True, beam_size=1)
 transcription = processor.decode(results[0].sequences_ids[0])
 
 print("Transcription: %s" % transcription)
+
+results[0].logits[0]
+
+res = np.array(results[0].logits[0])
+
+res.shape

@@ -28,7 +28,11 @@ from transformers import (
 from easywhisper.asr.hf import transcribe
 from easywhisper.data import StreamingAudioFileDataset
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    datefmt="%Y-%m-%d %H:%M:%S",
+    format="%(asctime)s | %(name)s | %(levelname)s | %(message)s",
+)
 logger = logging.getLogger(__name__)
 
 
@@ -145,7 +149,7 @@ if __name__ == "__main__":
 
     alignments = alignment_pipeline(
         dataloader=audiometa_loader,
-        text_normalizer=text_normalizer,
+        text_normalizer_fn=text_normalizer,
         processor=processor,
         tokenizer=None,
         emissions_dir="output/emissions",

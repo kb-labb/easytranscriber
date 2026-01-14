@@ -1,11 +1,3 @@
-"""
-Transcription script using CTranslate2 with dataloaders.
-
-This script mirrors the workflow in transcribe_vad.py but uses CTranslate2
-for inference instead of HuggingFace transformers. It supports both the
-easyalign AudioFileDataset and the streaming StreamingAudioFileDataset.
-"""
-
 import logging
 import time
 from pathlib import Path
@@ -22,7 +14,11 @@ from transformers import AutoModelForCTC, Wav2Vec2Processor, WhisperProcessor
 from easywhisper.asr.ct2 import transcribe
 from easywhisper.data import StreamingAudioFileDataset
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    datefmt="%Y-%m-%d %H:%M:%S",
+    format="%(asctime)s | %(name)s | %(levelname)s | %(message)s",
+)
 logger = logging.getLogger(__name__)
 
 
@@ -68,6 +64,9 @@ if __name__ == "__main__":
     logger.info("Loading VAD model...")
     model_vad = load_vad_model()
 
+    # Time with time
+    start_time = time.time()
+
     logger.info("Running VAD pipeline...")
     vad_outputs = vad_pipeline(
         model=model_vad,
@@ -97,9 +96,6 @@ if __name__ == "__main__":
     # =========================================================================
     # Step 3: Create dataset and dataloader
     # =========================================================================
-
-    # Time with time
-    start_time = time.time()
 
     json_dataset = JSONMetadataDataset(json_paths=list(Path(VAD_OUTPUT_DIR).rglob("*.json")))
 
@@ -209,7 +205,7 @@ if __name__ == "__main__":
 
     alignments = alignment_pipeline(
         dataloader=audiometa_loader,
-        text_normalizer=text_normalizer,
+        text_normalizer_fn=text_normalizer,
         processor=processor_w2v,
         tokenizer=None,
         emissions_dir=EMISSIONS_OUTPUT_DIR,

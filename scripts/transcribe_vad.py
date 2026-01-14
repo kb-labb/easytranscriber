@@ -131,7 +131,7 @@ if __name__ == "__main__":
 
     alignments = alignment_pipeline(
         dataloader=audiometa_loader,
-        text_normalizer=text_normalizer,
+        text_normalizer_fn=text_normalizer,
         processor=processor,
         tokenizer=None,
         emissions_dir="output/emissions",
