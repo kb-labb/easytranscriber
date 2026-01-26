@@ -30,8 +30,9 @@ def text_normalizer(text: str) -> str:
     # normalizer.transform(r"\[.*?\]", "")
     # normalizer.transform(r"\*.*?\*", "")
 
-    normalizer.transform(r".+", lambda m: unicodedata.normalize("NFKC", m.group()))
-    normalizer.transform(r"\w+", lambda m: m.group().lower())
+    # Unicode normalization on tokens and lowercasing
+    normalizer.transform(r"\S+", lambda m: unicodedata.normalize("NFKC", m.group()))
+    normalizer.transform(r"\S+", lambda m: m.group().lower())
     normalizer.transform(r"[^\w\s]", "")  # Remove punctuation and special characters
     normalizer.transform(r"\s+", " ")  # Normalize whitespace to a single space
     normalizer.transform(r"^\s+|\s+$", "")  # Strip leading and trailing whitespace

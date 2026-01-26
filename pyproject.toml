@@ -3,39 +3,53 @@ requires = ["setuptools>=67.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-version = "0.0.1"
-name = "easywhisper"
-
+urls = [{ repository = "https://github.com/kb-labb/easywhisper" }]
+authors = [{ name = "Faton Rekathati" }]
+version = "0.1.0"
 requires-python = ">= 3.10"
+name = "easywhisper"
+readme = "README.md"
+description = "Speech recognition with accurate word-level timestamps."
+
 
 dependencies = [
-  "torch>=2.5.0,<=2.8.0",
+  "transformers>=4.45.0",
+  "torch>=2.7.0,!=2.9.*",
+  "torchaudio>=2.7.0,!=2.9.*",
   "tqdm>=4.66.1",
+  "soundfile>=0.12.1",
+  "nltk>=3.8.2",
+  "pyannote-audio>=3.3.1",
+  "silero-vad~=6.0",
+  "ctranslate2>=4.4.0",
+  "easyaligner @ git+https://github.com/kb-labb/easyaligner.git"
 ]
 
-readme = "README.md"
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", marker = "sys_platform == 'darwin'" },
+  { index = "pytorch-cuda", marker = "sys_platform != 'darwin'" },
+]
+torchaudio = [
+  { index = "pytorch-cpu", marker = "sys_platform == 'darwin'" },
+  { index = "pytorch-cuda", marker = "sys_platform != 'darwin'" },
+]
 
-[project.urls]
+[[tool.uv.index]]
+name = "pytorch-cuda"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
 
 [tool.ruff]
 line-length = 99
 indent-width = 4
-
 target-version = "py310"
 
 [tool.ruff.lint]
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 # Disable fix for unused imports (`F401`).
 unfixable = ["F401"]
-
-[tool.ruff.format]
-# Use double quotes for strings and indent with spaces.
-quote-style = "double"
-indent-style = "space"
-
-# Respect magic trailing commas.
-skip-magic-trailing-comma = false
-
-# Automatically detect the appropriate line ending.
-line-ending = "auto"

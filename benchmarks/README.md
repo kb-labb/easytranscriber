@@ -9,8 +9,12 @@ Audio duration: 343 minutes
 
 ### EasyWhisper
 
+#### Pyannote
 325.74 seconds
 330.38 seconds
+
+#### Silero
+447.59 seconds
 
 ### WhisperX
 
