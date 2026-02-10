@@ -3,14 +3,15 @@ requires = ["setuptools>=67.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-urls = [{ repository = "https://github.com/kb-labb/easywhisper" }]
-authors = [{ name = "Faton Rekathati" }]
 version = "0.1.0"
 requires-python = ">= 3.10"
 name = "easywhisper"
 readme = "README.md"
 description = "Speech recognition with accurate word-level timestamps."
+authors = [{ name = "Faton Rekathati" }]
 
+[project.urls]
+repository = "https://github.com/kb-labb/easywhisper"
 
 dependencies = [
   "transformers>=4.45.0",
