@@ -3,20 +3,22 @@ import time
 from pathlib import Path
 
 import torch
-from easyalign.data.collators import (
+from easyaligner.data.collators import (
     audiofile_collate_fn,
     metadata_collate_fn,
 )
-from easyalign.data.dataset import AudioFileDataset, JSONMetadataDataset
-from easyalign.pipelines import (
+from easyaligner.data.dataset import AudioFileDataset, JSONMetadataDataset
+from easyaligner.pipelines import (
     alignment_pipeline,
     emissions_pipeline,
     vad_pipeline,
 )
-from easyalign.text.normalization import (
+from easyaligner.text.normalization import (
     SpanMapNormalizer,
 )
-from easyalign.vad.pyannote import load_vad_model
+from easyaligner.vad.pyannote import load_vad_model
+from easytranscriber.asr.hf import transcribe
+from easytranscriber.data import StreamingAudioFileDataset
 from nltk.tokenize import PunktTokenizer
 from transformers import (
     AutoModelForCTC,
@@ -24,9 +26,6 @@ from transformers import (
     WhisperForConditionalGeneration,
     WhisperProcessor,
 )
-
-from easywhisper.asr.hf import transcribe
-from easywhisper.data import StreamingAudioFileDataset
 
 logging.basicConfig(
     level=logging.INFO,

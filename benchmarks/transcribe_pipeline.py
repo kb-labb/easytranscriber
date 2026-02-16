@@ -2,8 +2,8 @@ import logging
 import time
 from pathlib import Path
 
-from easywhisper.pipelines import pipeline
-from easywhisper.text.normalization import text_normalizer
+from easytranscriber.pipelines import pipeline
+from easytranscriber.text.normalization import text_normalizer
 
 logging.basicConfig(
     level=logging.INFO,

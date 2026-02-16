@@ -1,0 +1,20 @@
+library,backend,vad,cpu,gpu,cpu_ghz,pipeline,seconds,bench,num_beams,audio_minutes
+easytranscriber,ctranslate2,pyannote,i7-9700K,RTX 3090,3.6,pipeline,325.74,bench1,5,343
+easytranscriber,ctranslate2,pyannote,i7-9700K,RTX 3090,3.6,pipeline,330.38,bench1,5,343
+easytranscriber,ctranslate2,silero,i7-9700K,RTX 3090,3.6,pipeline,447.59,bench1,5,343
+whisperx,faster-whisper,pyannote,i7-9700K,RTX 3090,3.6,whisperx,664.87,bench1,5,343
+whisperx,faster-whisper,pyannote,i7-9700K,RTX 3090,3.6,whisperx,657.76,bench1,5,343
+whisperx,faster-whisper,pyannote,i7-9700K,RTX 3090,3.6,whisperx,668.98,bench1,5,343
+easytranscriber,huggingface,pyannote,i7-9700K,RTX 3090,3.6,pipeline,1487.35,bench1,3,343
+easytranscriber,ctranslate2,pyannote,Ryzen 5950X,RTX 5000 Ada,3.4,pipeline,131.26,bench2,5,185.07
+easytranscriber,ctranslate2,pyannote,Ryzen 5950X,RTX 5000 Ada,3.4,pipeline,133.04,bench2,5,185.07
+whisperx,faster-whisper,pyannote,Ryzen 5950X,RTX 5000 Ada,3.4,whisperx,180.42,bench2,5,185.07
+easytranscriber,ctranslate2,pyannote,Ryzen 5950X,RTX 5000 Ada,3.4,pipeline,305.02,bench3,5,414.41883333
+whisperx,faster-whisper,pyannote,Ryzen 5950X,RTX 5000 Ada,3.4,whisperx,412.23,bench3,5,414.41883333
+easytranscriber,huggingface,pyannote,Ryzen 5950X,RTX 5000 Ada,3.4,pipeline,448.9,bench3,1,414.41883333
+easytranscriber,ctranslate2,pyannote,AMD Rome 7742,A100 40GB,2.25,pipeline,300.18615984916687,bench4,5,NA
+easytranscriber,ctranslate2,pyannote,AMD Rome 7742,A100 40GB,2.25,ct2_dataloader,328.8617465496063,bench4,5,NA
+easytranscriber,ctranslate2,pyannote,AMD Rome 7742,A100 40GB,2.25,ct2_dataloader,328.0924553871155,bench4,5,NA
+easytranscriber,ctranslate2,pyannote,AMD Rome 7742,A100 40GB,2.25,ct2_dataloader,357.6800391674042,bench4,5,NA
+whisperx,faster-whisper,pyannote,AMD Rome 7742,A100 40GB,2.25,whisperx,606.6599538326263,bench4,5,NA
+easytranscriber,huggingface,pyannote,AMD Rome 7742,A100 40GB,2.25,hf,527.1353778839111,bench4,1,NA

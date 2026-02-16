@@ -4,15 +4,14 @@ from pathlib import Path
 
 import ctranslate2
 import torch
-from easyalign.data.collators import audiofile_collate_fn, metadata_collate_fn
-from easyalign.data.dataset import AudioFileDataset, JSONMetadataDataset
-from easyalign.pipelines import alignment_pipeline, emissions_pipeline, vad_pipeline
-from easyalign.text.normalization import SpanMapNormalizer
-from easyalign.vad.pyannote import load_vad_model
+from easyaligner.data.collators import audiofile_collate_fn, metadata_collate_fn
+from easyaligner.data.dataset import AudioFileDataset, JSONMetadataDataset
+from easyaligner.pipelines import alignment_pipeline, emissions_pipeline, vad_pipeline
+from easyaligner.text.normalization import SpanMapNormalizer
+from easyaligner.vad.pyannote import load_vad_model
+from easytranscriber.asr.ct2 import transcribe
+from easytranscriber.data import StreamingAudioFileDataset
 from transformers import AutoModelForCTC, Wav2Vec2Processor, WhisperProcessor
-
-from easywhisper.asr.ct2 import transcribe
-from easywhisper.data import StreamingAudioFileDataset
 
 logging.basicConfig(
     level=logging.INFO,
@@ -53,7 +52,7 @@ if __name__ == "__main__":
     HF_MODEL_ID = "KBLab/kb-whisper-large"
     WAV2VEC2_MODEL_ID = "KBLab/wav2vec2-large-voxrex-swedish"
     LANGUAGE = "sv"
-    USE_STREAMING = True  # Set to False to use AudioFileDataset from easyalign
+    USE_STREAMING = True  # Set to False to use AudioFileDataset from easyaligner
 
     # Audio files to process (can be modified to accept CLI args)
     audio_files = [file.name for file in Path(AUDIO_DIR).glob("*")]
@@ -120,8 +119,8 @@ if __name__ == "__main__":
             prefetch_factor=2,
         )
     else:
-        # Use the easyalign AudioFileDataset
-        logger.info("Using AudioFileDataset from easyalign...")
+        # Use the easyaligner AudioFileDataset
+        logger.info("Using AudioFileDataset from easyaligner...")
         file_dataset = AudioFileDataset(
             metadata=json_dataset,
             processor=processor,
