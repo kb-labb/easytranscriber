@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@500&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0c0e14;
+            color: #e8e8e8;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .hero-wrapper {
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            position: relative;
+            width: 860px;
+            height: 472px;
+            transform-origin: top left;
+        }
+
+        .word {
+            position: absolute;
+            font-size: 3.82rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+            will-change: transform, opacity;
+        }
+
+        #word-easy {
+            color: #7ee8a2;
+        }
+
+        #word-aligner {
+            color: #5ebbf7;
+        }
+
+        .waveform-wrap {
+            position: absolute;
+            top: 173px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 716px;
+            height: 120px;
+            opacity: 0;
+        }
+
+        .waveform-wrap.visible {
+            opacity: 1;
+            transition: opacity 0.6s ease;
+        }
+
+        svg.waveform {
+            width: 100%;
+            height: 100%;
+        }
+
+        .bracket {
+            position: absolute;
+            top: 298px;
+            height: 45px;
+            border-left: 2px solid;
+            border-right: 2px solid;
+            border-bottom: 2px solid;
+            border-radius: 0 0 4px 4px;
+            opacity: 0;
+            transform: scaleX(0);
+            transform-origin: left center;
+        }
+
+        .bracket.visible {
+            opacity: 1;
+            transform: scaleX(1);
+            transition: transform 1s cubic-bezier(.22, .68, .31, 1.1), opacity 0.3s ease;
+        }
+
+        #bracket-easy {
+            border-color: #7ee8a2;
+        }
+
+        #bracket-aligner {
+            border-color: #5ebbf7;
+        }
+
+        .timestamp {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.98rem;
+            font-weight: 500;
+            opacity: 0;
+            top: 352px;
+            white-space: nowrap;
+        }
+
+        .timestamp.visible {
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .timestamp .label {
+            color: #667;
+            font-size: 0.81rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            display: block;
+            margin-bottom: 1px;
+        }
+
+        .ts-easy {
+            color: #7ee8a2;
+        }
+
+        .ts-aligner {
+            color: #5ebbf7;
+        }
+
+        .highlight-region {
+            position: absolute;
+            top: 173px;
+            height: 120px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .highlight-region.visible {
+            opacity: 1;
+            transition: opacity 0.6s ease;
+        }
+
+        #highlight-easy {
+            background: rgba(126, 232, 162, 0.10);
+        }
+
+        #highlight-aligner {
+            background: rgba(94, 187, 247, 0.10);
+        }
+
+        .playhead {
+            position: absolute;
+            top: 167px;
+            width: 2px;
+            height: 131px;
+            background: #fff;
+            opacity: 0;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+            border-radius: 1px;
+        }
+
+        .playhead.visible {
+            opacity: 0.8;
+        }
+
+        .subtitle {
+            position: absolute;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.19rem;
+            color: #667;
+            opacity: 0;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+
+        .subtitle.visible {
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+
+        .subtitle em {
+            font-style: normal;
+            color: #99a;
+        }
+
+        .replay-btn {
+            position: absolute;
+            bottom: 19px;
+            right: 24px;
+            background: none;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #667;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.93rem;
+            padding: 5px 14px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.4s ease, border-color 0.2s;
+        }
+
+        .replay-btn:hover {
+            border-color: #5ebbf7;
+            color: #5ebbf7;
+        }
+
+        .replay-btn.visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero-wrapper" id="hero-wrapper">
+        <div class="hero">
+            <div class="word" id="word-easy">easy</div>
+            <div class="word" id="word-aligner">transcriber</div>
+
+            <div class="waveform-wrap" id="waveform-wrap">
+                <svg class="waveform" id="waveform" viewBox="0 0 600 100" preserveAspectRatio="none"></svg>
+            </div>
+
+            <div class="highlight-region" id="highlight-easy"></div>
+            <div class="highlight-region" id="highlight-aligner"></div>
+
+            <div class="bracket" id="bracket-easy"></div>
+            <div class="bracket" id="bracket-aligner"></div>
+
+            <div class="timestamp ts-easy" id="ts-easy-start"><span class="label">start</span><span
+                    class="val">0.00s</span>
+            </div>
+            <div class="timestamp ts-easy" id="ts-easy-end"><span class="label">end</span><span class="val">0.00s</span>
+            </div>
+            <div class="timestamp ts-aligner" id="ts-aligner-start"><span class="label">start</span><span
+                    class="val">0.00s</span></div>
+            <div class="timestamp ts-aligner" id="ts-aligner-end"><span class="label">end</span><span
+                    class="val">0.00s</span></div>
+
+            <div class="playhead" id="playhead"></div>
+
+            <div class="subtitle" id="subtitle">Speech recognition with accurate timestamps, <em>made easy.</em></div>
+            <button class="replay-btn" id="replay-btn" onclick="replay()">↻ replay</button>
+        </div>
+    </div>
+
+    <script>
+        // ── Responsive scaling ──
+        const heroEl = document.querySelector('.hero');
+        const wrapper = document.getElementById('hero-wrapper');
+
+        function scaleHero() {
+            const wrapperW = wrapper.clientWidth;
+            const scale = Math.min(1, wrapperW / 860);
+            heroEl.style.transform = `scale(${scale})`;
+            wrapper.style.height = (472 * scale) + 'px';
+        }
+
+        scaleHero();
+        window.addEventListener('resize', scaleHero);
+
+        const svg = document.getElementById('waveform');
+        const BAR_COUNT = 120, BAR_W = 3;
+        const GAP = (600 - BAR_COUNT * BAR_W) / (BAR_COUNT - 1);
+        const DEFAULT_BAR_COLOR = '#2a2f42';
+
+        function amp(i) {
+            const x = i / BAR_COUNT;
+            const e1 = Math.exp(-((x - 0.20) ** 2) / 0.008) * 0.9;
+            const e2 = Math.exp(-((x - 0.63) ** 2) / 0.018) * 1.0;
+            const noise = 0.08 + Math.random() * 0.07;
+            return Math.min(1, e1 + e2 + noise);
+        }
+
+        let bars = [];
+        function buildBars() {
+            svg.innerHTML = '';
+            bars = [];
+            for (let i = 0; i < BAR_COUNT; i++) {
+                const h = Math.max(4, amp(i) * 80);
+                const x = i * (BAR_W + GAP);
+                const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                rect.setAttribute('x', x);
+                rect.setAttribute('y', 50 - h / 2);
+                rect.setAttribute('width', BAR_W);
+                rect.setAttribute('height', h);
+                rect.setAttribute('rx', '1.5');
+                rect.setAttribute('fill', DEFAULT_BAR_COLOR);
+                svg.appendChild(rect);
+                bars.push(rect);
+            }
+        }
+        buildBars();
+
+        const HERO_W = 860;
+        const WAVE_LEFT = (HERO_W - 716) / 2;
+        const WAVE_RIGHT = WAVE_LEFT + 716;
+
+        const EASY_START = 0.06, EASY_END = 0.34;
+        const ALIGNER_START = 0.40, ALIGNER_END = 0.88;
+
+        function pxFromNorm(n) { return WAVE_LEFT + n * 716; }
+
+        const bEasyL = pxFromNorm(EASY_START), bEasyR = pxFromNorm(EASY_END);
+        const bAlnL = pxFromNorm(ALIGNER_START), bAlnR = pxFromNorm(ALIGNER_END);
+
+        const wEasy = document.getElementById('word-easy');
+        const wAligner = document.getElementById('word-aligner');
+        const waveWrap = document.getElementById('waveform-wrap');
+        const hlEasy = document.getElementById('highlight-easy');
+        const hlAligner = document.getElementById('highlight-aligner');
+        const brEasy = document.getElementById('bracket-easy');
+        const brAligner = document.getElementById('bracket-aligner');
+        const tsES = document.getElementById('ts-easy-start');
+        const tsEE = document.getElementById('ts-easy-end');
+        const tsAS = document.getElementById('ts-aligner-start');
+        const tsAE = document.getElementById('ts-aligner-end');
+        const playhead = document.getElementById('playhead');
+        const subtitle = document.getElementById('subtitle');
+        const replayBtn = document.getElementById('replay-btn');
+
+        function colorBars() {
+            bars.forEach((rect, i) => {
+                const n = i / BAR_COUNT;
+                if (n >= EASY_START && n <= EASY_END) rect.setAttribute('fill', 'rgba(126,232,162,0.55)');
+                else if (n >= ALIGNER_START && n <= ALIGNER_END) rect.setAttribute('fill', 'rgba(94,187,247,0.55)');
+            });
+        }
+
+        function setPos(el, x, y) {
+            el.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        function lerp(a, b, t) { return a + (b - a) * t; }
+        function easeInOut(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+
+        function animateValue(el, from, to, dur, fmt) {
+            const start = performance.now();
+            function tick(now) {
+                const t = Math.min(1, (now - start) / dur);
+                el.querySelector('.val').textContent = fmt(lerp(from, to, easeInOut(t)));
+                if (t < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+
+        let timers = [];
+        function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+        function schedule(fn, ms) { timers.push(setTimeout(fn, ms)); }
+
+        function instantHide(el) {
+            el.style.transition = 'none';
+            el.classList.remove('visible');
+            el.offsetWidth;
+            el.style.transition = '';
+        }
+
+        function reset() {
+            clearTimers();
+            buildBars();
+
+            instantHide(waveWrap);
+            instantHide(hlEasy);
+            instantHide(hlAligner);
+            instantHide(brEasy);
+            instantHide(brAligner);
+            instantHide(tsES);
+            instantHide(tsEE);
+            instantHide(tsAS);
+            instantHide(tsAE);
+            instantHide(playhead);
+            instantHide(subtitle);
+            instantHide(replayBtn);
+
+            const charW = 39;
+            const totalW = 11 * charW;
+            const startX = (HERO_W - totalW) / 2;
+            wEasy.style.transition = 'none';
+            wAligner.style.transition = 'none';
+            setPos(wEasy, startX, 30);
+            setPos(wAligner, startX + 4 * charW, 30);
+
+            brEasy.style.left = bEasyL + 'px';
+            brEasy.style.width = (bEasyR - bEasyL) + 'px';
+            brAligner.style.left = bAlnL + 'px';
+            brAligner.style.width = (bAlnR - bAlnL) + 'px';
+
+            hlEasy.style.left = bEasyL + 'px';
+            hlEasy.style.width = (bEasyR - bEasyL) + 'px';
+            hlAligner.style.left = bAlnL + 'px';
+            hlAligner.style.width = (bAlnR - bAlnL) + 'px';
+
+            tsES.style.left = bEasyL + 'px';
+            tsEE.style.left = (bEasyR - 45) + 'px';
+            tsAS.style.left = bAlnL + 'px';
+            tsAE.style.left = (bAlnR - 45) + 'px';
+
+            tsES.querySelector('.val').textContent = '0.00s';
+            tsEE.querySelector('.val').textContent = '0.00s';
+            tsAS.querySelector('.val').textContent = '0.00s';
+            tsAE.querySelector('.val').textContent = '0.00s';
+        }
+
+        function play() {
+            reset();
+
+            const charW = 39;
+            const easyW = 4 * charW;
+            const easyTargetX = bEasyL + (bEasyR - bEasyL) / 2 - easyW / 2;
+            const alignerTargetX = bAlnL + (bAlnR - bAlnL) / 2 - (7 * charW) / 2 - 28;
+            const targetY = 107;
+
+            schedule(() => { waveWrap.classList.add('visible'); }, 800);
+
+            schedule(() => {
+                wEasy.style.transition = 'transform 1s cubic-bezier(.22,.68,.31,1.05)';
+                wAligner.style.transition = 'transform 1s cubic-bezier(.22,.68,.31,1.05)';
+                setPos(wEasy, easyTargetX, targetY);
+                setPos(wAligner, alignerTargetX, targetY);
+            }, 1500);
+
+            schedule(() => {
+                colorBars();
+                hlEasy.classList.add('visible');
+                hlAligner.classList.add('visible');
+            }, 2200);
+
+            schedule(() => { brEasy.classList.add('visible'); }, 2950);
+            schedule(() => { brAligner.classList.add('visible'); }, 3650);
+
+            schedule(() => {
+                playhead.style.transition = 'none';
+                playhead.style.left = WAVE_LEFT + 'px';
+                playhead.classList.add('visible');
+                playhead.offsetWidth;
+            }, 2300);
+
+            schedule(() => {
+                playhead.style.transition = 'left 1.8s linear';
+                playhead.style.left = WAVE_RIGHT + 'px';
+            }, 3000);
+
+            schedule(() => {
+                tsES.classList.add('visible');
+                tsEE.classList.add('visible');
+                animateValue(tsES, 0, 0.12, 600, v => v.toFixed(2) + 's');
+                animateValue(tsEE, 0, 0.68, 600, v => v.toFixed(2) + 's');
+            }, 3450);
+
+            schedule(() => {
+                tsAS.classList.add('visible');
+                tsAE.classList.add('visible');
+                animateValue(tsAS, 0, 0.81, 510, v => v.toFixed(2) + 's');
+                animateValue(tsAE, 0, 1.76, 510, v => v.toFixed(2) + 's');
+            }, 4360);
+
+            schedule(() => {
+                playhead.classList.remove('visible');
+                subtitle.classList.add('visible');
+            }, 5750);
+
+            schedule(() => { replayBtn.classList.add('visible'); }, 6900);
+        }
+
+        function replay() { play(); }
+        play();
+    </script>
+
+</body>
+
+</html>

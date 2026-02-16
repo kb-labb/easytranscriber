@@ -1,0 +1,394 @@
+[
+  {
+    "objectID": "reference/index.html",
+    "href": "reference/index.html",
+    "title": "Function reference",
+    "section": "",
+    "text": "Transcription pipelines and functions.\n\n\n\npipelines.pipeline\nRun the full transcription pipeline (VAD -&gt; Transcribe -&gt; Emissions -&gt; Align).\n\n\nasr.ct2.transcribe\nTranscribe audio files using CTranslate2 Whisper model.\n\n\nasr.hf.transcribe\nTranscribe audio files using HuggingFace Whisper model.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#transcription",
+    "href": "reference/index.html#transcription",
+    "title": "Function reference",
+    "section": "",
+    "text": "Transcription pipelines and functions.\n\n\n\npipelines.pipeline\nRun the full transcription pipeline (VAD -&gt; Transcribe -&gt; Emissions -&gt; Align).\n\n\nasr.ct2.transcribe\nTranscribe audio files using CTranslate2 Whisper model.\n\n\nasr.hf.transcribe\nTranscribe audio files using HuggingFace Whisper model.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#text-processing",
+    "href": "reference/index.html#text-processing",
+    "title": "Function reference",
+    "section": "Text Processing",
+    "text": "Text Processing\nText processing utilities. from easytranscriber.text.normalization import function_name. See also SpanMapNormalizer from easyaligner.\n\n\n\ntext_normalizer\nDefault text normalization function.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#datasets",
+    "href": "reference/index.html#datasets",
+    "title": "Function reference",
+    "section": "Datasets",
+    "text": "Datasets\nDataset classes for creating Pytorch DataLoaders. from easytranscriber.data.dataset import ClassName\n\n\n\nStreamingAudioSliceDataset\nDataset that lazily loads audio chunks on-demand using ffmpeg seek.\n\n\nStreamingAudioFileDataset\nStreaming version of AudioFileDataset that reads audio chunks on-demand.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#data-models",
+    "href": "reference/index.html#data-models",
+    "title": "Function reference",
+    "section": "Data Models",
+    "text": "Data Models\nData models for storing transcribed text and metadata. from easytranscriber.data.datamodel import ClassName\n\n\n\nAudioMetadata\nData model for the metadata of an audio file.\n\n\nSpeechSegment\nA slice of the audio that contains speech of interest to be aligned.\n\n\nWordSegment\nWord-level alignment data.\n\n\nAlignmentSegment\nA segment of aligned audio and text.\n\n\nAudioChunk\nSegment of audio, usually created by VAD.",
+    "crumbs": [
+      "Reference",
+      "Function reference"
+    ]
+  },
+  {
+    "objectID": "reference/WordSegment.html",
+    "href": "reference/WordSegment.html",
+    "title": "WordSegment",
+    "section": "",
+    "text": "data.datamodel.WordSegment()\nWord-level alignment data.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\ntext\nstr\nThe aligned word’s text.\n\n\nstart\nfloat\nStart time of the word in seconds.\n\n\nend\nfloat\nEnd time of the word in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the word alignment.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "WordSegment"
+    ]
+  },
+  {
+    "objectID": "reference/WordSegment.html#attributes",
+    "href": "reference/WordSegment.html#attributes",
+    "title": "WordSegment",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\ntext\nstr\nThe aligned word’s text.\n\n\nstart\nfloat\nStart time of the word in seconds.\n\n\nend\nfloat\nEnd time of the word in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the word alignment.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "WordSegment"
+    ]
+  },
+  {
+    "objectID": "reference/AudioMetadata.html",
+    "href": "reference/AudioMetadata.html",
+    "title": "AudioMetadata",
+    "section": "",
+    "text": "data.datamodel.AudioMetadata()\nData model for the metadata of an audio file.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\naudio_path\nstr\nPath to the audio file.\n\n\nsample_rate\nint\nSample rate of the audio file.\n\n\nduration\nfloat\nDuration of the audio file in seconds.\n\n\nspeeches\n(list[SpeechSegment], optional)\nList of speech segments in the audio.\n\n\nmetadata\n(dict, optional)\nOptional extra metadata.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "AudioMetadata"
+    ]
+  },
+  {
+    "objectID": "reference/AudioMetadata.html#attributes",
+    "href": "reference/AudioMetadata.html#attributes",
+    "title": "AudioMetadata",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\naudio_path\nstr\nPath to the audio file.\n\n\nsample_rate\nint\nSample rate of the audio file.\n\n\nduration\nfloat\nDuration of the audio file in seconds.\n\n\nspeeches\n(list[SpeechSegment], optional)\nList of speech segments in the audio.\n\n\nmetadata\n(dict, optional)\nOptional extra metadata.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "AudioMetadata"
+    ]
+  },
+  {
+    "objectID": "reference/asr.hf.transcribe.html",
+    "href": "reference/asr.hf.transcribe.html",
+    "title": "asr.hf.transcribe",
+    "section": "",
+    "text": "asr.hf.transcribe(\n    model,\n    processor,\n    file_dataloader,\n    language=None,\n    task='transcribe',\n    batch_size=4,\n    beam_size=5,\n    length_penalty=1.0,\n    repetition_penalty=1.0,\n    max_length=250,\n    num_workers=2,\n    prefetch_factor=2,\n    output_dir='output/transcriptions',\n    device='cuda',\n)\nTranscribe audio files using HuggingFace Whisper model.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nmodel\ntransformers.WhisperForConditionalGeneration\nHuggingFace Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nHuggingFace Whisper processor.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). Default is None (auto-detect).\nNone\n\n\nbatch_size\nint\nBatch size for inference.\n4\n\n\nbeam_size\nint\nNumber of beams for beam search. Default is 5.\n5\n\n\nlength_penalty\nfloat\nLength penalty. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text. Default is 250.\n250\n\n\nnum_workers\nint\nNumber of workers for feature dataloader.\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader.\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'\n\n\ndevice\nstr\nDevice to run inference on. Default is cuda.\n'cuda'",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "asr.hf.transcribe"
+    ]
+  },
+  {
+    "objectID": "reference/asr.hf.transcribe.html#parameters",
+    "href": "reference/asr.hf.transcribe.html#parameters",
+    "title": "asr.hf.transcribe",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nmodel\ntransformers.WhisperForConditionalGeneration\nHuggingFace Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nHuggingFace Whisper processor.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). Default is None (auto-detect).\nNone\n\n\nbatch_size\nint\nBatch size for inference.\n4\n\n\nbeam_size\nint\nNumber of beams for beam search. Default is 5.\n5\n\n\nlength_penalty\nfloat\nLength penalty. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text. Default is 250.\n250\n\n\nnum_workers\nint\nNumber of workers for feature dataloader.\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader.\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'\n\n\ndevice\nstr\nDevice to run inference on. Default is cuda.\n'cuda'",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "asr.hf.transcribe"
+    ]
+  },
+  {
+    "objectID": "reference/StreamingAudioFileDataset.html",
+    "href": "reference/StreamingAudioFileDataset.html",
+    "title": "StreamingAudioFileDataset",
+    "section": "",
+    "text": "data.dataset.StreamingAudioFileDataset(\n    metadata,\n    processor,\n    audio_dir='data',\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy='chunk',\n)\nStreaming version of AudioFileDataset that reads audio chunks on-demand.\nInstead of loading entire audio files and chunking in memory, this dataset returns a StreamingAudioSliceDataset that lazily loads each chunk via ffmpeg.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nmetadata\nJSONMetadataDataset or list[AudioMetadata] or AudioMetadata\nMetadata source.\nrequired\n\n\nprocessor\ntransformers.Wav2Vec2Processor or transformers.WhisperProcessor\nProcessor for feature extraction.\nrequired\n\n\naudio_dir\nstr\nBase directory for audio files.\n'data'\n\n\nsample_rate\nint\nTarget sample rate for resampling.\n16000\n\n\nchunk_size\nint\nMaximum chunk size in seconds (for speech-based chunking).\n30\n\n\nalignment_strategy\nstr\n‘speech’ or ‘chunk’ - determines how chunks are defined.\n'chunk'",
+    "crumbs": [
+      "Reference",
+      "Datasets",
+      "StreamingAudioFileDataset"
+    ]
+  },
+  {
+    "objectID": "reference/StreamingAudioFileDataset.html#parameters",
+    "href": "reference/StreamingAudioFileDataset.html#parameters",
+    "title": "StreamingAudioFileDataset",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nmetadata\nJSONMetadataDataset or list[AudioMetadata] or AudioMetadata\nMetadata source.\nrequired\n\n\nprocessor\ntransformers.Wav2Vec2Processor or transformers.WhisperProcessor\nProcessor for feature extraction.\nrequired\n\n\naudio_dir\nstr\nBase directory for audio files.\n'data'\n\n\nsample_rate\nint\nTarget sample rate for resampling.\n16000\n\n\nchunk_size\nint\nMaximum chunk size in seconds (for speech-based chunking).\n30\n\n\nalignment_strategy\nstr\n‘speech’ or ‘chunk’ - determines how chunks are defined.\n'chunk'",
+    "crumbs": [
+      "Reference",
+      "Datasets",
+      "StreamingAudioFileDataset"
+    ]
+  },
+  {
+    "objectID": "reference/asr.ct2.transcribe.html",
+    "href": "reference/asr.ct2.transcribe.html",
+    "title": "asr.ct2.transcribe",
+    "section": "",
+    "text": "asr.ct2.transcribe(\n    model,\n    processor,\n    file_dataloader,\n    language=None,\n    task='transcribe',\n    batch_size=8,\n    beam_size=5,\n    patience=1.0,\n    length_penalty=1.0,\n    repetition_penalty=1.0,\n    no_repeat_ngram_size=0,\n    max_length=448,\n    suppress_blank=True,\n    num_workers=2,\n    prefetch_factor=2,\n    output_dir='output/transcriptions',\n)\nTranscribe audio files using CTranslate2 Whisper model.\nThis function processes audio files through a dataloader structure similar to the HuggingFace implementation, but uses ctranslate2 for inference.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nmodel\nctranslate2.models.Whisper\nCTranslate2 Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nWhisperProcessor for tokenization and decoding.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). If None, auto-detect.\nNone\n\n\nbatch_size\nint\nBatch size for feature processing.\n8\n\n\ntask\nstr\nTask type - ‘transcribe’ or ‘translate’.\n'transcribe'\n\n\nbeam_size\nint\nBeam size for search. Default is 5.\n5\n\n\npatience\nfloat\nBeam search patience factor. Default is 1.0.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nno_repeat_ngram_size\nint\nN-gram size for no repeat. Default is 0.\n0\n\n\nmax_length\nint\nMaximum output length. Default is 448.\n448\n\n\nsuppress_blank\nbool\nWhether to suppress blank tokens. Default is True.\nTrue\n\n\nnum_workers\nint\nNumber of workers for feature dataloader (file dataloader is created outside of this function).\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader (file dataloader is created outside of this function).\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "asr.ct2.transcribe"
+    ]
+  },
+  {
+    "objectID": "reference/asr.ct2.transcribe.html#parameters",
+    "href": "reference/asr.ct2.transcribe.html#parameters",
+    "title": "asr.ct2.transcribe",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nmodel\nctranslate2.models.Whisper\nCTranslate2 Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nWhisperProcessor for tokenization and decoding.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). If None, auto-detect.\nNone\n\n\nbatch_size\nint\nBatch size for feature processing.\n8\n\n\ntask\nstr\nTask type - ‘transcribe’ or ‘translate’.\n'transcribe'\n\n\nbeam_size\nint\nBeam size for search. Default is 5.\n5\n\n\npatience\nfloat\nBeam search patience factor. Default is 1.0.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nno_repeat_ngram_size\nint\nN-gram size for no repeat. Default is 0.\n0\n\n\nmax_length\nint\nMaximum output length. Default is 448.\n448\n\n\nsuppress_blank\nbool\nWhether to suppress blank tokens. Default is True.\nTrue\n\n\nnum_workers\nint\nNumber of workers for feature dataloader (file dataloader is created outside of this function).\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader (file dataloader is created outside of this function).\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "asr.ct2.transcribe"
+    ]
+  },
+  {
+    "objectID": "reference/normalization.text_normalizer.html",
+    "href": "reference/normalization.text_normalizer.html",
+    "title": "normalization.text_normalizer",
+    "section": "",
+    "text": "text.normalization.text_normalizer(text)\nDefault text normalization function.\nApplies - Unicode normalization (NFKC) - Lowercasing - Normalization of whitespace - Remove parentheses and special characters\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntext\nstr\nInput text to normalize.\nrequired\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ntuple\nTuple containing (normalized_tokens, mapping)."
+  },
+  {
+    "objectID": "reference/normalization.text_normalizer.html#parameters",
+    "href": "reference/normalization.text_normalizer.html#parameters",
+    "title": "normalization.text_normalizer",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ntext\nstr\nInput text to normalize.\nrequired"
+  },
+  {
+    "objectID": "reference/normalization.text_normalizer.html#returns",
+    "href": "reference/normalization.text_normalizer.html#returns",
+    "title": "normalization.text_normalizer",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\ntuple\nTuple containing (normalized_tokens, mapping)."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "reference/text_normalizer.html",
+    "href": "reference/text_normalizer.html",
+    "title": "text_normalizer",
+    "section": "",
+    "text": "text.normalization.text_normalizer(text)\nDefault text normalization function.\nApplies - Unicode normalization (NFKC) - Lowercasing - Normalization of whitespace - Remove parentheses and special characters\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntext\nstr\nInput text to normalize.\nrequired\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ntuple\nTuple containing (normalized_tokens, mapping).",
+    "crumbs": [
+      "Reference",
+      "Text Processing",
+      "text_normalizer"
+    ]
+  },
+  {
+    "objectID": "reference/text_normalizer.html#parameters",
+    "href": "reference/text_normalizer.html#parameters",
+    "title": "text_normalizer",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ntext\nstr\nInput text to normalize.\nrequired",
+    "crumbs": [
+      "Reference",
+      "Text Processing",
+      "text_normalizer"
+    ]
+  },
+  {
+    "objectID": "reference/text_normalizer.html#returns",
+    "href": "reference/text_normalizer.html#returns",
+    "title": "text_normalizer",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\ntuple\nTuple containing (normalized_tokens, mapping).",
+    "crumbs": [
+      "Reference",
+      "Text Processing",
+      "text_normalizer"
+    ]
+  },
+  {
+    "objectID": "reference/StreamingAudioSliceDataset.html",
+    "href": "reference/StreamingAudioSliceDataset.html",
+    "title": "StreamingAudioSliceDataset",
+    "section": "",
+    "text": "data.dataset.StreamingAudioSliceDataset(\n    audio_path,\n    chunk_specs,\n    processor,\n    sample_rate=16000,\n    metadata=None,\n)\nDataset that lazily loads audio chunks on-demand using ffmpeg seek.\nUnlike AudioSliceDataset which holds all features in memory, this dataset stores only the chunk metadata and loads audio when getitem is called.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\naudio_path\nstr or Path\nPath to the audio file.\nrequired\n\n\nchunk_specs\nlist of dict\nList of dicts with ‘start_sec’, ‘end_sec’, ‘speech_id’ keys.\nrequired\n\n\nprocessor\ntransformers.Wav2Vec2Processor or transformers.WhisperProcessor\nProcessor for feature extraction.\nrequired\n\n\nsample_rate\nint\nTarget sample rate.\n16000\n\n\nmetadata\nAudioMetadata\nAudioMetadata object to pass through.\nNone",
+    "crumbs": [
+      "Reference",
+      "Datasets",
+      "StreamingAudioSliceDataset"
+    ]
+  },
+  {
+    "objectID": "reference/StreamingAudioSliceDataset.html#parameters",
+    "href": "reference/StreamingAudioSliceDataset.html#parameters",
+    "title": "StreamingAudioSliceDataset",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\naudio_path\nstr or Path\nPath to the audio file.\nrequired\n\n\nchunk_specs\nlist of dict\nList of dicts with ‘start_sec’, ‘end_sec’, ‘speech_id’ keys.\nrequired\n\n\nprocessor\ntransformers.Wav2Vec2Processor or transformers.WhisperProcessor\nProcessor for feature extraction.\nrequired\n\n\nsample_rate\nint\nTarget sample rate.\n16000\n\n\nmetadata\nAudioMetadata\nAudioMetadata object to pass through.\nNone",
+    "crumbs": [
+      "Reference",
+      "Datasets",
+      "StreamingAudioSliceDataset"
+    ]
+  },
+  {
+    "objectID": "reference/pipelines.pipeline.html",
+    "href": "reference/pipelines.pipeline.html",
+    "title": "pipelines.pipeline",
+    "section": "",
+    "text": "pipelines.pipeline(\n    vad_model,\n    emissions_model,\n    transcription_model,\n    audio_paths,\n    audio_dir,\n    backend='ct2',\n    speeches=None,\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy='chunk',\n    text_normalizer_fn=text_normalizer,\n    tokenizer=None,\n    language=None,\n    task='transcribe',\n    beam_size=5,\n    max_length=250,\n    repetition_penalty=1.0,\n    length_penalty=1.0,\n    patience=1.0,\n    no_repeat_ngram_size=0,\n    start_wildcard=False,\n    end_wildcard=False,\n    blank_id=None,\n    word_boundary=None,\n    indent=2,\n    ndigits=5,\n    batch_size_files=1,\n    num_workers_files=2,\n    prefetch_factor_files=2,\n    batch_size_features=8,\n    num_workers_features=4,\n    streaming=True,\n    save_json=True,\n    save_msgpack=False,\n    save_emissions=True,\n    return_alignments=False,\n    delete_emissions=False,\n    output_vad_dir='output/vad',\n    output_transcriptions_dir='output/transcriptions',\n    output_emissions_dir='output/emissions',\n    output_alignments_dir='output/alignments',\n    cache_dir='models',\n    hf_token=None,\n    device='cuda',\n)\nRun the full transcription pipeline (VAD -&gt; Transcribe -&gt; Emissions -&gt; Align).\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nvad_model\nstr\nVoice Activity Detection model: “pyannote” or “silero”.\nrequired\n\n\nemissions_model\nstr\nHugging Face model ID for the emissions model (“org_name/model_name”).\nrequired\n\n\ntranscription_model\nstr\nPath to Hugging Face model ID for the transcription model (“org_name/model_name”).\nrequired\n\n\naudio_paths\nlist\nList of audio file paths.\nrequired\n\n\naudio_dir\nstr\nDirectory containing audio files.\nrequired\n\n\nspeeches\nlist[list[SpeechSegment]]\nExisting speech segments for alignment.\nNone\n\n\nbackend\nstr\nBackend to use for the transcription model: “ct2” or “hf”. Default is “ct2”.\n'ct2'\n\n\nsample_rate\nint\nSample rate.\n16000\n\n\nchunk_size\nint\nChunk size in seconds.\n30\n\n\nalignment_strategy\nstr\nAlignment strategy (‘speech’ or ‘chunk’).\n'chunk'\n\n\ntext_normalizer_fn\ncallable\nFunction to normalize text before forced alignment.\ntext_normalizer\n\n\ntokenizer\nobject\nAn nltk tokenizer or a custom callable tokenizer that takes a string as input and returns a list of tuples (start_char, end_char), marking the spans/boundaries of sentences, paragraphs, or any other text unit of interest.\nNone\n\n\nbeam_size\nint\nNumber of beams for beam search. Recommended: 5 for ct2 and 1 for hf (beam search is slow in Hugging Face transformers).\n5\n\n\npatience\nfloat\nPatience. Only implemented in ct2.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. See HF source code for details\n1.0\n\n\nrepetition_penalty\nfloat\nSee HF source code for details.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text.\n250\n\n\nstart_wildcard\nbool\nAdd start wildcard to forced alignment.\nFalse\n\n\nend_wildcard\nbool\nAdd end wildcard to forced alignment.\nFalse\n\n\nblank_id\nint | None\nBlank token ID of the emissions model (generally the pad token ID).\nNone\n\n\nword_boundary\nstr | None\nWord boundary character of the emissions model (usually “|”).\nNone\n\n\nindent\nint\nJSON indentation.\n2\n\n\nndigits\nint\nNumber of digits for rounding.\n5\n\n\nbatch_size_files\nint\nBatch size for files. Recommended to set to 1.\n1\n\n\nnum_workers_files\nint\nNumber of workers for file loading.\n2\n\n\nprefetch_factor_files\nint\nPrefetch factor for files.\n2\n\n\nbatch_size_features\nint\nBatch size for feature extraction.\n8\n\n\nnum_workers_features\nint\nNumber of workers for feature extraction.\n4\n\n\nstreaming\nbool\nUse streaming mode.\nTrue\n\n\nsave_json\nbool\nSave results to JSON.\nTrue\n\n\nsave_msgpack\nbool\nSave results to MessagePack.\nFalse\n\n\nsave_emissions\nbool\nSave emissions.\nTrue\n\n\nreturn_alignments\nbool\nReturn alignment results.\nFalse\n\n\ndelete_emissions\nbool\nWhether to delete emissions numpy files after processing.\nFalse\n\n\noutput_vad_dir\nstr\nOutput directory for VAD.\n'output/vad'\n\n\noutput_transcriptions_dir\nstr\nOutput directory for transcriptions.\n'output/transcriptions'\n\n\noutput_emissions_dir\nstr\nOutput directory for emissions.\n'output/emissions'\n\n\noutput_alignments_dir\nstr\nOutput directory for alignments.\n'output/alignments'\n\n\ncache_dir\nstr\nCache directory for transcription and emissions models.\n'models'\n\n\nhf_token\nstr or None\nHugging Face authentication token for gated models.\nNone\n\n\ndevice\nstr\nDevice to run models on. Default is cuda.\n'cuda'\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nlist[list[SpeechSegment]] or None\nIf return_alignments is True, returns a list of alignment mappings for each audio file. Otherwise, returns None (the alignments are saved to disk only).",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "pipelines.pipeline"
+    ]
+  },
+  {
+    "objectID": "reference/pipelines.pipeline.html#parameters",
+    "href": "reference/pipelines.pipeline.html#parameters",
+    "title": "pipelines.pipeline",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nvad_model\nstr\nVoice Activity Detection model: “pyannote” or “silero”.\nrequired\n\n\nemissions_model\nstr\nHugging Face model ID for the emissions model (“org_name/model_name”).\nrequired\n\n\ntranscription_model\nstr\nPath to Hugging Face model ID for the transcription model (“org_name/model_name”).\nrequired\n\n\naudio_paths\nlist\nList of audio file paths.\nrequired\n\n\naudio_dir\nstr\nDirectory containing audio files.\nrequired\n\n\nspeeches\nlist[list[SpeechSegment]]\nExisting speech segments for alignment.\nNone\n\n\nbackend\nstr\nBackend to use for the transcription model: “ct2” or “hf”. Default is “ct2”.\n'ct2'\n\n\nsample_rate\nint\nSample rate.\n16000\n\n\nchunk_size\nint\nChunk size in seconds.\n30\n\n\nalignment_strategy\nstr\nAlignment strategy (‘speech’ or ‘chunk’).\n'chunk'\n\n\ntext_normalizer_fn\ncallable\nFunction to normalize text before forced alignment.\ntext_normalizer\n\n\ntokenizer\nobject\nAn nltk tokenizer or a custom callable tokenizer that takes a string as input and returns a list of tuples (start_char, end_char), marking the spans/boundaries of sentences, paragraphs, or any other text unit of interest.\nNone\n\n\nbeam_size\nint\nNumber of beams for beam search. Recommended: 5 for ct2 and 1 for hf (beam search is slow in Hugging Face transformers).\n5\n\n\npatience\nfloat\nPatience. Only implemented in ct2.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. See HF source code for details\n1.0\n\n\nrepetition_penalty\nfloat\nSee HF source code for details.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text.\n250\n\n\nstart_wildcard\nbool\nAdd start wildcard to forced alignment.\nFalse\n\n\nend_wildcard\nbool\nAdd end wildcard to forced alignment.\nFalse\n\n\nblank_id\nint | None\nBlank token ID of the emissions model (generally the pad token ID).\nNone\n\n\nword_boundary\nstr | None\nWord boundary character of the emissions model (usually “|”).\nNone\n\n\nindent\nint\nJSON indentation.\n2\n\n\nndigits\nint\nNumber of digits for rounding.\n5\n\n\nbatch_size_files\nint\nBatch size for files. Recommended to set to 1.\n1\n\n\nnum_workers_files\nint\nNumber of workers for file loading.\n2\n\n\nprefetch_factor_files\nint\nPrefetch factor for files.\n2\n\n\nbatch_size_features\nint\nBatch size for feature extraction.\n8\n\n\nnum_workers_features\nint\nNumber of workers for feature extraction.\n4\n\n\nstreaming\nbool\nUse streaming mode.\nTrue\n\n\nsave_json\nbool\nSave results to JSON.\nTrue\n\n\nsave_msgpack\nbool\nSave results to MessagePack.\nFalse\n\n\nsave_emissions\nbool\nSave emissions.\nTrue\n\n\nreturn_alignments\nbool\nReturn alignment results.\nFalse\n\n\ndelete_emissions\nbool\nWhether to delete emissions numpy files after processing.\nFalse\n\n\noutput_vad_dir\nstr\nOutput directory for VAD.\n'output/vad'\n\n\noutput_transcriptions_dir\nstr\nOutput directory for transcriptions.\n'output/transcriptions'\n\n\noutput_emissions_dir\nstr\nOutput directory for emissions.\n'output/emissions'\n\n\noutput_alignments_dir\nstr\nOutput directory for alignments.\n'output/alignments'\n\n\ncache_dir\nstr\nCache directory for transcription and emissions models.\n'models'\n\n\nhf_token\nstr or None\nHugging Face authentication token for gated models.\nNone\n\n\ndevice\nstr\nDevice to run models on. Default is cuda.\n'cuda'",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "pipelines.pipeline"
+    ]
+  },
+  {
+    "objectID": "reference/pipelines.pipeline.html#returns",
+    "href": "reference/pipelines.pipeline.html#returns",
+    "title": "pipelines.pipeline",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\nlist[list[SpeechSegment]] or None\nIf return_alignments is True, returns a list of alignment mappings for each audio file. Otherwise, returns None (the alignments are saved to disk only).",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "pipelines.pipeline"
+    ]
+  },
+  {
+    "objectID": "reference/normalization.default_text_normalize.html",
+    "href": "reference/normalization.default_text_normalize.html",
+    "title": "normalization.default_text_normalize",
+    "section": "",
+    "text": "text.normalization.default_text_normalize(text)\nDefault text normalization function. Applies - Unicode normalization (NFKC) - Lowercasing - Normalization of whitespace - Remove parentheses and special characters\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntext\nstr\nInput text to normalize.\nrequired\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ntuple\nTuple containing (normalized_tokens, mapping)."
+  },
+  {
+    "objectID": "reference/normalization.default_text_normalize.html#parameters",
+    "href": "reference/normalization.default_text_normalize.html#parameters",
+    "title": "normalization.default_text_normalize",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ntext\nstr\nInput text to normalize.\nrequired"
+  },
+  {
+    "objectID": "reference/normalization.default_text_normalize.html#returns",
+    "href": "reference/normalization.default_text_normalize.html#returns",
+    "title": "normalization.default_text_normalize",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\ntuple\nTuple containing (normalized_tokens, mapping)."
+  },
+  {
+    "objectID": "reference/AlignmentSegment.html",
+    "href": "reference/AlignmentSegment.html",
+    "title": "AlignmentSegment",
+    "section": "",
+    "text": "data.datamodel.AlignmentSegment()\nA segment of aligned audio and text.\nThis can be sentence, paragraph, or any other unit of text.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the aligned segment in seconds.\n\n\nend\nfloat\nEnd time of the aligned segment in seconds.\n\n\ntext\nstr\nThe aligned text segment.\n\n\nwords\nlist[WordSegment]\nList of word-level alignment data within this segment.\n\n\nduration\n(float, optional)\nDuration of the aligned segment in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the alignment.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "AlignmentSegment"
+    ]
+  },
+  {
+    "objectID": "reference/AlignmentSegment.html#attributes",
+    "href": "reference/AlignmentSegment.html#attributes",
+    "title": "AlignmentSegment",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the aligned segment in seconds.\n\n\nend\nfloat\nEnd time of the aligned segment in seconds.\n\n\ntext\nstr\nThe aligned text segment.\n\n\nwords\nlist[WordSegment]\nList of word-level alignment data within this segment.\n\n\nduration\n(float, optional)\nDuration of the aligned segment in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the alignment.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "AlignmentSegment"
+    ]
+  },
+  {
+    "objectID": "reference/AudioChunk.html",
+    "href": "reference/AudioChunk.html",
+    "title": "AudioChunk",
+    "section": "",
+    "text": "data.datamodel.AudioChunk()\nSegment of audio, usually created by VAD.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the chunk in seconds.\n\n\nend\nfloat\nEnd time of the chunk in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription for the chunk.\n\n\nduration\n(float, optional)\nDuration of the chunk in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames a chunk spans.\n\n\nnum_logits\n(int, optional)\nNumber of model output logits for the chunk.\n\n\nlanguage\n(str, optional)\nLanguage code for the chunk.\n\n\nlanguage_prob\n(float, optional)\nProbability/confidence of the detected language.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "AudioChunk"
+    ]
+  },
+  {
+    "objectID": "reference/AudioChunk.html#attributes",
+    "href": "reference/AudioChunk.html#attributes",
+    "title": "AudioChunk",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the chunk in seconds.\n\n\nend\nfloat\nEnd time of the chunk in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription for the chunk.\n\n\nduration\n(float, optional)\nDuration of the chunk in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames a chunk spans.\n\n\nnum_logits\n(int, optional)\nNumber of model output logits for the chunk.\n\n\nlanguage\n(str, optional)\nLanguage code for the chunk.\n\n\nlanguage_prob\n(float, optional)\nProbability/confidence of the detected language.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "AudioChunk"
+    ]
+  },
+  {
+    "objectID": "reference/SpeechSegment.html",
+    "href": "reference/SpeechSegment.html",
+    "title": "SpeechSegment",
+    "section": "",
+    "text": "data.datamodel.SpeechSegment()\nA slice of the audio that contains speech of interest to be aligned.\nA SpeechSegment may be a speech given by a single speaker, a dialogue between multiple speakers, a book chapter, or whatever unit of organisational abstraction the user prefers.\nIf no SpeechSegment is defined, one will automatically be added, treating the entire audio as a single speech.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nstart\n(float, optional)\nStart time of the speech segment in seconds.\n\n\nend\n(float, optional)\nEnd time of the speech segment in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription (manual, or created by ASR).\n\n\ntext_spans\n(list[tuple[int, int]], optional)\nOptional (start_char, end_char) indices in the text that allows for a custom segmentation of the text to be aligned to audio. Can for example be used to perform alignment on paragraph, sentence, or other optional levels of granularity.\n\n\nchunks\nlist[AudioChunk]\nAudio chunks from which we create w2v2 logits (if alignment_strategy is ‘chunk’). When ASR is used, these chunks will additionally contain the transcribed text of the chunk. The ASR output will be used for forced alignment within the chunk.\n\n\nalignments\nlist[AlignmentSegment]\nAligned text segments.\n\n\nduration\n(float, optional)\nDuration of the speech segment in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames speech segment spans.\n\n\nspeech_id\n(str or int, optional)\nOptional unique identifier for the speech segment.\n\n\nprobs_path\n(str, optional)\nPath to saved wav2vec2 emissions/probs.\n\n\nmetadata\n(dict, optional)\nOptional extra metadata such as speaker name, etc.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "SpeechSegment"
+    ]
+  },
+  {
+    "objectID": "reference/SpeechSegment.html#attributes",
+    "href": "reference/SpeechSegment.html#attributes",
+    "title": "SpeechSegment",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\nstart\n(float, optional)\nStart time of the speech segment in seconds.\n\n\nend\n(float, optional)\nEnd time of the speech segment in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription (manual, or created by ASR).\n\n\ntext_spans\n(list[tuple[int, int]], optional)\nOptional (start_char, end_char) indices in the text that allows for a custom segmentation of the text to be aligned to audio. Can for example be used to perform alignment on paragraph, sentence, or other optional levels of granularity.\n\n\nchunks\nlist[AudioChunk]\nAudio chunks from which we create w2v2 logits (if alignment_strategy is ‘chunk’). When ASR is used, these chunks will additionally contain the transcribed text of the chunk. The ASR output will be used for forced alignment within the chunk.\n\n\nalignments\nlist[AlignmentSegment]\nAligned text segments.\n\n\nduration\n(float, optional)\nDuration of the speech segment in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames speech segment spans.\n\n\nspeech_id\n(str or int, optional)\nOptional unique identifier for the speech segment.\n\n\nprobs_path\n(str, optional)\nPath to saved wav2vec2 emissions/probs.\n\n\nmetadata\n(dict, optional)\nOptional extra metadata such as speaker name, etc.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "SpeechSegment"
+    ]
+  }
+]
