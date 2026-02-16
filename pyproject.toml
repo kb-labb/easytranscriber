@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=67.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+version = "0.1.0"
+name = "easytranscriber"
+requires-python = ">= 3.10"
+description = "Speech recognition with accurate word-level timestamps."
+readme = "README.md"
+authors = [{ name = "Faton Rekathati" }]
+
+dependencies = [
+  "transformers>=4.45.0",
+  "torch>=2.7.0,!=2.9.*",
+  "torchaudio>=2.7.0,!=2.9.*",
+  "tqdm>=4.66.1",
+  "soundfile>=0.12.1",
+  "nltk>=3.8.2",
+  "pyannote-audio>=3.3.1",
+  "silero-vad~=6.0",
+  "ctranslate2>=4.4.0",
+  "msgspec",
+  "easyaligner @ git+https://github.com/kb-labb/easyaligner.git"
+]
+
+[project.urls]
+Repository = "https://github.com/kb-labb/easytranscriber"
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", marker = "sys_platform == 'darwin'" },
+  { index = "pytorch-cuda", marker = "sys_platform != 'darwin'" },
+]
+torchaudio = [
+  { index = "pytorch-cpu", marker = "sys_platform == 'darwin'" },
+  { index = "pytorch-cuda", marker = "sys_platform != 'darwin'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cuda"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.ruff]
+line-length = 99
+indent-width = 4
+target-version = "py310"
+
+[tool.ruff.lint]
+# Disable fix for unused imports (`F401`).
+unfixable = ["F401"]
