@@ -1,0 +1,56 @@
+/*-- scss:defaults --*/
+
+// Match the hero animation background
+$body-bg: #0c0e14;
+$body-color: #e0e0e8;
+
+// Slightly lighter surface for cards, sidebars, code blocks, etc.
+$card-bg: #12141c;
+$code-block-bg: #12141c;
+
+// Accent colors to match the hero's green/blue palette
+$link-color: #5ebbf7;
+$link-hover-color: #7ee8a2;
+
+// Navbar / sidebar
+$navbar-bg: #181b26;
+$sidebar-bg: #0c0e14;
+
+// Softer borders
+$border-color: #1e2230;
+
+// Code styling
+$code-color: #7ee8a2;
+
+/*-- scss:rules --*/
+
+// Smooth transition for the iframe to blend with the page
+iframe {
+    background: transparent;
+}
+
+// Sidebar links
+.sidebar-item .sidebar-item-text {
+    color: #aab;
+}
+
+.sidebar-item .sidebar-item-text:hover {
+    color: #5ebbf7;
+}
+
+// Color-split the navbar title: "easy" green, "aligner" blue
+.navbar-brand {
+    background: linear-gradient(90deg, #7ee8a2 0%, #7ee8a2 30%, #5ebbf7 30%, #5ebbf7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+// Tone down heading color slightly
+h1,
+h2,
+h3,
+h4 {
+    color: #f0f0f5;
+}

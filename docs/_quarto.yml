@@ -1,8 +1,11 @@
 project:
   type: website
 
+execute:
+  freeze: auto
+
 website:
-  title: "easywhisper"
+  title: "easytranscriber"
   navbar:
     background: light
     search: true
@@ -11,6 +14,8 @@ website:
         href: reference/index.qmd
       - text: "About"
         href: about.qmd
+      - icon: github
+        href: https://github.com/kb-labb/easytranscriber
 
 # tell quarto to read the generated sidebar
 metadata-files:
@@ -19,13 +24,21 @@ metadata-files:
 # tell quarto to read the generated styles
 format:
   html:
+    theme:
+      dark:
+        - cosmo
+        - styles/dark-custom.scss
+      light: 
+        - cosmo
+        - styles/light-custom.scss
     css:
       - reference/_styles-quartodoc.css
       - styles.css
 
+
 quartodoc:
   # the name used to import the package you want to create reference docs for
-  package: easywhisper
+  package: easytranscriber
   renderer:
     style: markdown
     table_style: table # description-list
@@ -43,11 +56,17 @@ quartodoc:
         - pipelines.pipeline
         - asr.ct2.transcribe
         - asr.hf.transcribe
+    - title: Text Processing
+      desc: 
+        Text processing utilities. See also [SpanMapNormalizer](https://kb-labb.github.io/easyaligner/reference/SpanMapNormalizer.html)
+        from [easyaligner](https://github.com/kb-labb/easyaligner). 
+      package: easytranscriber.text.normalization
+      contents:
+        - text_normalizer
     - title: Datasets
       desc: 
-        Dataset classes for creating Pytorch DataLoaders. 
-        `from easywhisper.data.streaming import ClassName`
-      package: easywhisper.data.streaming
+        Dataset classes for creating Pytorch DataLoaders.
+      package: easytranscriber.data.dataset
       contents:
         - name: StreamingAudioSliceDataset
           children: separate
@@ -55,20 +74,11 @@ quartodoc:
           children: separate
     - title: Data Models
       desc: 
-        Data models for storing transcribed text and metadata. 
-        `from easywhisper.data.datamodel import ClassName`
-      package: easywhisper.data.datamodel
+        Data models for storing transcribed text and metadata.
+      package: easytranscriber.data.datamodel
       contents:
         - AudioMetadata
         - SpeechSegment
         - WordSegment
         - AlignmentSegment
         - AudioChunk
-    - title: Text Processing
-      desc: 
-        Text processing utilities. `from easywhisper.text.normalization import function_name`.
-        See also [SpanMapNormalizer](https://lauler.github.io/easyalign/reference/SpanMapNormalizer.html)
-        from [easyalign](https://github.com/lauler/easyalign).
-      package: easywhisper.text
-      contents:
-        - normalization.default_text_normalize

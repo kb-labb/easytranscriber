@@ -1,5 +1,21 @@
 ---
-title: "easywhisper"
 ---
 
-Documentation for the `easywhisper` package.
+```{=html}
+<style>
+  .hero-iframe { width: 100%; border: none; overflow: hidden; height: 502px; }
+  @media (max-width: 650px) { .hero-iframe { height: 60vw; } }
+</style>
+```
+
+::: {.dark-content}
+```{=html}
+<iframe class="hero-iframe" src="_assets/hero-dark.html"></iframe>
+```
+:::
+
+::: {.light-content}
+```{=html}
+<iframe class="hero-iframe" src="_assets/hero-light.html"></iframe>
+```
+:::

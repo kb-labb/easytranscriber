@@ -1,0 +1,71 @@
+/*-- scss:defaults --*/
+
+// Light sepia-tinted background
+$body-bg: #f5f3ef;
+$body-color: #2c2c2c;
+
+// Cards and code blocks
+$card-bg: #eeece7;
+$code-block-bg: #eeece7;
+
+// Accent colors matching the light hero
+$link-color: #2563eb;
+$link-hover-color: #16a34a;
+
+// Dark navbar to match the dark theme
+$navbar-bg: #181b26;
+$navbar-fg: #e0e0e8;
+
+// Sidebar
+$sidebar-bg: #f5f3ef;
+
+// Borders
+$border-color: #ddd8d0;
+
+// Code styling
+$code-color: #16a34a;
+
+/*-- scss:rules --*/
+
+iframe {
+    background: transparent;
+}
+
+// Force light text in the dark navbar
+.navbar {
+
+    .nav-link,
+    .navbar-toggler-icon {
+        color: #aab !important;
+    }
+
+    .nav-link:hover {
+        color: #5ebbf7 !important;
+    }
+}
+
+// Color-split the navbar title: "easy" green, "aligner" blue
+.navbar-brand {
+    background: linear-gradient(90deg, #7ee8a2 0%, #7ee8a2 30%, #5ebbf7 30%, #5ebbf7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+// Sidebar links
+.sidebar-item .sidebar-item-text {
+    color: #555;
+}
+
+.sidebar-item .sidebar-item-text:hover {
+    color: #2563eb;
+}
+
+// Headings
+h1,
+h2,
+h3,
+h4 {
+    color: #1a1a1a;
+}
