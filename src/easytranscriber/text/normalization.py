@@ -1,6 +1,6 @@
 import unicodedata
 
-from easyalign.text.normalization import SpanMapNormalizer
+from easyaligner.text.normalization import SpanMapNormalizer
 
 
 def text_normalizer(text: str) -> str:

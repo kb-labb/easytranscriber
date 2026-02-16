@@ -10,12 +10,11 @@ import logging
 from pathlib import Path
 
 import torch
-from easyalign.data.datamodel import AudioMetadata
-from easyalign.data.dataset import JSONMetadataDataset
+from easyaligner.data.datamodel import AudioMetadata
+from easyaligner.data.dataset import JSONMetadataDataset
+from easytranscriber.audio import read_audio_segment
 from torch.utils.data import Dataset
 from transformers import Wav2Vec2Processor, WhisperProcessor
-
-from easywhisper.audio import read_audio_segment
 
 logger = logging.getLogger(__name__)
 

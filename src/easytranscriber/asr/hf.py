@@ -2,12 +2,11 @@ import logging
 from pathlib import Path
 
 import torch
-from easyalign.data.dataset import AudioFileDataset
-from easyalign.utils import save_metadata_json
+from easyaligner.data.dataset import AudioFileDataset
+from easyaligner.utils import save_metadata_json
+from easytranscriber.data.collators import transcribe_collate_fn
 from tqdm import tqdm
 from transformers import WhisperForConditionalGeneration, WhisperProcessor
-
-from easywhisper.data.collators import transcribe_collate_fn
 
 logger = logging.getLogger(__name__)
 

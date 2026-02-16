@@ -4,14 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 version = "0.1.0"
+name = "easytranscriber"
 requires-python = ">= 3.10"
-name = "easywhisper"
-readme = "README.md"
 description = "Speech recognition with accurate word-level timestamps."
+readme = "README.md"
 authors = [{ name = "Faton Rekathati" }]
-
-[project.urls]
-repository = "https://github.com/kb-labb/easywhisper"
 
 dependencies = [
   "transformers>=4.45.0",
@@ -23,8 +20,12 @@ dependencies = [
   "pyannote-audio>=3.3.1",
   "silero-vad~=6.0",
   "ctranslate2>=4.4.0",
+  "msgspec",
   "easyaligner @ git+https://github.com/kb-labb/easyaligner.git"
 ]
+
+[project.urls]
+Repository = "https://github.com/kb-labb/easytranscriber"
 
 [tool.uv.sources]
 torch = [

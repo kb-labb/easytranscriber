@@ -3,23 +3,26 @@ from pathlib import Path
 
 import ctranslate2
 import torch
-from easyalign.data.collators import audiofile_collate_fn, metadata_collate_fn
-from easyalign.data.datamodel import SpeechSegment
-from easyalign.data.dataset import AudioFileDataset, JSONMetadataDataset, StreamingAudioFileDataset
-from easyalign.pipelines import alignment_pipeline, emissions_pipeline, vad_pipeline
-from easyalign.vad.pyannote import load_vad_model as load_pyannote_vad_model
-from easyalign.vad.silero import load_vad_model as load_silero_vad_model
+from easyaligner.data.collators import audiofile_collate_fn, metadata_collate_fn
+from easyaligner.data.datamodel import SpeechSegment
+from easyaligner.data.dataset import (
+    AudioFileDataset,
+    JSONMetadataDataset,
+    StreamingAudioFileDataset,
+)
+from easyaligner.pipelines import alignment_pipeline, emissions_pipeline, vad_pipeline
+from easyaligner.vad.pyannote import load_vad_model as load_pyannote_vad_model
+from easyaligner.vad.silero import load_vad_model as load_silero_vad_model
+from easytranscriber.asr.ct2 import transcribe as ct2_transcribe
+from easytranscriber.asr.hf import transcribe as hf_transcribe
+from easytranscriber.text.normalization import text_normalizer
+from easytranscriber.utils import hf_to_ct2_converter
 from transformers import (
     AutoModelForCTC,
     Wav2Vec2Processor,
     WhisperForConditionalGeneration,
     WhisperProcessor,
 )
-
-from easywhisper.asr.ct2 import transcribe as ct2_transcribe
-from easywhisper.asr.hf import transcribe as hf_transcribe
-from easywhisper.text.normalization import text_normalizer
-from easywhisper.utils import hf_to_ct2_converter
 
 logger = logging.getLogger(__name__)
 

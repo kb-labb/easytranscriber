@@ -11,11 +11,10 @@ from pathlib import Path
 import ctranslate2
 import numpy as np
 import torch
-from easyalign.utils import save_metadata_json, save_metadata_msgpack
+from easyaligner.utils import save_metadata_json, save_metadata_msgpack
+from easytranscriber.data.collators import transcribe_collate_fn
 from tqdm import tqdm
 from transformers import WhisperProcessor
-
-from easywhisper.data.collators import transcribe_collate_fn
 
 logger = logging.getLogger(__name__)
 
