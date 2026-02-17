@@ -65,6 +65,52 @@ html body.nav-sidebar.floating.nav-fixed.fullcontent.quarto-light div#quarto-con
 }
 
 
+/* Landing page cards */
+
+.landing-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 960px;
+    margin: 0rem auto 3rem;
+    padding: 0 1rem;
+}
+
+.landing-card {
+    display: block;
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    text-decoration: none !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.landing-card:hover {
+    transform: translateY(-4px);
+}
+
+.landing-card h3 {
+    margin: 0.75rem 0 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.landing-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.landing-card-icon {
+    font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+    .landing-cards {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
 td:first-child {
     text-wrap: nowrap;
 }

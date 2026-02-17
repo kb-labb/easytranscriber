@@ -62,10 +62,40 @@ iframe {
     color: #2563eb;
 }
 
+// Code cell output box
+.cell-output pre {
+    color: #3a3a3a;
+    background-color: #e8e5df;
+    border-left: 3px solid #2563eb;
+    padding: 0.75em 1em;
+    border-radius: 4px;
+}
+
 // Headings
 h1,
 h2,
 h3,
 h4 {
     color: #1a1a1a;
+}
+
+// Landing page cards
+.landing-card {
+    background: #ffffff;
+    border: 1px solid #ddd8d0;
+    color: #555;
+
+    h3 {
+        color: #1a1a1a;
+    }
+
+    .landing-card-icon {
+        color: #16a34a;
+    }
+
+    &:hover {
+        border-color: #2563eb;
+        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
+        color: #555;
+    }
 }

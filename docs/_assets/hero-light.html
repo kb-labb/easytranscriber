@@ -28,6 +28,7 @@
             width: 100%;
             max-width: 860px;
             margin: 0 auto;
+            transform: translateX(-20px);
         }
 
         .hero {
@@ -381,7 +382,7 @@
 
             const charW = 39;
             const totalW = 11 * charW;
-            const startX = (HERO_W - totalW) / 2;
+            const startX = (HERO_W - totalW) / 2 - 35;
             wEasy.style.transition = 'none';
             wAligner.style.transition = 'none';
             setPos(wEasy, startX, 30);

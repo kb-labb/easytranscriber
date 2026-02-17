@@ -47,10 +47,40 @@ iframe {
     font-weight: 700;
 }
 
+// Code cell output box
+.cell-output pre {
+    color: #c0c0cc;
+    background-color: #0e1018;
+    border-left: 3px solid #5ebbf7;
+    padding: 0.75em 1em;
+    border-radius: 4px;
+}
+
 // Tone down heading color slightly
 h1,
 h2,
 h3,
 h4 {
     color: #f0f0f5;
+}
+
+// Landing page cards
+.landing-card {
+    background: #181b26;
+    border: 1px solid #1e2230;
+    color: #c0c0cc;
+
+    h3 {
+        color: #f0f0f5;
+    }
+
+    .landing-card-icon {
+        color: #7ee8a2;
+    }
+
+    &:hover {
+        border-color: #5ebbf7;
+        box-shadow: 0 8px 24px rgba(94, 187, 247, 0.1);
+        color: #c0c0cc;
+    }
 }

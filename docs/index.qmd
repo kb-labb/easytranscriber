@@ -19,3 +19,24 @@
 <iframe class="hero-iframe" src="_assets/hero-light.html"></iframe>
 ```
 :::
+
+```{=html}
+<div class="landing-cards">
+  <a href="get-started/overview.html" class="landing-card">
+    <div class="landing-card-icon"><i class="bi bi-rocket-takeoff"></i></div>
+    <h3>Get Started</h3>
+    <p>Install easytranscriber and transcribe your first audio file in minutes.</p>
+  </a>
+  <a href="reference/index.html" class="landing-card">
+    <div class="landing-card-icon"><i class="bi bi-book"></i></div>
+    <h3>Reference</h3>
+    <p>Explore the API — pipelines, datasets, data models, and text processing.</p>
+  </a>
+  <a href="about.html" class="landing-card">
+    <div class="landing-card-icon"><i class="bi bi-speedometer2"></i></div>
+    <h3>Benchmarks</h3>
+    <p>Speech comparisons between easytranscriber and WhisperX.</p>
+  </a>
+</div>
+```
+

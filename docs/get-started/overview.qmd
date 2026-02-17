@@ -1,0 +1,34 @@
+---
+title: Overview
+conda: 
+    environment: easywhisper
+---
+
+Hi.
+
+`test`
+
+```python
+import easytranscriber as et
+
+def main():
+    # create a transcriber
+    transcriber = et.Transcriber()
+
+    # transcribe an audio
+    a = 3+3
+    print(a)
+```
+
+```{python}
+print(3+3)
+print("hello")
+```
+
+:::{.callout-tip}
+This is a tip.
+:::
+
+:::{.callout-important}
+This is important!
+:::

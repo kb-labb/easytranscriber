@@ -1,0 +1,12 @@
+{
+  "hash": "5949fdb58c6c596869df50b79288390a",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: Overview\nconda: \n    environment: easywhisper\n---\n\nHi.\n\n`test`\n\n```python\nimport easytranscriber as et\n\ndef main():\n    # create a transcriber\n    transcriber = et.Transcriber()\n\n    # transcribe an audio\n    a = 3+3\n    print(a)\n```\n\n::: {#c2e7aae0 .cell execution_count=1}\n``` {.python .cell-code}\nprint(3+3)\nprint(\"hello\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n6\nhello\n```\n:::\n:::\n\n\n:::{.callout-tip}\nThis is a tip.\n:::\n\n:::{.callout-important}\nThis is important!\n:::\n\n",
+    "supporting": [
+      "overview_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

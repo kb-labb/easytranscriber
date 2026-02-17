@@ -10,12 +10,19 @@ website:
     background: light
     search: true
     right:
+      - text: "Get Started"
+        href: get-started/overview.qmd
       - text: "Reference"
         href: reference/index.qmd
       - text: "About"
         href: about.qmd
       - icon: github
         href: https://github.com/kb-labb/easytranscriber
+  sidebar:
+    - id: get-started
+      title: "Get Started"
+      contents:
+        - get-started/overview.qmd
 
 # tell quarto to read the generated sidebar
 metadata-files:
