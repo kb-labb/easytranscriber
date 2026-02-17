@@ -194,6 +194,24 @@
     ]
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "easytranscriber",
+    "section": "",
+    "text": "Get Started\n    Install easytranscriber and transcribe your first audio file in minutes.\n  \n  \n    \n    Reference\n    Explore the API — pipelines, datasets, data models, and text processing.\n  \n  \n    \n    Benchmarks\n    Speech comparisons between easytranscriber and WhisperX."
+  },
+  {
+    "objectID": "get-started/overview.html",
+    "href": "get-started/overview.html",
+    "title": "Overview",
+    "section": "",
+    "text": "Hi.\ntest\nimport easytranscriber as et\n\ndef main():\n    # create a transcriber\n    transcriber = et.Transcriber()\n\n    # transcribe an audio\n    a = 3+3\n    print(a)\n\nprint(3+3)\nprint(\"hello\")\n\n6\nhello\n\n\n\n\n\n\n\n\nTip\n\n\n\nThis is a tip.\n\n\n\n\n\n\n\n\nImportant\n\n\n\nThis is important!",
+    "crumbs": [
+      "Get Started",
+      "Overview"
+    ]
+  },
+  {
     "objectID": "reference/AlignmentSegment.html",
     "href": "reference/AlignmentSegment.html",
     "title": "AlignmentSegment",
