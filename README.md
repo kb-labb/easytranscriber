@@ -1,4 +1,5 @@
-## easytranscriber
+<div align="center"><img width="1020" height="340" alt="image" src="https://github.com/user-attachments/assets/7f1bdf33-5161-40c1-b6a7-6f1f586e030b" /></div>
+
 
 `easytranscriber` provides automatic speech recognition with accurate word-level timestamps. The library is designed for efficient transcription of large audio archives. It features a modular pipeline architecture which decomposes the different stages of the inference pipeline into independent and parallelizable components (VAD, transcription, feature/emission extraction, forced alignment). The library supports both `ctranslate2` and `Hugging Face` backends for inference. Notable features include:
 
