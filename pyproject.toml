@@ -21,7 +21,7 @@ dependencies = [
   "silero-vad~=6.0",
   "ctranslate2>=4.4.0",
   "msgspec",
-  "easyaligner @ git+https://github.com/kb-labb/easyaligner.git"
+  "easyaligner==0.*"
 ]
 
 [project.urls]
