@@ -76,8 +76,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-b701948f03a84fdd0e0325dee96d7fae.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-f48754a524d249cbfee4b863d4b04778.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-f055453bf5c6f63e9b894934d5b0dc26.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-9ba7254411b574ae9777a917f44d17c1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -111,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-sidebar floating nav-fixed fullcontent quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating nav-fixed slimcontent quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -293,6 +296,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../benchmarks.html"> 
+<span class="menu-text">Benchmarks</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../reference/index.html"> 
 <span class="menu-text">Reference</span></a>
   </li>  
@@ -335,14 +342,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Overview</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../get-started/text-processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Text processing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../benchmarks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Benchmarks</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#installation" id="toc-installation" class="nav-link active" data-scroll-target="#installation">Installation</a>
+  <ul class="collapse">
+  <li><a href="#with-gpu-support" id="toc-with-gpu-support" class="nav-link" data-scroll-target="#with-gpu-support">With GPU support</a></li>
+  <li><a href="#using-uv" id="toc-using-uv" class="nav-link" data-scroll-target="#using-uv">Using uv</a></li>
+  </ul></li>
+  <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a>
+  <ul class="collapse">
+  <li><a href="#output" id="toc-output" class="nav-link" data-scroll-target="#output">Output</a></li>
+  </ul></li>
+  <li><a href="#schema" id="toc-schema" class="nav-link" data-scroll-target="#schema">Schema</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -364,25 +400,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Hi.</p>
-<p><code>test</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> easytranscriber <span class="im">as</span> et</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main():</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create a transcriber</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    transcriber <span class="op">=</span> et.Transcriber()</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># transcribe an audio</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> <span class="dv">3</span><span class="op">+</span><span class="dv">3</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(a)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="c2e7aae0" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">3</span><span class="op">+</span><span class="dv">3</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"hello"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>6
-hello</code></pre>
+<p><code>easytranscriber</code> is an automatic speech recognition library (ASR) that offers similar functionality to <a href="https://github.com/m-bain/whisperX"><code>WhisperX</code></a>. Although transcription is highly optimized in most ASR libraries, there still remains ample room for improvement in several other parts of the inference pipeline. The goal of <code>easytranscriber</code> is to squeeze out as much performance as possible from these ancillary parts. This is achieved by implementing:</p>
+<ul>
+<li>GPU-accelerated forced alignment using Pytorch’s forced alignment API <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</li>
+<li>Parallel loading and pre-fetching of audio files, enabling efficient, non-blocking data loading and batching.</li>
+<li>Batched inference support for wav2vec2 models (emission extraction).</li>
+<li>Support for independent, parallel processing of emissions (they are written to disk).</li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;There’s a tutorial in Pytorch’s official <a href="https://docs.pytorch.org/audio/main/tutorials/ctc_forced_alignment_api_tutorial.html">documentation</a>. See also <a href="https://jmlr.org/papers/volume25/23-1318/23-1318.pdf#page=8">Pratap et al., 2024</a></p></div></div><p>Additionally, <code>easytranscriber</code> supports flexible regex-based normalization of transcribed text as a means of improving forced alignment quality. The normalizations are reversible, meaning that the original text can be recovered after forced alignment. <code>easytranscriber</code> also supports using Hugging Face <a href="https://github.com/huggingface/transformers"><code>transformers</code></a> as the backend for inference.</p>
+<div class="page-columns page-full">
+<div id="fig-pipeline" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<a href="images/pipelines_light.svg" class="lightbox page-columns page-full" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: The easytranscriber pipeline"><img src="images/pipelines_light.svg" class="img-fluid quarto-figure quarto-figure-center figure-img column-page-inset" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<strong>Figure</strong>&nbsp;1: The easytranscriber pipeline
+</figcaption>
+</figure>
 </div>
 </div>
+<p>Together, these optimizations result in speedups of 35% to 102% compared to <code>WhisperX</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, depending on the hardware configuration used.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;See the <a href="../benchmarks.html">benchmarks</a> page of the documentation.</p></div></div><section id="installation" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<section id="with-gpu-support" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="with-gpu-support">With GPU support</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install easytranscriber <span class="at">--extra-index-url</span> https://download.pytorch.org/whl/cu128</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+<div class="no-row-height column-margin column-container"><div class="">
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -393,23 +438,153 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This is a tip.</p>
+<p>Remove <code>--extra-index-url</code> if you want a CPU-only installation.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+</div></div></section>
+<section id="using-uv" class="level3">
+<h3 class="anchored" data-anchor-id="using-uv">Using uv</h3>
+<p>When installing with <a href="https://docs.astral.sh/uv/">uv</a>, it will select the appropriate PyTorch version automatically (CPU for macOS, CUDA for Linux/Windows/ARM):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> pip install easytranscriber</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="usage" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="usage">Usage</h2>
+<p>For our quickstart guide, we will be transcribing a short clip of the first book and chapter of “A Tale of Two Cities” from LibriVox <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;The original recording can be found <a href="https://librivox.org/a-tale-of-two-cities-by-charles-dickens-2/">here</a></p></div></div><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.text <span class="im">import</span> load_tokenizer</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> huggingface_hub <span class="im">import</span> snapshot_download</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easytranscriber.pipelines <span class="im">import</span> pipeline</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easytranscriber.text.normalization <span class="im">import</span> text_normalizer</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>snapshot_download(</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Lauler/easytranscriber_tutorials"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    repo_type<span class="op">=</span><span class="st">"dataset"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    local_dir<span class="op">=</span><span class="st">"data/tutorials"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    allow_patterns<span class="op">=</span><span class="st">"tale-of-two-cities_short-en/*"</span>,  <span class="co"># Wildcard pattern</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># max_workers=4,</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> load_tokenizer(<span class="st">"english"</span>) <span class="co"># For sentence tokenization in forced alignment</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>audio_files <span class="op">=</span> [<span class="bu">file</span>.name <span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> Path(<span class="st">"data/tutorials/tale-of-two-cities_short-en"</span>).glob(<span class="st">"*"</span>)]</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>pipeline(</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    vad_model<span class="op">=</span><span class="st">"pyannote"</span>,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    emissions_model<span class="op">=</span><span class="st">"facebook/wav2vec2-base-960h"</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    transcription_model<span class="op">=</span><span class="st">"distil-whisper/distil-large-v3.5"</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    audio_paths<span class="op">=</span>audio_files,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    audio_dir<span class="op">=</span><span class="st">"data/tutorials/tale-of-two-cities_short-en"</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    language<span class="op">=</span><span class="st">"en"</span>,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    tokenizer<span class="op">=</span>tokenizer,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    text_normalizer_fn<span class="op">=</span>text_normalizer,</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    cache_dir<span class="op">=</span><span class="st">"models"</span>,</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="output" class="level3">
+<h3 class="anchored" data-anchor-id="output">Output</h3>
+<p>By default, <code>easytranscriber</code> outputs a JSON file for each stage of the pipeline (VAD, emissions, transcription, forced alignment). The final aligned output can be found in <code>output/alignments</code>. The directory structure will look as follows:</p>
+<pre><code>output
+├── alignments
+├── emissions
+├── transcriptions
+└── vad</code></pre>
+<p>Let’s read the final aligned output and print out one of the aligned segments. We can either read using Python’s build-in <code>json</code> library, or use a convenience function provided in <code>easyaligner</code> that reads in the file as an <a href="../reference/AudioMetadata.html#easytranscriber.data.datamodel.AudioMetadata"><code>AudioMetadata</code></a> object.</p>
+<div id="24f4a65d" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.data.utils <span class="im">import</span> read_json</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> read_json(<span class="st">"output/alignments/taleoftwocities_01_dickens_64kb_trimmed.json"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the 3rd aligned segment of the first speech</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>pprint(results.speeches[<span class="dv">0</span>].alignments[<span class="dv">2</span>].to_dict())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'duration': 2.02164,
+ 'end': 8.57463,
+ 'score': 0.99115,
+ 'start': 6.55299,
+ 'text': 'It was the best of times. ',
+ 'words': [WordSegment(text='It ', start=6.55299, end=6.59302, score=0.99927),
+           WordSegment(text='was ', start=6.67308, end=6.77316, score=0.99967),
+           WordSegment(text='the ', start=6.85323, end=6.95331, score=0.9834),
+           WordSegment(text='best ', start=7.27357, end=7.59383, score=0.9998),
+           WordSegment(text='of ', start=7.73395, end=7.77398, score=0.99927),
+           WordSegment(text='times. ', start=7.89408, end=8.57463, score=0.96552)]}</code></pre>
 </div>
-<div class="callout-title-container flex-fill">
-Important
 </div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This is important!</p>
-</div>
+<audio controls="" style="width: 100%">
+<source src="https://huggingface.co/datasets/Lauler/easytranscriber_tutorials/resolve/main/tale-of-two-cities_short-en/taleoftwocities_01_dickens_64kb_trimmed.mp3" type="audio/mpeg">
+</audio>
+</section>
+</section>
+<section id="schema" class="level2">
+<h2 class="anchored" data-anchor-id="schema">Schema</h2>
+<p>See the <a href="../reference/index.html#data-models">reference</a> page of the documentation for a detailed overview of the data models used in <code>easytranscriber</code>. Below is a simplified schema of the final output after forced alignment of our example audio file.</p>
+<div style="max-height: 460px; overflow-y: auto;">
+<pre><code>AudioMetadata
+├── audio_path       "taleoftwocities_01_dickens_64kb_trimmed.mp3"
+├── sample_rate      16000
+├── duration         428.93
+├── metadata         null
+└── speeches[]
+    └── SpeechSegment
+        ├── speech_id       0
+        ├── start           1.769
+        ├── end             423.948
+        ├── text            null
+        ├── text_spans      null
+        ├── duration        422.179
+        ├── audio_frames    null
+        ├── probs_path      "taleoftwocities_01_dickens_64kb_trimmed/0.npy"
+        ├── metadata        null
+        │
+        ├── chunks[]                          ← VAD segments, transcribed by ASR
+        │   ├── [0] AudioChunk
+        │   │   ├── start         1.769
+        │   │   ├── end           28.162
+        │   │   ├── text          "Book 1. Chapter 1, The Period. It was the
+        │   │   │                  best of times. It was the worst of times..."
+        │   │   ├── duration      26.393
+        │   │   ├── audio_frames  422280
+        │   │   └── num_logits    1319
+        │   ├── [1] AudioChunk
+        │   │   ├── start         29.039
+        │   │   ├── end           57.085
+        │   │   └── text          "It was the winter of despair..."
+        │   └── ... (19 chunks total)
+        │
+        └── alignments[]                      ← sentence-level, with word timestamps
+            ├── [0] AlignmentSegment
+            │   ├── start         1.769
+            │   ├── end           2.169
+            │   ├── text          "Book 1. "
+            │   ├── duration      0.400
+            │   ├── score         0.482
+            │   └── words[]
+            │       ├── { text: "Book ",  start: 1.769, end: 1.909, score: 0.964 }
+            │       └── { text: "1. ",    start: 2.149, end: 2.169, score: 0.0   }
+            ├── [1] AlignmentSegment
+            │   ├── start         3.671
+            │   ├── end           5.112
+            │   ├── text          "Chapter 1, The Period. "
+            │   ├── duration      1.441
+            │   ├── score         0.737
+            │   └── words[]
+            │       ├── { text: "Chapter ", start: 3.671, end: 3.991, score: 0.982 }
+            │       ├── { text: "1, ",      start: 4.111, end: 4.131, score: 0.0   }
+            │       ├── { text: "The ",     start: 4.471, end: 4.551, score: 0.972 }
+            │       └── { text: "Period. ", start: 4.651, end: 5.112, score: 0.992 }
+            ├── [2] AlignmentSegment
+            │   ├── text          "It was the best of times. "
+            │   └── words[]
+            │       ├── { text: "It ",     start: 6.553, end: 6.593, score: 0.999 }
+            │       ├── { text: "was ",    start: 6.673, end: 6.773, score: 1.000 }
+            │       ├── { text: "the ",    start: 6.853, end: ...                 }
+            │       └── ...
+            └── ...</code></pre>
 </div>
 
+
+</section>
 
 
 </main> <!-- /main -->
@@ -827,6 +1002,38 @@ Important
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

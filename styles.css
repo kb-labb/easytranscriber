@@ -118,3 +118,11 @@ td:first-child {
 td:first-child a {
     word-break: normal;
 }
+
+/* Fix fig-align within column layout classes (Quarto grid overrides text-align) */
+.quarto-figure-center .column-page-inset,
+.quarto-figure-center .column-page,
+.quarto-figure-center .column-screen-inset,
+.quarto-figure-center .column-screen {
+    justify-self: center;
+}

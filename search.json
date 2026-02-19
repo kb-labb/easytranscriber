@@ -2,9 +2,9 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About easytranscriber",
     "section": "",
-    "text": "About this site"
+    "text": "easytranscriber was developed by Faton Rekathati at KBLab. KBLab is a national research infrastructure for digital research and and development of artificial intelligence at the National Library of Sweden."
   },
   {
     "objectID": "reference/AudioChunk.html",
@@ -194,22 +194,66 @@
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "easytranscriber",
-    "section": "",
-    "text": "Get Started\n    Install easytranscriber and transcribe your first audio file in minutes.\n  \n  \n    \n    Reference\n    Explore the API — pipelines, datasets, data models, and text processing.\n  \n  \n    \n    Benchmarks\n    Speech comparisons between easytranscriber and WhisperX."
-  },
-  {
     "objectID": "get-started/overview.html",
     "href": "get-started/overview.html",
     "title": "Overview",
     "section": "",
-    "text": "Hi.\ntest\nimport easytranscriber as et\n\ndef main():\n    # create a transcriber\n    transcriber = et.Transcriber()\n\n    # transcribe an audio\n    a = 3+3\n    print(a)\n\nprint(3+3)\nprint(\"hello\")\n\n6\nhello\n\n\n\n\n\n\n\n\nTip\n\n\n\nThis is a tip.\n\n\n\n\n\n\n\n\nImportant\n\n\n\nThis is important!",
+    "text": "easytranscriber is an automatic speech recognition library (ASR) that offers similar functionality to WhisperX. Although transcription is highly optimized in most ASR libraries, there still remains ample room for improvement in several other parts of the inference pipeline. The goal of easytranscriber is to squeeze out as much performance as possible from these ancillary parts. This is achieved by implementing:\nAdditionally, easytranscriber supports flexible regex-based normalization of transcribed text as a means of improving forced alignment quality. The normalizations are reversible, meaning that the original text can be recovered after forced alignment. easytranscriber also supports using Hugging Face transformers as the backend for inference.\nTogether, these optimizations result in speedups of 35% to 102% compared to WhisperX2, depending on the hardware configuration used.",
     "crumbs": [
       "Get Started",
       "Overview"
     ]
+  },
+  {
+    "objectID": "get-started/overview.html#installation",
+    "href": "get-started/overview.html#installation",
+    "title": "Overview",
+    "section": "Installation",
+    "text": "Installation\n\nWith GPU support\npip install easytranscriber --extra-index-url https://download.pytorch.org/whl/cu128\n\n\n\n\n\n\n\n\nTip\n\n\n\nRemove --extra-index-url if you want a CPU-only installation.\n\n\n\n\nUsing uv\nWhen installing with uv, it will select the appropriate PyTorch version automatically (CPU for macOS, CUDA for Linux/Windows/ARM):\nuv pip install easytranscriber",
+    "crumbs": [
+      "Get Started",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "get-started/overview.html#usage",
+    "href": "get-started/overview.html#usage",
+    "title": "Overview",
+    "section": "Usage",
+    "text": "Usage\nFor our quickstart guide, we will be transcribing a short clip of the first book and chapter of “A Tale of Two Cities” from LibriVox 3.\n3 The original recording can be found herefrom pathlib import Path\n\nfrom easyaligner.text import load_tokenizer\nfrom huggingface_hub import snapshot_download\n\nfrom easytranscriber.pipelines import pipeline\nfrom easytranscriber.text.normalization import text_normalizer\n\nsnapshot_download(\n    \"Lauler/easytranscriber_tutorials\",\n    repo_type=\"dataset\",\n    local_dir=\"data/tutorials\",\n    allow_patterns=\"tale-of-two-cities_short-en/*\",  # Wildcard pattern\n    # max_workers=4,\n)\n\n\ntokenizer = load_tokenizer(\"english\") # For sentence tokenization in forced alignment\naudio_files = [file.name for file in Path(\"data/tutorials/tale-of-two-cities_short-en\").glob(\"*\")]\npipeline(\n    vad_model=\"pyannote\",\n    emissions_model=\"facebook/wav2vec2-base-960h\",\n    transcription_model=\"distil-whisper/distil-large-v3.5\",\n    audio_paths=audio_files,\n    audio_dir=\"data/tutorials/tale-of-two-cities_short-en\",\n    language=\"en\",\n    tokenizer=tokenizer,\n    text_normalizer_fn=text_normalizer,\n    cache_dir=\"models\",\n)\n\nOutput\nBy default, easytranscriber outputs a JSON file for each stage of the pipeline (VAD, emissions, transcription, forced alignment). The final aligned output can be found in output/alignments. The directory structure will look as follows:\noutput\n├── alignments\n├── emissions\n├── transcriptions\n└── vad\nLet’s read the final aligned output and print out one of the aligned segments. We can either read using Python’s build-in json library, or use a convenience function provided in easyaligner that reads in the file as an AudioMetadata object.\n\nfrom easyaligner.data.utils import read_json\nfrom pprint import pprint\n\nresults = read_json(\"output/alignments/taleoftwocities_01_dickens_64kb_trimmed.json\")\n# Print the 3rd aligned segment of the first speech\npprint(results.speeches[0].alignments[2].to_dict())\n\n{'duration': 2.02164,\n 'end': 8.57463,\n 'score': 0.99115,\n 'start': 6.55299,\n 'text': 'It was the best of times. ',\n 'words': [WordSegment(text='It ', start=6.55299, end=6.59302, score=0.99927),\n           WordSegment(text='was ', start=6.67308, end=6.77316, score=0.99967),\n           WordSegment(text='the ', start=6.85323, end=6.95331, score=0.9834),\n           WordSegment(text='best ', start=7.27357, end=7.59383, score=0.9998),\n           WordSegment(text='of ', start=7.73395, end=7.77398, score=0.99927),\n           WordSegment(text='times. ', start=7.89408, end=8.57463, score=0.96552)]}",
+    "crumbs": [
+      "Get Started",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "get-started/overview.html#schema",
+    "href": "get-started/overview.html#schema",
+    "title": "Overview",
+    "section": "Schema",
+    "text": "Schema\nSee the reference page of the documentation for a detailed overview of the data models used in easytranscriber. Below is a simplified schema of the final output after forced alignment of our example audio file.\n\nAudioMetadata\n├── audio_path       \"taleoftwocities_01_dickens_64kb_trimmed.mp3\"\n├── sample_rate      16000\n├── duration         428.93\n├── metadata         null\n└── speeches[]\n    └── SpeechSegment\n        ├── speech_id       0\n        ├── start           1.769\n        ├── end             423.948\n        ├── text            null\n        ├── text_spans      null\n        ├── duration        422.179\n        ├── audio_frames    null\n        ├── probs_path      \"taleoftwocities_01_dickens_64kb_trimmed/0.npy\"\n        ├── metadata        null\n        │\n        ├── chunks[]                          ← VAD segments, transcribed by ASR\n        │   ├── [0] AudioChunk\n        │   │   ├── start         1.769\n        │   │   ├── end           28.162\n        │   │   ├── text          \"Book 1. Chapter 1, The Period. It was the\n        │   │   │                  best of times. It was the worst of times...\"\n        │   │   ├── duration      26.393\n        │   │   ├── audio_frames  422280\n        │   │   └── num_logits    1319\n        │   ├── [1] AudioChunk\n        │   │   ├── start         29.039\n        │   │   ├── end           57.085\n        │   │   └── text          \"It was the winter of despair...\"\n        │   └── ... (19 chunks total)\n        │\n        └── alignments[]                      ← sentence-level, with word timestamps\n            ├── [0] AlignmentSegment\n            │   ├── start         1.769\n            │   ├── end           2.169\n            │   ├── text          \"Book 1. \"\n            │   ├── duration      0.400\n            │   ├── score         0.482\n            │   └── words[]\n            │       ├── { text: \"Book \",  start: 1.769, end: 1.909, score: 0.964 }\n            │       └── { text: \"1. \",    start: 2.149, end: 2.169, score: 0.0   }\n            ├── [1] AlignmentSegment\n            │   ├── start         3.671\n            │   ├── end           5.112\n            │   ├── text          \"Chapter 1, The Period. \"\n            │   ├── duration      1.441\n            │   ├── score         0.737\n            │   └── words[]\n            │       ├── { text: \"Chapter \", start: 3.671, end: 3.991, score: 0.982 }\n            │       ├── { text: \"1, \",      start: 4.111, end: 4.131, score: 0.0   }\n            │       ├── { text: \"The \",     start: 4.471, end: 4.551, score: 0.972 }\n            │       └── { text: \"Period. \", start: 4.651, end: 5.112, score: 0.992 }\n            ├── [2] AlignmentSegment\n            │   ├── text          \"It was the best of times. \"\n            │   └── words[]\n            │       ├── { text: \"It \",     start: 6.553, end: 6.593, score: 0.999 }\n            │       ├── { text: \"was \",    start: 6.673, end: 6.773, score: 1.000 }\n            │       ├── { text: \"the \",    start: 6.853, end: ...                 }\n            │       └── ...\n            └── ...",
+    "crumbs": [
+      "Get Started",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "benchmarks.html",
+    "href": "benchmarks.html",
+    "title": "Benchmarks",
+    "section": "",
+    "text": "We present throughput comparisons between easytranscriber and WhisperX. See the github repository for more details, and inference code.\nIn general, easytranscriber achieves a bigger boost on hardware that feature slower single-core CPU performance. The CPU increasingly acts as a bottleneck due to the sequential nature of data loading and forced alignment in WhisperX.\n\n\n\n\neasytranscriber vs WhisperX",
+    "crumbs": [
+      "Get Started",
+      "Benchmarks"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "easytranscriber",
+    "section": "",
+    "text": "Get Started\n    Install easytranscriber and transcribe your first audio file in minutes.\n  \n  \n    \n    Benchmarks\n    Speed comparisons between easytranscriber and WhisperX.\n  \n  \n    \n    Reference\n    Explore the API — pipelines, datasets, data models, and text processing."
   },
   {
     "objectID": "reference/AlignmentSegment.html",
