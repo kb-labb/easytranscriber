@@ -27,7 +27,13 @@ website:
         - get-started/overview.qmd
         - get-started/text-processing.qmd
         - benchmarks.qmd
-        
+  open-graph: 
+    title: "easytranscriber: Speech recognition with accurate timestamps, made easy"
+    description: 
+      "An automatic speech recognition library for transcribing audio files with precise timestamps.
+      Efficient inference pipelines suitable for transcription of large audio archives. Supports
+      both ctranslate2 and Hugging Face transformers as ASR backends."
+    image: _assets/easytranscriber.png
 
 # tell quarto to read the generated sidebar
 metadata-files:
