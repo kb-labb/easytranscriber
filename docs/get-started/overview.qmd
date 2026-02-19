@@ -1,34 +1,187 @@
 ---
 title: Overview
+format:
+  html:
+    embed-resources: false
+    toc: true
+    toc-depth: 3
+lightbox: true
+reference-location: margin
+freeze: true
 conda: 
     environment: easywhisper
 ---
 
-Hi.
+`easytranscriber` is an automatic speech recognition library (ASR) that offers similar functionality to [`WhisperX`](https://github.com/m-bain/whisperX). Although transcription is highly optimized in most ASR libraries, there still remains ample room for improvement in several other parts of the inference pipeline. The goal of `easytranscriber` is to squeeze out as much performance as possible from these ancillary parts. This is achieved by implementing:
 
-`test`
+* GPU-accelerated forced alignment using Pytorch's forced alignment API ^[There's a tutorial in Pytorch's official [documentation](https://docs.pytorch.org/audio/main/tutorials/ctc_forced_alignment_api_tutorial.html). See also [Pratap et al., 2024](https://jmlr.org/papers/volume25/23-1318/23-1318.pdf#page=8)].
+* Parallel loading and pre-fetching of audio files, enabling efficient, non-blocking data loading and batching.
+* Batched inference support for wav2vec2 models (emission extraction). 
+* Support for independent, parallel processing of emissions (they are written to disk).  
 
-```python
-import easytranscriber as et
+Additionally, `easytranscriber` supports flexible regex-based normalization of transcribed text as a means of improving forced alignment quality. The normalizations are reversible, meaning that the original text can be recovered after forced alignment. `easytranscriber` also supports using Hugging Face [`transformers`](https://github.com/huggingface/transformers) as the backend for inference. 
 
-def main():
-    # create a transcriber
-    transcriber = et.Transcriber()
-
-    # transcribe an audio
-    a = 3+3
-    print(a)
-```
-
-```{python}
-print(3+3)
-print("hello")
-```
-
-:::{.callout-tip}
-This is a tip.
+::: {.column-page-inset}
+![The easytranscriber pipeline](images/pipelines_light.svg){#fig-pipeline width=100% fig-align="center"}
 :::
 
-:::{.callout-important}
-This is important!
+Together, these optimizations result in speedups of 35% to 102% compared to `WhisperX`^[See the [benchmarks](../benchmarks.qmd) page of the documentation.], depending on the hardware configuration used. 
+
+## Installation
+
+### With GPU support
+
+```bash
+pip install easytranscriber --extra-index-url https://download.pytorch.org/whl/cu128
+```
+
+::: {.column-margin}
+::: {.callout-tip}
+Remove `--extra-index-url` if you want a CPU-only installation.
+:::
+:::
+
+### Using uv
+
+When installing with [uv](https://docs.astral.sh/uv/), it will select the appropriate PyTorch version automatically (CPU for macOS, CUDA for Linux/Windows/ARM):
+
+```bash
+uv pip install easytranscriber
+```
+
+## Usage
+
+For our quickstart guide, we will be transcribing a short clip of the first book and chapter of "A Tale of Two Cities" from LibriVox ^[The original recording can be found [here](https://librivox.org/a-tale-of-two-cities-by-charles-dickens-2/)].
+
+```python
+from pathlib import Path
+
+from easyaligner.text import load_tokenizer
+from huggingface_hub import snapshot_download
+
+from easytranscriber.pipelines import pipeline
+from easytranscriber.text.normalization import text_normalizer
+
+snapshot_download(
+    "Lauler/easytranscriber_tutorials",
+    repo_type="dataset",
+    local_dir="data/tutorials",
+    allow_patterns="tale-of-two-cities_short-en/*",  # Wildcard pattern
+    # max_workers=4,
+)
+
+
+tokenizer = load_tokenizer("english") # For sentence tokenization in forced alignment
+audio_files = [file.name for file in Path("data/tutorials/tale-of-two-cities_short-en").glob("*")]
+pipeline(
+    vad_model="pyannote",
+    emissions_model="facebook/wav2vec2-base-960h",
+    transcription_model="distil-whisper/distil-large-v3.5",
+    audio_paths=audio_files,
+    audio_dir="data/tutorials/tale-of-two-cities_short-en",
+    language="en",
+    tokenizer=tokenizer,
+    text_normalizer_fn=text_normalizer,
+    cache_dir="models",
+)
+```
+
+### Output
+
+By default, `easytranscriber` outputs a JSON file for each stage of the pipeline (VAD, emissions, transcription, forced alignment). The final aligned output can be found in `output/alignments`. The directory structure will look as follows:
+
+```
+output
+├── alignments
+├── emissions
+├── transcriptions
+└── vad
+```
+
+Let's read the final aligned output and print out one of the aligned segments. We can either read using Python's build-in `json` library, or use a convenience function provided in `easyaligner` that reads in the file as an [`AudioMetadata`](../reference/AudioMetadata.html#easytranscriber.data.datamodel.AudioMetadata) object.
+
+```{python}
+from easyaligner.data.utils import read_json
+from pprint import pprint
+
+results = read_json("output/alignments/taleoftwocities_01_dickens_64kb_trimmed.json")
+# Print the 3rd aligned segment of the first speech
+pprint(results.speeches[0].alignments[2].to_dict())
+```
+
+
+<audio controls style="width: 100%">
+  <source src="https://huggingface.co/datasets/Lauler/easytranscriber_tutorials/resolve/main/tale-of-two-cities_short-en/taleoftwocities_01_dickens_64kb_trimmed.mp3"
+  type="audio/mpeg">
+</audio>
+
+## Schema
+
+See the [reference](../reference/index.qmd#data-models) page of the documentation for a detailed overview of the data models used in `easytranscriber`. Below is a simplified schema of the final output after forced alignment of our example audio file. 
+
+
+::: {style="max-height: 460px; overflow-y: auto;"}
+```
+AudioMetadata
+├── audio_path       "taleoftwocities_01_dickens_64kb_trimmed.mp3"
+├── sample_rate      16000
+├── duration         428.93
+├── metadata         null
+└── speeches[]
+    └── SpeechSegment
+        ├── speech_id       0
+        ├── start           1.769
+        ├── end             423.948
+        ├── text            null
+        ├── text_spans      null
+        ├── duration        422.179
+        ├── audio_frames    null
+        ├── probs_path      "taleoftwocities_01_dickens_64kb_trimmed/0.npy"
+        ├── metadata        null
+        │
+        ├── chunks[]                          ← VAD segments, transcribed by ASR
+        │   ├── [0] AudioChunk
+        │   │   ├── start         1.769
+        │   │   ├── end           28.162
+        │   │   ├── text          "Book 1. Chapter 1, The Period. It was the
+        │   │   │                  best of times. It was the worst of times..."
+        │   │   ├── duration      26.393
+        │   │   ├── audio_frames  422280
+        │   │   └── num_logits    1319
+        │   ├── [1] AudioChunk
+        │   │   ├── start         29.039
+        │   │   ├── end           57.085
+        │   │   └── text          "It was the winter of despair..."
+        │   └── ... (19 chunks total)
+        │
+        └── alignments[]                      ← sentence-level, with word timestamps
+            ├── [0] AlignmentSegment
+            │   ├── start         1.769
+            │   ├── end           2.169
+            │   ├── text          "Book 1. "
+            │   ├── duration      0.400
+            │   ├── score         0.482
+            │   └── words[]
+            │       ├── { text: "Book ",  start: 1.769, end: 1.909, score: 0.964 }
+            │       └── { text: "1. ",    start: 2.149, end: 2.169, score: 0.0   }
+            ├── [1] AlignmentSegment
+            │   ├── start         3.671
+            │   ├── end           5.112
+            │   ├── text          "Chapter 1, The Period. "
+            │   ├── duration      1.441
+            │   ├── score         0.737
+            │   └── words[]
+            │       ├── { text: "Chapter ", start: 3.671, end: 3.991, score: 0.982 }
+            │       ├── { text: "1, ",      start: 4.111, end: 4.131, score: 0.0   }
+            │       ├── { text: "The ",     start: 4.471, end: 4.551, score: 0.972 }
+            │       └── { text: "Period. ", start: 4.651, end: 5.112, score: 0.992 }
+            ├── [2] AlignmentSegment
+            │   ├── text          "It was the best of times. "
+            │   └── words[]
+            │       ├── { text: "It ",     start: 6.553, end: 6.593, score: 0.999 }
+            │       ├── { text: "was ",    start: 6.673, end: 6.773, score: 1.000 }
+            │       ├── { text: "the ",    start: 6.853, end: ...                 }
+            │       └── ...
+            └── ...
+```
 :::

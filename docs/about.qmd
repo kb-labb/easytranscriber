@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "About easytranscriber"
 ---
 
-About this site
+`easytranscriber` was developed by [Faton Rekathati](https://github.com/Lauler) at [KBLab](https://huggingface.co/KBLab). KBLab is a national research infrastructure for digital research and and development of artificial intelligence at the [National Library of Sweden](https://www.kb.se/eng.html). 

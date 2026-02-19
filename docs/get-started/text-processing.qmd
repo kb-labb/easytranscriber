@@ -1,0 +1,22 @@
+---
+title: Text processing
+format:
+  html:
+    embed-resources: false
+    toc: true
+    toc-depth: 3
+reference-location: margin
+freeze: true
+conda: 
+    environment: easywhisper
+---
+
+## Text processing
+
+### Normalization
+
+### Sentence tokenization
+
+
+
+

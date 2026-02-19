@@ -1,0 +1,13 @@
+---
+title: "Benchmarks"
+lightbox: true
+toc: true
+---
+
+We present throughput comparisons between `easytranscriber` and `WhisperX`. See the [github repository](https://github.com/kb-labb/easytranscriber/tree/main/benchmarks) for more details, and inference code.  
+
+In general, `easytranscriber` achieves a bigger boost on hardware that feature slower single-core CPU performance. The CPU increasingly acts as a bottleneck due to the sequential nature of data loading and forced alignment in `WhisperX`. 
+
+::: {.column-page-inset}
+![`easytranscriber` vs `WhisperX`](_assets/all_speedup.png)
+:::

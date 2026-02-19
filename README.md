@@ -9,6 +9,64 @@
 * **35% to 102% faster inference compared to [`WhisperX`](https://github.com/m-bain/whisperX)**. See the [benchmarks](#benchmarks) for more details.
 * Batch inference support for both wav2vec2 and Whisper models.
 
-### Benchmarks
+## Installation
+
+### With GPU support
+
+```bash
+pip install easytranscriber --extra-index-url https://download.pytorch.org/whl/cu128
+```
+
+> [!TIP]  
+> Remove `--extra-index-url` if you want a CPU-only installation.
+
+### Using uv
+
+When installing with [uv](https://docs.astral.sh/uv/), it will select the appropriate PyTorch version automatically (CPU for macOS, CUDA for Linux/Windows/ARM):
+
+```bash
+uv pip install easytranscriber
+```
+
+## Usage
+
+```python
+
+from huggingface_hub import snapshot_download
+
+# Download Tale of Two Cities book 1 chapter 1 LibriVox audiobook recording for testing
+snapshot_download(
+    "Lauler/easytranscriber_tutorials",
+    repo_type="dataset",
+    local_dir="data/tutorials",
+    allow_patterns="tale-of-two-cities_short-en/*",
+    # max_workers=4,
+)
+
+tokenizer = load_tokenizer("english") # For sentence tokenization in forced alignment
+audio_files = [file.name for file in Path("data/tutorials/tale-of-two-cities_short-en").glob("*")]
+pipeline(
+    vad_model="pyannote",
+    emissions_model="facebook/wav2vec2-base-960h",
+    transcription_model="distil-whisper/distil-large-v3.5",
+    audio_paths=audio_files,
+    audio_dir="data/tutorials/tale-of-two-cities_short-en",
+    language="en",
+    tokenizer=tokenizer,
+    text_normalizer_fn=text_normalizer,
+    cache_dir="models",
+)
+```
+
+
+
+## Benchmarks
 
 ![Benchmarks](benchmarks/plots/all_speedup.png)
+
+
+## Acknowledgements
+
+`easytranscriber` is inspired by [`WhisperX`](https://github.com/m-bain/whisperX).
+
+The forced alignment component of `easytranscriber` is based on Pytorch's forced alignment API, which implements a GPU-accelerated version of the Viterbi algorithm as described in [Pratap et al., 2024](https://jmlr.org/papers/volume25/23-1318/23-1318.pdf#page=8).

@@ -12,6 +12,8 @@ website:
     right:
       - text: "Get Started"
         href: get-started/overview.qmd
+      - text: "Benchmarks"
+        href: benchmarks.qmd
       - text: "Reference"
         href: reference/index.qmd
       - text: "About"
@@ -23,6 +25,9 @@ website:
       title: "Get Started"
       contents:
         - get-started/overview.qmd
+        - get-started/text-processing.qmd
+        - benchmarks.qmd
+        
 
 # tell quarto to read the generated sidebar
 metadata-files:
@@ -42,6 +47,9 @@ format:
       - reference/_styles-quartodoc.css
       - styles.css
 
+# Make "Figure" titles bold in figure text
+crossref:
+  fig-title: '**Figure**'
 
 quartodoc:
   # the name used to import the package you want to create reference docs for

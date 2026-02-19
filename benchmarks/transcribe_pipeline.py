@@ -2,6 +2,8 @@ import logging
 import time
 from pathlib import Path
 
+from easyaligner.text import load_tokenizer
+
 from easytranscriber.pipelines import pipeline
 from easytranscriber.text.normalization import text_normalizer
 
@@ -12,18 +14,20 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+tokenizer = load_tokenizer("swedish")
 
 if __name__ == "__main__":
-    AUDIO_DIR = "data/multi"
+    AUDIO_DIR = "data/sv"
     audio_files = [file.name for file in Path(AUDIO_DIR).glob("*.wav")]
     start = time.time()
     pipeline(
         vad_model="pyannote",
-        emissions_model="facebook/mms-1b-all",
-        transcription_model="openai/whisper-large-v3",
+        emissions_model="KBLab/wav2vec2-large-voxrex-swedish",
+        transcription_model="KBLab/kb-whisper-large",
         audio_paths=audio_files,
         audio_dir=AUDIO_DIR,
-        language=None,
+        language="sv",
+        tokenizer=tokenizer,
         batch_size_features=16,
         text_normalizer_fn=text_normalizer,
     )

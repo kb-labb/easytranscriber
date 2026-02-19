@@ -79,6 +79,19 @@ h4 {
     color: #1a1a1a;
 }
 
+// Plain code blocks (no language specified) don't get $code-block-bg
+pre:not(.sourceCode) {
+    background-color: #eeece7;
+}
+
+// Code in captions and headings
+figcaption code,
+.figure-caption code,
+h1 code, h2 code, h3 code, h4 code {
+    color: #16a34a;
+    background-color: #eeece7;
+}
+
 // Landing page cards
 .landing-card {
     background: #ffffff;

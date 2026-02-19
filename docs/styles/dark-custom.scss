@@ -64,6 +64,26 @@ h4 {
     color: #f0f0f5;
 }
 
+// Comments in syntax-highlighted code blocks
+.sourceCode .co {
+    color: #6b7a8a;
+    font-style: italic;
+}
+
+// Plain code blocks (no language specified) don't get $code-block-bg
+pre:not(.sourceCode) {
+    background-color: #12141c;
+    color: #c0c0cc;
+}
+
+// Code in captions and headings
+figcaption code,
+.figure-caption code,
+h1 code, h2 code, h3 code, h4 code {
+    color: #7ee8a2;
+    background-color: #12141c;
+}
+
 // Landing page cards
 .landing-card {
     background: #181b26;
