@@ -4,5 +4,6 @@ _site/
 /output/
 /models/
 reference/
+.jupyter_cache/
 
 *.egg-info/

@@ -7,14 +7,15 @@ format:
     toc-depth: 3
 lightbox: true
 reference-location: margin
-freeze: true
+freeze: auto
+cache: true
 conda:
     environment: easywhisper
 resources:
   - ../_assets/taleoftwocities_01_dickens_64kb_trimmed.json
 ---
 
-`easytranscriber` is an automatic speech recognition library (ASR) that offers similar functionality to [`WhisperX`](https://github.com/m-bain/whisperX). Although transcription is highly optimized in most ASR libraries, there still remains ample room for improvement in several other parts of the inference pipeline. The goal of `easytranscriber` is to squeeze out as much performance as possible from these ancillary parts. This is achieved by implementing:
+`easytranscriber` is an automatic speech recognition (ASR) library that offers similar functionality to [`WhisperX`](https://github.com/m-bain/whisperX). While transcription is highly optimized in most ASR libraries, significant room for improvement remains in several stages of the inference pipeline. `easytranscriber` aims to squeeze as much performance as possible out of these components by implementing: 
 
 * GPU-accelerated forced alignment using Pytorch's forced alignment API ^[There's a tutorial in Pytorch's official [documentation](https://docs.pytorch.org/audio/main/tutorials/ctc_forced_alignment_api_tutorial.html). See also [Pratap et al., 2024](https://jmlr.org/papers/volume25/23-1318/23-1318.pdf#page=8)].
 * Parallel loading and pre-fetching of audio files, enabling efficient, non-blocking data loading and batching.
@@ -55,7 +56,8 @@ uv pip install easytranscriber
 
 For our quickstart guide, we will be transcribing a short clip of the first book and chapter of "A Tale of Two Cities" from LibriVox ^[The original recording can be found [here](https://librivox.org/a-tale-of-two-cities-by-charles-dickens-2/)].
 
-```python
+```{python}
+#| output: false
 from pathlib import Path
 
 from easyaligner.text import load_tokenizer
@@ -81,12 +83,21 @@ pipeline(
     transcription_model="distil-whisper/distil-large-v3.5",
     audio_paths=audio_files,
     audio_dir="data/tutorials/tale-of-two-cities_short-en",
+    backend="ct2", # easytranscriber handles conversion between ct2 and hf formats. 
     language="en",
     tokenizer=tokenizer,
     text_normalizer_fn=text_normalizer,
     cache_dir="models",
 )
 ```
+
+You can specify any repo with a Whisper model on Hugging Face. `easytranscriber` will handle the download and conversion to `ct2`^[[Ctranslate2](https://github.com/OpenNMT/CTranslate2) provides C++ optimized inference for Whisper].
+
+::: {.callout-note}
+The default VAD model is from `pyannote`. Their models are gated. To use them, you need to create a Hugging Face [access token](https://huggingface.co/docs/hub/en/security-tokens) and accept [terms and conditions](https://huggingface.co/pyannote/segmentation-3.0). Then, either i) save the access token at `~/.cache/huggingface/token` or ii) install and use the Hugging Face CLI and run `hf auth login`. See the [Hugging Face Hub quick start guide](https://huggingface.co/docs/huggingface_hub/en/quick-start#login-command) for more details. 
+
+Alternatively, you can switch to `silero` VAD (CPU-only, slightly slower). Silero can be used without authentication, and performs well. See the [vad_model](../reference/pipelines.pipeline.html#parameters) parameter in the docs. 
+:::
 
 ### Output
 
@@ -102,7 +113,7 @@ output
 
 #### Demo
 
-Let's preview the results as an interactive demo. The transcript below the audio player will automatically automatically be highlighted in sync with the words spoken in the audio. 
+Let's preview the results as an interactive demo. The text transcript below the audio player will automatically be highlighted in sync with the words spoken in the audio. 
 
 <div id="audio-player" class="audio-card">
   <div class="audio-card-label">Sample audio</div>
@@ -125,7 +136,7 @@ You can click anywhere in the text to jump to that point (sentence) in the audio
 
 #### Reading the output
 
-Let's read the final aligned output and print out one of the aligned segments. We can either read using Python's build-in `json` library, or use a convenience function provided in `easyaligner` that reads in the file as an [`AudioMetadata`](../reference/AudioMetadata.html#easytranscriber.data.datamodel.AudioMetadata) object.
+Let's read the final aligned output and print out one of the aligned segments. We can either read it using Python's build-in `json` library, or use a convenience function provided in `easyaligner` that reads in the file as an [`AudioMetadata`](../reference/AudioMetadata.html#easytranscriber.data.datamodel.AudioMetadata) object.
 
 ```{python}
 from easyaligner.data.utils import read_json
@@ -135,7 +146,6 @@ results = read_json("output/alignments/taleoftwocities_01_dickens_64kb_trimmed.j
 # Print the 3rd aligned segment of the first speech
 pprint(results.speeches[0].alignments[2].to_dict())
 ```
-
 
 
 ## Schema
