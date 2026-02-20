@@ -30,6 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./get-started/pipelines.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -41,8 +42,8 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-f055453bf5c6f63e9b894934d5b0dc26.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-9ba7254411b574ae9777a917f44d17c1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-5f53e196a2178d245accc371ac19f050.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-d2be07560ea121de3029aecc67d70911.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -319,6 +320,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./get-started/pipelines.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pipelines</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./benchmarks.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Benchmarks</span></a>
   </div>
@@ -354,8 +361,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>We present throughput comparisons between <code>easytranscriber</code> and <code>WhisperX</code>. See the <a href="https://github.com/kb-labb/easytranscriber/tree/main/benchmarks">github repository</a> for more details, and inference code.</p>
-<p>In general, <code>easytranscriber</code> achieves a bigger boost on hardware that feature slower single-core CPU performance. The CPU increasingly acts as a bottleneck due to the sequential nature of data loading and forced alignment in <code>WhisperX</code>.</p>
+<p>We present throughput comparisons between <code>easytranscriber</code> and <code>WhisperX</code>. See the <a href="https://github.com/kb-labb/easytranscriber/tree/main/benchmarks">github repository</a> for details, and inference code.</p>
+<p>In general, <code>easytranscriber</code> achieves a greater speedup on hardware with slower single-core CPU performance. The CPU bottlenecks performance in <code>WhisperX</code> due to the library’s use of sequential data loading, along with its CPU-based single-threaded forced alignment implementation.</p>
 <div class="page-columns page-full">
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full">
@@ -364,6 +371,14 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 </div>
+<p>All <code>easytranscriber</code> benchmarks were run using the <code>ctranslate2</code> backend for transcription.</p>
+<ul>
+<li>PyTorch version: 2.8.0</li>
+<li>CUDA: 12.8</li>
+<li>WhisperX version: 3.7.6</li>
+<li>Model: <code>KBLab/kb-whisper-large</code></li>
+<li>Language: Swedish (<code>sv</code>)</li>
+</ul>
 
 
 
@@ -781,6 +796,15 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./get-started/pipelines.html" class="pagination-link" aria-label="Pipelines">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Pipelines</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
 </div> <!-- /content -->
 <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
 (function() {

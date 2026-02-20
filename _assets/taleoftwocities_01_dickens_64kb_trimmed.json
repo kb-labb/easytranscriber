@@ -1,0 +1,6690 @@
+{
+  "audio_path": "taleoftwocities_01_dickens_64kb_trimmed.mp3",
+  "sample_rate": 16000,
+  "duration": 428.9277097505669,
+  "speeches": [
+    {
+      "speech_id": 0,
+      "start": 1.7690937500000001,
+      "end": 423.94784375,
+      "text": null,
+      "text_spans": null,
+      "chunks": [
+        {
+          "start": 1.7690937500000001,
+          "end": 28.16159375,
+          "text": "Book 1. Chapter 1, The Period. It was the best of times. It was the worst of times. It was the age of wisdom. It was the age of foolishness. It was the epoch of belief. It was the epoch of incredulity. It was the season of light. It was the season of darkness. It was the spring of hope.",
+          "duration": 26.392500000000002,
+          "audio_frames": 422280,
+          "num_logits": 1319,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 29.039093750000003,
+          "end": 57.08534375,
+          "text": "It was the winter of despair. We had everything before us. We had nothing before us. We were all going direct to heaven. We were all going direct the other way. In short, the period was so far like the present period that some of its noisiest authorities insisted on its being received, for good or for evil, in the superlative degree of comparison only.",
+          "duration": 28.046249999999997,
+          "audio_frames": 448739,
+          "num_logits": 1402,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 58.469093750000006,
+          "end": 78.78659375000001,
+          "text": "There was a king with a large jaw and a queen with a plain face on the throne of England. There was a king with a large jaw and a queen with a fair face on the throne of France. In both countries it was clearer than crystal to the lords of the state preserves of loaves and fishes that things in general were settled forever.",
+          "duration": 20.317500000000003,
+          "audio_frames": 325080,
+          "num_logits": 1015,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 80.30534375,
+          "end": 106.22534375000001,
+          "text": "It was the year of our Lord 1,775. Spiritual revelations were conceded to England at that favoured period, as at this. Mrs. Southcote had recently attained a five-and-twentieth blessed birthday, of whom a prophetic private in the lifeguards had heralded the sublime appearance by announcing that arrangements were made for the swallowing up of London and Westminster.",
+          "duration": 25.92,
+          "audio_frames": 414720,
+          "num_logits": 1295,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 106.74846875,
+          "end": 120.78846875,
+          "text": "even the cock-lane ghost had been laid only around a dozen of years after wrapping out its messages as the spirits of this very last year passed supernaturally deficient in originality wrapped out theirs",
+          "duration": 14.040000000000006,
+          "audio_frames": 224640,
+          "num_logits": 701,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 122.18909375000001,
+          "end": 141.22409375,
+          "text": "Mere messages in the earthly order of events had lately come to the English crown and people from a congress of British subjects in America, which, strange to relate, have proved more important to the human race than any communications yet received through any of the chickens of the Cock Lane brood.",
+          "duration": 19.034999999999997,
+          "audio_frames": 304559,
+          "num_logits": 951,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 143.09721875,
+          "end": 155.80409375000002,
+          "text": "france less favored on the whole as to matters spiritual than her sister of the shield and trident rolled with exceeding smoothness downhill making paper money and spending it",
+          "duration": 12.706875000000025,
+          "audio_frames": 203310,
+          "num_logits": 635,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 155.95596875,
+          "end": 180.45846875,
+          "text": "under the guidance of her christian pastors she entertained herself besides with such humane achievements as sentencing a youth to have his hands cut off his tongue torn out with pincers and his body burned alive because he had not kneeled down in the rain to do honour to a dirty procession of monks which passed within his view at a distance of some fifty or sixty yards",
+          "duration": 24.502499999999998,
+          "audio_frames": 392039,
+          "num_logits": 1224,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 181.28534375,
+          "end": 201.09659375,
+          "text": "it is likely enough that rooted in the woods of france and norway there were growing trees when that sufferer was put to death already marked by the woodman fate to come down and be sawn into boards to make a certain movable framework with a sack and a knife in it terrible in history",
+          "duration": 19.81125,
+          "audio_frames": 316980,
+          "num_logits": 990,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 201.60284375,
+          "end": 224.04659375000003,
+          "text": "it is likely enough that in the rough outhouses of some tillers of the heavy lands adjacent to paris there were sheltered from the weather that very day rude carts bespattered with rustic mire snuffed about by pigs and roosted in by poultry which the farmer death had already set apart to be his tumbles of the revolution",
+          "duration": 22.443750000000023,
+          "audio_frames": 359100,
+          "num_logits": 1121,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 225.16034375,
+          "end": 243.95909375000002,
+          "text": "But that woodman and that farmer, though they work unceasingly, work silently, and no one heard them as they went about with muffled tread, the rather, forasmuch as to entertain any suspicion that they were awake, was to be atheistical and traitorous.",
+          "duration": 18.798750000000013,
+          "audio_frames": 300780,
+          "num_logits": 939,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 245.32596875000002,
+          "end": 267.07784375,
+          "text": "in england there was scarcely an amount of order and protection to justify much national boasting daring burglaries by armed men and highway robberies took place in the capital itself every night families were publicly cautioned not to go out of town without removing their furniture to upholsterers warehouses for security",
+          "duration": 21.751874999999984,
+          "audio_frames": 348029,
+          "num_logits": 1087,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 268.12409375000004,
+          "end": 292.52534375,
+          "text": "The highwayman in the dark was a city tradesman in the light, and being recognized and challenged by his fellow tradesman, whom he stopped in his character of the captain, gallantly shot him through the head and rode away. The mail was waylaid by seven robbers, and the guard shot three dead, and then got shot dead himself by the other four, in consequence of the failure of his ammunition.",
+          "duration": 24.401249999999948,
+          "audio_frames": 390419,
+          "num_logits": 1219,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 292.64346875,
+          "end": 308.35409375,
+          "text": "after which the mail was robbed in peace that magnificent potentate the lord mayor of london was made to stand and deliver on turnham green by one highwayman who despoiled the illustrious creature in sight of all his retinue",
+          "duration": 15.710624999999993,
+          "audio_frames": 251369,
+          "num_logits": 785,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 308.87721875,
+          "end": 338.34096875,
+          "text": "Prisoners in London jails fought battles with their turnkeys, and the Majesty of the Law fired blunderbusses in among them, loaded with rounds of shot and ball. Thieves snipped off diamond crosses from the necks of noble lords at court drawing-rooms, musketeers went into St Giles's to search for contraband goods, and the mob fired on the musketeers, and the musketeers fired on the mob, and nobody thought any of these occurrences much out of the common way.",
+          "duration": 29.463750000000005,
+          "audio_frames": 471420,
+          "num_logits": 1472,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 339.74159375000005,
+          "end": 354.74346875000003,
+          "text": "In the midst of them the hangman, ever busy and ever worse than useless, was in constant requisition, now stringing up long rows of miscellaneous criminals, now hanging a housebreaker on Saturday who had been taken on Tuesday,",
+          "duration": 15.001874999999984,
+          "audio_frames": 240029,
+          "num_logits": 749,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 354.74346875000003,
+          "end": 382.16534375000003,
+          "text": "now burning people in the hand at newgate by the dozen and now burning pamphlets at the door of westminster hall to-day taking the life of an atrocious murderer and to-morrow of a wretched pilfer who had robbed a farmer's boy of sixpence all these things and a thousand like them came to pass in and close upon the dear old year one thousand seven hundred and seventy-five",
+          "duration": 27.421875,
+          "audio_frames": 438750,
+          "num_logits": 1370,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 382.89096875,
+          "end": 412.16909375,
+          "text": "Environment by them, while the woodman and the farmer worked unheeded, those two of the large jaws, and those other two of the plain and the fair faces, trod with stir enough, and carried their divine rights with a high hand. Thus did the year one thousand seven hundred and seventy-five conduct their greatnesses, and myriads of small creatures, the creatures of this chronicle among the rest, along the roads that lay before them.",
+          "duration": 29.27812499999999,
+          "audio_frames": 468449,
+          "num_logits": 1463,
+          "language": null,
+          "language_prob": null
+        },
+        {
+          "start": 416.30346875000004,
+          "end": 423.94784375,
+          "text": "End of Book One, Chapter One. Recording by Paul Adams. www.jornguy.com.",
+          "duration": 7.644374999999968,
+          "audio_frames": 122309,
+          "num_logits": 381,
+          "language": null,
+          "language_prob": null
+        }
+      ],
+      "alignments": [
+        {
+          "start": 1.76909,
+          "end": 2.16942,
+          "text": "Book 1. ",
+          "words": [
+            {
+              "text": "Book ",
+              "start": 1.76909,
+              "end": 1.90921,
+              "score": 0.96375
+            },
+            {
+              "text": "1. ",
+              "start": 2.1494,
+              "end": 2.16942,
+              "score": 0.0
+            }
+          ],
+          "duration": 0.40033,
+          "score": 0.48187
+        },
+        {
+          "start": 3.67064,
+          "end": 5.11181,
+          "text": "Chapter 1, The Period. ",
+          "words": [
+            {
+              "text": "Chapter ",
+              "start": 3.67064,
+              "end": 3.9909,
+              "score": 0.98233
+            },
+            {
+              "text": "1, ",
+              "start": 4.111,
+              "end": 4.13102,
+              "score": 0.0
+            },
+            {
+              "text": "The ",
+              "start": 4.47129,
+              "end": 4.55136,
+              "score": 0.97217
+            },
+            {
+              "text": "Period. ",
+              "start": 4.65144,
+              "end": 5.11181,
+              "score": 0.99219
+            }
+          ],
+          "duration": 1.44117,
+          "score": 0.73667
+        },
+        {
+          "start": 6.55299,
+          "end": 8.57463,
+          "text": "It was the best of times. ",
+          "words": [
+            {
+              "text": "It ",
+              "start": 6.55299,
+              "end": 6.59302,
+              "score": 0.99927
+            },
+            {
+              "text": "was ",
+              "start": 6.67308,
+              "end": 6.77316,
+              "score": 0.99967
+            },
+            {
+              "text": "the ",
+              "start": 6.85323,
+              "end": 6.95331,
+              "score": 0.9834
+            },
+            {
+              "text": "best ",
+              "start": 7.27357,
+              "end": 7.59383,
+              "score": 0.9998
+            },
+            {
+              "text": "of ",
+              "start": 7.73395,
+              "end": 7.77398,
+              "score": 0.99927
+            },
+            {
+              "text": "times. ",
+              "start": 7.89408,
+              "end": 8.57463,
+              "score": 0.96552
+            }
+          ],
+          "duration": 2.02164,
+          "score": 0.99115
+        },
+        {
+          "start": 8.83484,
+          "end": 10.85649,
+          "text": "It was the worst of times. ",
+          "words": [
+            {
+              "text": "It ",
+              "start": 8.83484,
+              "end": 8.89489,
+              "score": 0.99854
+            },
+            {
+              "text": "was ",
+              "start": 8.97496,
+              "end": 9.09505,
+              "score": 0.99821
+            },
+            {
+              "text": "the ",
+              "start": 9.21515,
+              "end": 9.35526,
+              "score": 0.98405
+            },
+            {
+              "text": "worst ",
+              "start": 9.53541,
+              "end": 9.97577,
+              "score": 0.9989
+            },
+            {
+              "text": "of ",
+              "start": 10.11588,
+              "end": 10.15592,
+              "score": 0.99731
+            },
+            {
+              "text": "times. ",
+              "start": 10.29603,
+              "end": 10.85649,
+              "score": 0.98486
+            }
+          ],
+          "duration": 2.02164,
+          "score": 0.99365
+        },
+        {
+          "start": 11.17675,
+          "end": 12.69798,
+          "text": "It was the age of wisdom. ",
+          "words": [
+            {
+              "text": "It ",
+              "start": 11.17675,
+              "end": 11.21678,
+              "score": 0.99683
+            },
+            {
+              "text": "was ",
+              "start": 11.25681,
+              "end": 11.33688,
+              "score": 0.99919
+            },
+            {
+              "text": "the ",
+              "start": 11.39693,
+              "end": 11.47699,
+              "score": 1.0
+            },
+            {
+              "text": "age ",
+              "start": 11.63712,
+              "end": 11.81727,
+              "score": 0.99487
+            },
+            {
+              "text": "of ",
+              "start": 11.91735,
+              "end": 11.95738,
+              "score": 0.99951
+            },
+            {
+              "text": "wisdom. ",
+              "start": 12.15754,
+              "end": 12.69798,
+              "score": 0.98895
+            }
+          ],
+          "duration": 1.52124,
+          "score": 0.99656
+        },
+        {
+          "start": 13.55868,
+          "end": 15.4202,
+          "text": "It was the age of foolishness. ",
+          "words": [
+            {
+              "text": "It ",
+              "start": 13.55868,
+              "end": 13.59872,
+              "score": 0.99951
+            },
+            {
+              "text": "was ",
+              "start": 13.63875,
+              "end": 13.73883,
+              "score": 0.99597
+            },
+            {
+              "text": "the ",
+              "start": 13.8189,
+              "end": 13.91898,
+              "score": 0.98477
+            },
+            {
+              "text": "age ",
+              "start": 14.03907,
+              "end": 14.1992,
+              "score": 1.0
+            },
+            {
+              "text": "of ",
+              "start": 14.27927,
+              "end": 14.3193,
+              "score": 0.99976
+            },
+            {
+              "text": "foolishness. ",
+              "start": 14.61955,
+              "end": 15.4202,
+              "score": 0.96816
+            }
+          ],
+          "duration": 1.86151,
+          "score": 0.99136
+        },
+        {
+          "start": 15.58033,
+          "end": 17.28171,
+          "text": "It was the epoch of belief. ",
+          "words": [
+            {
+              "text": "It ",
+              "start": 15.58033,
+              "end": 15.62036,
+              "score": 0.99902
+            },
+            {
+              "text": "was ",
+              "start": 15.68041,
+              "end": 15.76047,
+              "score": 0.99951
+            },
+            {
+              "text": "the ",
+              "start": 15.84054,
+              "end": 15.92061,
+              "score": 0.9989
+            },
+            {
+              "text": "epoch ",
+              "start": 16.10075,
+              "end": 16.48106,
+              "score": 0.97768
+            },
+            {
+              "text": "of ",
+              "start": 16.58114,
+              "end": 16.62118,
+              "score": 0.99927
+            },
+            {
+              "text": "belief. ",
+              "start": 16.80132,
+              "end": 17.28171,
+              "score": 0.99573
+            }
+          ],
+          "duration": 1.70138,
+          "score": 0.99502
+        },
+        {
+          "start": 17.86218,
+          "end": 20.10401,
+          "text": "It was the epoch of incredulity. ",
+          "words": [
+            {
+              "text": "It ",
+              "start": 17.86218,
+              "end": 17.90222,
+              "score": 0.99951
+            },
+            {
+              "text": "was ",
+              "start": 17.96227,
+              "end": 18.04233,
+              "score": 0.99951
+            },
+            {
+              "text": "the ",
+              "start": 18.10238,
+              "end": 18.18245,
+              "score": 0.99854
+            },
+            {
+              "text": "epoch ",
+              "start": 18.32256,
+              "end": 18.70287,
+              "score": 0.99403
+            },
+            {
+              "text": "of ",
+              "start": 18.76292,
+              "end": 18.80295,
+              "score": 0.99976
+            },
+            {
+              "text": "incredulity. ",
+              "start": 18.90303,
+              "end": 20.10401,
+              "score": 0.97305
+            }
+          ],
+          "duration": 2.24182,
+          "score": 0.99407
+        },
+        {
+          "start": 20.4643,
+          "end": 22.20572,
+          "text": "It was the season of light. ",
+          "words": [
+            {
+              "text": "It ",
+              "start": 20.4643,
+              "end": 20.50433,
+              "score": 0.99951
+            },
+            {
+              "text": "was ",
+              "start": 20.56438,
+              "end": 20.66446,
+              "score": 0.99967
+            },
+            {
+              "text": "the ",
+              "start": 20.76455,
+              "end": 20.84461,
+              "score": 0.99072
+            },
+            {
+              "text": "season ",
+              "start": 21.00474,
+              "end": 21.48513,
+              "score": 0.92285
+            },
+            {
+              "text": "of ",
+              "start": 21.58521,
+              "end": 21.62525,
+              "score": 0.99951
+            },
+            {
+              "text": "light. ",
+              "start": 21.90547,
+              "end": 22.20572,
+              "score": 0.9624
+            }
+          ],
+          "duration": 1.74142,
+          "score": 0.97911
+        },
+        {
+          "start": 23.10645,
+          "end": 25.38831,
+          "text": "It was the season of darkness. ",
+          "words": [
+            {
+              "text": "It ",
+              "start": 23.10645,
+              "end": 23.1665,
+              "score": 0.97021
+            },
+            {
+              "text": "was ",
+              "start": 23.20653,
+              "end": 23.2866,
+              "score": 0.99886
+            },
+            {
+              "text": "the ",
+              "start": 23.36666,
+              "end": 23.44673,
+              "score": 0.97738
+            },
+            {
+              "text": "season ",
+              "start": 23.62687,
+              "end": 24.04722,
+              "score": 0.99719
+            },
+            {
+              "text": "of ",
+              "start": 24.16731,
+              "end": 24.20735,
+              "score": 0.99951
+            },
+            {
+              "text": "darkness. ",
+              "start": 24.50759,
+              "end": 25.38831,
+              "score": 0.98592
+            }
+          ],
+          "duration": 2.28186,
+          "score": 0.98818
+        },
+        {
+          "start": 25.96878,
+          "end": 28.11052,
+          "text": "It was the spring of hope.",
+          "words": [
+            {
+              "text": "It ",
+              "start": 25.96878,
+              "end": 26.02883,
+              "score": 0.97624
+            },
+            {
+              "text": "was ",
+              "start": 26.06886,
+              "end": 26.18896,
+              "score": 0.98721
+            },
+            {
+              "text": "the ",
+              "start": 26.26902,
+              "end": 26.3691,
+              "score": 0.993
+            },
+            {
+              "text": "spring ",
+              "start": 26.52923,
+              "end": 27.14974,
+              "score": 0.99014
+            },
+            {
+              "text": "of ",
+              "start": 27.28985,
+              "end": 27.3499,
+              "score": 0.90674
+            },
+            {
+              "text": "hope.",
+              "start": 27.87033,
+              "end": 28.11052,
+              "score": 0.92151
+            }
+          ],
+          "duration": 2.14174,
+          "score": 0.96247
+        },
+        {
+          "start": 29.17921,
+          "end": 31.96147,
+          "text": "It was the winter of despair. ",
+          "words": [
+            {
+              "text": "It ",
+              "start": 29.17921,
+              "end": 29.21924,
+              "score": 1.0
+            },
+            {
+              "text": "was ",
+              "start": 29.27929,
+              "end": 29.39939,
+              "score": 0.99316
+            },
+            {
+              "text": "the ",
+              "start": 29.49947,
+              "end": 29.63958,
+              "score": 0.96021
+            },
+            {
+              "text": "winter ",
+              "start": 29.81973,
+              "end": 30.4002,
+              "score": 0.96586
+            },
+            {
+              "text": "of ",
+              "start": 30.5203,
+              "end": 30.56033,
+              "score": 1.0
+            },
+            {
+              "text": "despair. ",
+              "start": 30.74048,
+              "end": 31.96147,
+              "score": 0.99338
+            }
+          ],
+          "duration": 2.78226,
+          "score": 0.98544
+        },
+        {
+          "start": 33.32258,
+          "end": 35.00395,
+          "text": "We had everything before us. ",
+          "words": [
+            {
+              "text": "We ",
+              "start": 33.32258,
+              "end": 33.40264,
+              "score": 0.99609
+            },
+            {
+              "text": "had ",
+              "start": 33.48271,
+              "end": 33.58279,
+              "score": 0.99967
+            },
+            {
+              "text": "everything ",
+              "start": 33.76294,
+              "end": 34.18328,
+              "score": 0.98751
+            },
+            {
+              "text": "before ",
+              "start": 34.28336,
+              "end": 34.80378,
+              "score": 0.99538
+            },
+            {
+              "text": "us. ",
+              "start": 34.92388,
+              "end": 35.00395,
+              "score": 0.99967
+            }
+          ],
+          "duration": 1.68137,
+          "score": 0.99567
+        },
+        {
+          "start": 35.42429,
+          "end": 37.06562,
+          "text": "We had nothing before us. ",
+          "words": [
+            {
+              "text": "We ",
+              "start": 35.42429,
+              "end": 35.50435,
+              "score": 1.0
+            },
+            {
+              "text": "had ",
+              "start": 35.54439,
+              "end": 35.66448,
+              "score": 0.99744
+            },
+            {
+              "text": "nothing ",
+              "start": 35.90468,
+              "end": 36.28499,
+              "score": 0.95725
+            },
+            {
+              "text": "before ",
+              "start": 36.40509,
+              "end": 36.86546,
+              "score": 0.95808
+            },
+            {
+              "text": "us. ",
+              "start": 36.98556,
+              "end": 37.06562,
+              "score": 0.93701
+            }
+          ],
+          "duration": 1.64134,
+          "score": 0.96995
+        },
+        {
+          "start": 37.70614,
+          "end": 39.60769,
+          "text": "We were all going direct to heaven. ",
+          "words": [
+            {
+              "text": "We ",
+              "start": 37.70614,
+              "end": 37.78621,
+              "score": 0.84766
+            },
+            {
+              "text": "were ",
+              "start": 37.84626,
+              "end": 37.96636,
+              "score": 0.99746
+            },
+            {
+              "text": "all ",
+              "start": 38.06644,
+              "end": 38.18653,
+              "score": 1.0
+            },
+            {
+              "text": "going ",
+              "start": 38.28662,
+              "end": 38.56684,
+              "score": 0.89661
+            },
+            {
+              "text": "direct ",
+              "start": 38.62689,
+              "end": 38.98719,
+              "score": 0.95312
+            },
+            {
+              "text": "to ",
+              "start": 39.04723,
+              "end": 39.14732,
+              "score": 0.99805
+            },
+            {
+              "text": "heaven. ",
+              "start": 39.2474,
+              "end": 39.60769,
+              "score": 0.99902
+            }
+          ],
+          "duration": 1.90155,
+          "score": 0.95599
+        },
+        {
+          "start": 40.46839,
+          "end": 42.40997,
+          "text": "We were all going direct the other way. ",
+          "words": [
+            {
+              "text": "We ",
+              "start": 40.46839,
+              "end": 40.56847,
+              "score": 0.95557
+            },
+            {
+              "text": "were ",
+              "start": 40.62852,
+              "end": 40.7286,
+              "score": 0.99939
+            },
+            {
+              "text": "all ",
+              "start": 40.76864,
+              "end": 40.88873,
+              "score": 0.99984
+            },
+            {
+              "text": "going ",
+              "start": 40.94878,
+              "end": 41.20899,
+              "score": 0.93597
+            },
+            {
+              "text": "direct ",
+              "start": 41.26904,
+              "end": 41.64935,
+              "score": 0.91744
+            },
+            {
+              "text": "the ",
+              "start": 41.72942,
+              "end": 41.8295,
+              "score": 0.70931
+            },
+            {
+              "text": "other ",
+              "start": 41.9496,
+              "end": 42.14976,
+              "score": 0.99944
+            },
+            {
+              "text": "way. ",
+              "start": 42.20981,
+              "end": 42.40997,
+              "score": 0.99687
+            }
+          ],
+          "duration": 1.94158,
+          "score": 0.93923
+        },
+        {
+          "start": 42.95041,
+          "end": 56.98182,
+          "text": "In short, the period was so far like the present period that some of its noisiest authorities insisted on its being received, for good or for evil, in the superlative degree of comparison only.",
+          "words": [
+            {
+              "text": "In ",
+              "start": 42.95041,
+              "end": 43.01046,
+              "score": 0.99609
+            },
+            {
+              "text": "short, ",
+              "start": 43.15057,
+              "end": 43.4308,
+              "score": 0.99805
+            },
+            {
+              "text": "the ",
+              "start": 43.69101,
+              "end": 43.77108,
+              "score": 0.99984
+            },
+            {
+              "text": "period ",
+              "start": 43.89118,
+              "end": 44.2915,
+              "score": 0.9356
+            },
+            {
+              "text": "was ",
+              "start": 44.37157,
+              "end": 44.47165,
+              "score": 0.99577
+            },
+            {
+              "text": "so ",
+              "start": 44.61176,
+              "end": 44.77189,
+              "score": 0.92969
+            },
+            {
+              "text": "far ",
+              "start": 44.97205,
+              "end": 45.19223,
+              "score": 1.0
+            },
+            {
+              "text": "like ",
+              "start": 45.29231,
+              "end": 45.47246,
+              "score": 0.88542
+            },
+            {
+              "text": "the ",
+              "start": 45.55253,
+              "end": 45.63259,
+              "score": 0.99984
+            },
+            {
+              "text": "present ",
+              "start": 45.73267,
+              "end": 46.11298,
+              "score": 0.99939
+            },
+            {
+              "text": "period ",
+              "start": 46.21306,
+              "end": 46.63341,
+              "score": 0.95747
+            },
+            {
+              "text": "that ",
+              "start": 46.8736,
+              "end": 46.9937,
+              "score": 0.97715
+            },
+            {
+              "text": "some ",
+              "start": 47.07376,
+              "end": 47.23389,
+              "score": 0.99219
+            },
+            {
+              "text": "of ",
+              "start": 47.29394,
+              "end": 47.33398,
+              "score": 1.0
+            },
+            {
+              "text": "its ",
+              "start": 47.43406,
+              "end": 47.53414,
+              "score": 0.99976
+            },
+            {
+              "text": "noisiest ",
+              "start": 47.71428,
+              "end": 48.29476,
+              "score": 0.96177
+            },
+            {
+              "text": "authorities ",
+              "start": 48.43487,
+              "end": 49.09541,
+              "score": 0.96734
+            },
+            {
+              "text": "insisted ",
+              "start": 49.17547,
+              "end": 49.83601,
+              "score": 0.95771
+            },
+            {
+              "text": "on ",
+              "start": 49.93609,
+              "end": 49.97612,
+              "score": 0.99951
+            },
+            {
+              "text": "its ",
+              "start": 50.03617,
+              "end": 50.15627,
+              "score": 0.90951
+            },
+            {
+              "text": "being ",
+              "start": 50.23634,
+              "end": 50.47653,
+              "score": 0.96228
+            },
+            {
+              "text": "received, ",
+              "start": 50.51656,
+              "end": 51.07702,
+              "score": 0.99379
+            },
+            {
+              "text": "for ",
+              "start": 51.49736,
+              "end": 51.59744,
+              "score": 0.99951
+            },
+            {
+              "text": "good ",
+              "start": 51.67751,
+              "end": 51.89769,
+              "score": 0.9445
+            },
+            {
+              "text": "or ",
+              "start": 52.45814,
+              "end": 52.49818,
+              "score": 0.99463
+            },
+            {
+              "text": "for ",
+              "start": 52.59826,
+              "end": 52.71836,
+              "score": 0.97974
+            },
+            {
+              "text": "evil, ",
+              "start": 52.87849,
+              "end": 53.1387,
+              "score": 0.97768
+            },
+            {
+              "text": "in ",
+              "start": 53.53902,
+              "end": 53.57906,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 53.6391,
+              "end": 53.69915,
+              "score": 0.99544
+            },
+            {
+              "text": "superlative ",
+              "start": 53.81925,
+              "end": 54.76002,
+              "score": 0.94811
+            },
+            {
+              "text": "degree ",
+              "start": 54.84008,
+              "end": 55.24041,
+              "score": 0.99967
+            },
+            {
+              "text": "of ",
+              "start": 55.30046,
+              "end": 55.34049,
+              "score": 1.0
+            },
+            {
+              "text": "comparison ",
+              "start": 55.44057,
+              "end": 56.28125,
+              "score": 0.96
+            },
+            {
+              "text": "only.",
+              "start": 56.68158,
+              "end": 56.98182,
+              "score": 0.93034
+            }
+          ],
+          "duration": 14.03141,
+          "score": 0.97493
+        },
+        {
+          "start": 58.48911,
+          "end": 63.45315,
+          "text": "There was a king with a large jaw and a queen with a plain face on the throne of England. ",
+          "words": [
+            {
+              "text": "There ",
+              "start": 58.48911,
+              "end": 58.62922,
+              "score": 0.98814
+            },
+            {
+              "text": "was ",
+              "start": 58.66926,
+              "end": 58.72931,
+              "score": 0.98031
+            },
+            {
+              "text": "a ",
+              "start": 58.78935,
+              "end": 58.82939,
+              "score": 0.89551
+            },
+            {
+              "text": "king ",
+              "start": 58.94948,
+              "end": 59.16966,
+              "score": 0.99163
+            },
+            {
+              "text": "with ",
+              "start": 59.24973,
+              "end": 59.36983,
+              "score": 0.99941
+            },
+            {
+              "text": "a ",
+              "start": 59.42988,
+              "end": 59.44989,
+              "score": 0.99805
+            },
+            {
+              "text": "large ",
+              "start": 59.52996,
+              "end": 59.87023,
+              "score": 0.99191
+            },
+            {
+              "text": "jaw ",
+              "start": 60.01035,
+              "end": 60.27056,
+              "score": 0.99723
+            },
+            {
+              "text": "and ",
+              "start": 60.55079,
+              "end": 60.61084,
+              "score": 0.99984
+            },
+            {
+              "text": "a ",
+              "start": 60.67088,
+              "end": 60.6909,
+              "score": 0.99707
+            },
+            {
+              "text": "queen ",
+              "start": 60.79098,
+              "end": 61.03118,
+              "score": 0.99512
+            },
+            {
+              "text": "with ",
+              "start": 61.09123,
+              "end": 61.21132,
+              "score": 1.0
+            },
+            {
+              "text": "a ",
+              "start": 61.31141,
+              "end": 61.33142,
+              "score": 0.90674
+            },
+            {
+              "text": "plain ",
+              "start": 61.4315,
+              "end": 61.69172,
+              "score": 0.99344
+            },
+            {
+              "text": "face ",
+              "start": 61.85185,
+              "end": 62.13207,
+              "score": 1.0
+            },
+            {
+              "text": "on ",
+              "start": 62.35225,
+              "end": 62.39229,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 62.47235,
+              "end": 62.55242,
+              "score": 0.93848
+            },
+            {
+              "text": "throne ",
+              "start": 62.63248,
+              "end": 62.93272,
+              "score": 0.98704
+            },
+            {
+              "text": "of ",
+              "start": 62.99277,
+              "end": 63.03281,
+              "score": 1.0
+            },
+            {
+              "text": "England. ",
+              "start": 63.1529,
+              "end": 63.45315,
+              "score": 0.99957
+            }
+          ],
+          "duration": 4.96404,
+          "score": 0.98297
+        },
+        {
+          "start": 64.19375,
+          "end": 69.2979,
+          "text": "There was a king with a large jaw and a queen with a fair face on the throne of France. ",
+          "words": [
+            {
+              "text": "There ",
+              "start": 64.19375,
+              "end": 64.33386,
+              "score": 0.99749
+            },
+            {
+              "text": "was ",
+              "start": 64.3739,
+              "end": 64.45396,
+              "score": 0.94409
+            },
+            {
+              "text": "a ",
+              "start": 64.51401,
+              "end": 64.53403,
+              "score": 0.99805
+            },
+            {
+              "text": "king ",
+              "start": 64.63411,
+              "end": 64.85429,
+              "score": 0.99629
+            },
+            {
+              "text": "with ",
+              "start": 64.91434,
+              "end": 65.03443,
+              "score": 0.99844
+            },
+            {
+              "text": "a ",
+              "start": 65.09448,
+              "end": 65.1145,
+              "score": 0.99756
+            },
+            {
+              "text": "large ",
+              "start": 65.19456,
+              "end": 65.51483,
+              "score": 0.96289
+            },
+            {
+              "text": "jaw ",
+              "start": 65.63492,
+              "end": 65.89513,
+              "score": 0.97327
+            },
+            {
+              "text": "and ",
+              "start": 66.25543,
+              "end": 66.33549,
+              "score": 0.93604
+            },
+            {
+              "text": "a ",
+              "start": 66.39554,
+              "end": 66.41556,
+              "score": 0.99805
+            },
+            {
+              "text": "queen ",
+              "start": 66.51564,
+              "end": 66.75583,
+              "score": 0.99902
+            },
+            {
+              "text": "with ",
+              "start": 66.81588,
+              "end": 66.91596,
+              "score": 1.0
+            },
+            {
+              "text": "a ",
+              "start": 66.99603,
+              "end": 67.01605,
+              "score": 0.99609
+            },
+            {
+              "text": "fair ",
+              "start": 67.13614,
+              "end": 67.35632,
+              "score": 0.94808
+            },
+            {
+              "text": "face ",
+              "start": 67.49644,
+              "end": 67.77666,
+              "score": 0.99023
+            },
+            {
+              "text": "on ",
+              "start": 68.01686,
+              "end": 68.05689,
+              "score": 0.99976
+            },
+            {
+              "text": "the ",
+              "start": 68.11694,
+              "end": 68.19701,
+              "score": 0.91492
+            },
+            {
+              "text": "throne ",
+              "start": 68.29709,
+              "end": 68.61735,
+              "score": 0.94902
+            },
+            {
+              "text": "of ",
+              "start": 68.73745,
+              "end": 68.77748,
+              "score": 1.0
+            },
+            {
+              "text": "France. ",
+              "start": 68.91759,
+              "end": 69.2979,
+              "score": 0.95426
+            }
+          ],
+          "duration": 5.10415,
+          "score": 0.97768
+        },
+        {
+          "start": 70.13859,
+          "end": 78.60547,
+          "text": "In both countries it was clearer than crystal to the lords of the state preserves of loaves and fishes that things in general were settled forever.",
+          "words": [
+            {
+              "text": "In ",
+              "start": 70.13859,
+              "end": 70.17862,
+              "score": 1.0
+            },
+            {
+              "text": "both ",
+              "start": 70.25868,
+              "end": 70.45885,
+              "score": 0.89551
+            },
+            {
+              "text": "countries ",
+              "start": 70.55893,
+              "end": 70.99929,
+              "score": 0.98224
+            },
+            {
+              "text": "it ",
+              "start": 71.07935,
+              "end": 71.11938,
+              "score": 1.0
+            },
+            {
+              "text": "was ",
+              "start": 71.17943,
+              "end": 71.2595,
+              "score": 0.99984
+            },
+            {
+              "text": "clearer ",
+              "start": 71.41963,
+              "end": 71.75991,
+              "score": 0.95925
+            },
+            {
+              "text": "than ",
+              "start": 71.79994,
+              "end": 71.90002,
+              "score": 0.93711
+            },
+            {
+              "text": "crystal ",
+              "start": 72.0001,
+              "end": 72.44046,
+              "score": 0.99374
+            },
+            {
+              "text": "to ",
+              "start": 72.52052,
+              "end": 72.60059,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 72.66064,
+              "end": 72.7407,
+              "score": 0.95007
+            },
+            {
+              "text": "lords ",
+              "start": 72.80075,
+              "end": 73.06096,
+              "score": 0.80298
+            },
+            {
+              "text": "of ",
+              "start": 73.14103,
+              "end": 73.18106,
+              "score": 0.99878
+            },
+            {
+              "text": "the ",
+              "start": 73.24111,
+              "end": 73.32118,
+              "score": 0.99984
+            },
+            {
+              "text": "state ",
+              "start": 73.40124,
+              "end": 73.70148,
+              "score": 0.99426
+            },
+            {
+              "text": "preserves ",
+              "start": 73.78155,
+              "end": 74.32199,
+              "score": 0.97716
+            },
+            {
+              "text": "of ",
+              "start": 74.42207,
+              "end": 74.4621,
+              "score": 0.99951
+            },
+            {
+              "text": "loaves ",
+              "start": 74.60222,
+              "end": 74.94249,
+              "score": 0.95871
+            },
+            {
+              "text": "and ",
+              "start": 75.02256,
+              "end": 75.10262,
+              "score": 0.99268
+            },
+            {
+              "text": "fishes ",
+              "start": 75.22272,
+              "end": 75.64306,
+              "score": 0.94165
+            },
+            {
+              "text": "that ",
+              "start": 76.04339,
+              "end": 76.16349,
+              "score": 0.98242
+            },
+            {
+              "text": "things ",
+              "start": 76.26357,
+              "end": 76.52378,
+              "score": 0.96777
+            },
+            {
+              "text": "in ",
+              "start": 76.64388,
+              "end": 76.68391,
+              "score": 1.0
+            },
+            {
+              "text": "general ",
+              "start": 76.80401,
+              "end": 77.18432,
+              "score": 0.96963
+            },
+            {
+              "text": "were ",
+              "start": 77.26438,
+              "end": 77.4045,
+              "score": 0.99414
+            },
+            {
+              "text": "settled ",
+              "start": 77.52459,
+              "end": 77.94494,
+              "score": 0.94486
+            },
+            {
+              "text": "forever.",
+              "start": 78.10507,
+              "end": 78.60547,
+              "score": 0.99387
+            }
+          ],
+          "duration": 8.46689,
+          "score": 0.97062
+        },
+        {
+          "start": 80.36539,
+          "end": 83.48793,
+          "text": "It was the year of our Lord 1,775. ",
+          "words": [
+            {
+              "text": "It ",
+              "start": 80.36539,
+              "end": 80.40543,
+              "score": 0.99512
+            },
+            {
+              "text": "was ",
+              "start": 80.44546,
+              "end": 80.50551,
+              "score": 0.9974
+            },
+            {
+              "text": "the ",
+              "start": 80.56556,
+              "end": 80.64562,
+              "score": 0.99398
+            },
+            {
+              "text": "year ",
+              "start": 80.68565,
+              "end": 80.88582,
+              "score": 0.98354
+            },
+            {
+              "text": "of ",
+              "start": 80.96588,
+              "end": 81.00591,
+              "score": 1.0
+            },
+            {
+              "text": "our ",
+              "start": 81.14603,
+              "end": 81.24611,
+              "score": 0.91602
+            },
+            {
+              "text": "Lord ",
+              "start": 81.32617,
+              "end": 83.06759,
+              "score": 0.69055
+            },
+            {
+              "text": "1,775. ",
+              "start": 83.26775,
+              "end": 83.48793,
+              "score": 0.0
+            }
+          ],
+          "duration": 3.12254,
+          "score": 0.82207
+        },
+        {
+          "start": 84.70893,
+          "end": 90.03326,
+          "text": "Spiritual revelations were conceded to England at that favoured period, as at this. ",
+          "words": [
+            {
+              "text": "Spiritual ",
+              "start": 84.70893,
+              "end": 85.24937,
+              "score": 0.98105
+            },
+            {
+              "text": "revelations ",
+              "start": 85.34945,
+              "end": 86.03,
+              "score": 0.99109
+            },
+            {
+              "text": "were ",
+              "start": 86.11007,
+              "end": 86.25018,
+              "score": 0.96064
+            },
+            {
+              "text": "conceded ",
+              "start": 86.31023,
+              "end": 86.8907,
+              "score": 0.99194
+            },
+            {
+              "text": "to ",
+              "start": 86.97077,
+              "end": 87.07085,
+              "score": 0.90698
+            },
+            {
+              "text": "England ",
+              "start": 87.27101,
+              "end": 87.61129,
+              "score": 0.98793
+            },
+            {
+              "text": "at ",
+              "start": 87.69135,
+              "end": 87.73138,
+              "score": 0.99951
+            },
+            {
+              "text": "that ",
+              "start": 87.79143,
+              "end": 87.93155,
+              "score": 0.99951
+            },
+            {
+              "text": "favoured ",
+              "start": 88.11169,
+              "end": 88.492,
+              "score": 0.91195
+            },
+            {
+              "text": "period, ",
+              "start": 88.6121,
+              "end": 89.07248,
+              "score": 0.985
+            },
+            {
+              "text": "as ",
+              "start": 89.4728,
+              "end": 89.53285,
+              "score": 1.0
+            },
+            {
+              "text": "at ",
+              "start": 89.67296,
+              "end": 89.713,
+              "score": 0.99805
+            },
+            {
+              "text": "this. ",
+              "start": 89.83309,
+              "end": 90.03326,
+              "score": 0.97773
+            }
+          ],
+          "duration": 5.32433,
+          "score": 0.97626
+        },
+        {
+          "start": 90.89396,
+          "end": 106.00625,
+          "text": "Mrs. Southcote had recently attained a five-and-twentieth blessed birthday, of whom a prophetic private in the lifeguards had heralded the sublime appearance by announcing that arrangements were made for the swallowing up of London and Westminster.",
+          "words": [
+            {
+              "text": "Mrs. ",
+              "start": 90.89396,
+              "end": 91.09412,
+              "score": 0.71172
+            },
+            {
+              "text": "Southcote ",
+              "start": 91.29428,
+              "end": 91.83472,
+              "score": 0.6629
+            },
+            {
+              "text": "had ",
+              "start": 91.89477,
+              "end": 91.97484,
+              "score": 0.99935
+            },
+            {
+              "text": "recently ",
+              "start": 92.07492,
+              "end": 92.51528,
+              "score": 0.92472
+            },
+            {
+              "text": "attained ",
+              "start": 92.63537,
+              "end": 93.01568,
+              "score": 0.75426
+            },
+            {
+              "text": "a ",
+              "start": 93.09575,
+              "end": 93.11576,
+              "score": 0.98975
+            },
+            {
+              "text": "five-and-twentieth ",
+              "start": 93.27589,
+              "end": 94.33676,
+              "score": 0.99012
+            },
+            {
+              "text": "blessed ",
+              "start": 94.45686,
+              "end": 94.8772,
+              "score": 0.97988
+            },
+            {
+              "text": "birthday, ",
+              "start": 94.97728,
+              "end": 95.53773,
+              "score": 0.99887
+            },
+            {
+              "text": "of ",
+              "start": 96.01813,
+              "end": 96.05816,
+              "score": 0.99976
+            },
+            {
+              "text": "whom ",
+              "start": 96.13822,
+              "end": 96.27834,
+              "score": 1.0
+            },
+            {
+              "text": "a ",
+              "start": 96.37842,
+              "end": 96.39843,
+              "score": 0.99902
+            },
+            {
+              "text": "prophetic ",
+              "start": 96.4785,
+              "end": 96.99892,
+              "score": 0.99984
+            },
+            {
+              "text": "private ",
+              "start": 97.13904,
+              "end": 97.59941,
+              "score": 0.91397
+            },
+            {
+              "text": "in ",
+              "start": 97.65946,
+              "end": 97.69949,
+              "score": 0.99976
+            },
+            {
+              "text": "the ",
+              "start": 97.75954,
+              "end": 97.81959,
+              "score": 1.0
+            },
+            {
+              "text": "lifeguards ",
+              "start": 97.91967,
+              "end": 98.64026,
+              "score": 0.95251
+            },
+            {
+              "text": "had ",
+              "start": 99.02057,
+              "end": 99.10063,
+              "score": 0.99967
+            },
+            {
+              "text": "heralded ",
+              "start": 99.20071,
+              "end": 99.58102,
+              "score": 0.94243
+            },
+            {
+              "text": "the ",
+              "start": 99.64107,
+              "end": 99.72114,
+              "score": 0.99536
+            },
+            {
+              "text": "sublime ",
+              "start": 99.8012,
+              "end": 100.32163,
+              "score": 0.99544
+            },
+            {
+              "text": "appearance ",
+              "start": 100.40169,
+              "end": 100.98216,
+              "score": 1.0
+            },
+            {
+              "text": "by ",
+              "start": 101.40251,
+              "end": 101.50259,
+              "score": 1.0
+            },
+            {
+              "text": "announcing ",
+              "start": 101.58265,
+              "end": 102.06304,
+              "score": 0.99174
+            },
+            {
+              "text": "that ",
+              "start": 102.10307,
+              "end": 102.20316,
+              "score": 0.99824
+            },
+            {
+              "text": "arrangements ",
+              "start": 102.28322,
+              "end": 102.86369,
+              "score": 0.98502
+            },
+            {
+              "text": "were ",
+              "start": 102.92374,
+              "end": 103.06386,
+              "score": 0.99963
+            },
+            {
+              "text": "made ",
+              "start": 103.10389,
+              "end": 103.32407,
+              "score": 0.96387
+            },
+            {
+              "text": "for ",
+              "start": 103.38412,
+              "end": 103.46418,
+              "score": 0.99984
+            },
+            {
+              "text": "the ",
+              "start": 103.50421,
+              "end": 103.6043,
+              "score": 0.96641
+            },
+            {
+              "text": "swallowing ",
+              "start": 103.76443,
+              "end": 104.30487,
+              "score": 0.99241
+            },
+            {
+              "text": "up ",
+              "start": 104.40495,
+              "end": 104.465,
+              "score": 1.0
+            },
+            {
+              "text": "of ",
+              "start": 104.54506,
+              "end": 104.58509,
+              "score": 0.99854
+            },
+            {
+              "text": "London ",
+              "start": 104.70519,
+              "end": 105.0855,
+              "score": 0.93652
+            },
+            {
+              "text": "and ",
+              "start": 105.14555,
+              "end": 105.22561,
+              "score": 0.88159
+            },
+            {
+              "text": "Westminster.",
+              "start": 105.30568,
+              "end": 106.00625,
+              "score": 0.99913
+            }
+          ],
+          "duration": 15.11229,
+          "score": 0.95895
+        },
+        {
+          "start": 106.94863,
+          "end": 120.5597,
+          "text": "even the cock-lane ghost had been laid only around a dozen of years after wrapping out its messages as the spirits of this very last year passed supernaturally deficient in originality wrapped out theirs",
+          "words": [
+            {
+              "text": "even ",
+              "start": 106.94863,
+              "end": 107.10876,
+              "score": 0.9998
+            },
+            {
+              "text": "the ",
+              "start": 107.16881,
+              "end": 107.22886,
+              "score": 0.99935
+            },
+            {
+              "text": "cock-lane ",
+              "start": 107.34896,
+              "end": 107.98948,
+              "score": 0.93126
+            },
+            {
+              "text": "ghost ",
+              "start": 108.12959,
+              "end": 108.40982,
+              "score": 0.98014
+            },
+            {
+              "text": "had ",
+              "start": 108.48989,
+              "end": 108.56995,
+              "score": 0.98324
+            },
+            {
+              "text": "been ",
+              "start": 108.63,
+              "end": 108.79013,
+              "score": 0.89467
+            },
+            {
+              "text": "laid ",
+              "start": 108.89021,
+              "end": 109.15042,
+              "score": 0.95522
+            },
+            {
+              "text": "only ",
+              "start": 109.39062,
+              "end": 109.57076,
+              "score": 0.99902
+            },
+            {
+              "text": "around ",
+              "start": 109.67085,
+              "end": 110.07117,
+              "score": 0.93658
+            },
+            {
+              "text": "a ",
+              "start": 110.1112,
+              "end": 110.15124,
+              "score": 0.90576
+            },
+            {
+              "text": "dozen ",
+              "start": 110.21129,
+              "end": 110.53155,
+              "score": 0.99146
+            },
+            {
+              "text": "of ",
+              "start": 110.61161,
+              "end": 110.65164,
+              "score": 1.0
+            },
+            {
+              "text": "years ",
+              "start": 110.71169,
+              "end": 111.092,
+              "score": 0.96012
+            },
+            {
+              "text": "after ",
+              "start": 111.63244,
+              "end": 111.87264,
+              "score": 0.9917
+            },
+            {
+              "text": "wrapping ",
+              "start": 112.01275,
+              "end": 112.35303,
+              "score": 0.9386
+            },
+            {
+              "text": "out ",
+              "start": 112.45311,
+              "end": 112.57321,
+              "score": 0.99766
+            },
+            {
+              "text": "its ",
+              "start": 112.67329,
+              "end": 112.77337,
+              "score": 0.96602
+            },
+            {
+              "text": "messages ",
+              "start": 112.91348,
+              "end": 113.45392,
+              "score": 0.95601
+            },
+            {
+              "text": "as ",
+              "start": 113.87427,
+              "end": 113.9143,
+              "score": 0.99707
+            },
+            {
+              "text": "the ",
+              "start": 113.99436,
+              "end": 114.07443,
+              "score": 1.0
+            },
+            {
+              "text": "spirits ",
+              "start": 114.15449,
+              "end": 114.57484,
+              "score": 0.94106
+            },
+            {
+              "text": "of ",
+              "start": 114.6549,
+              "end": 114.69493,
+              "score": 0.99951
+            },
+            {
+              "text": "this ",
+              "start": 114.775,
+              "end": 114.91511,
+              "score": 0.94951
+            },
+            {
+              "text": "very ",
+              "start": 114.99518,
+              "end": 115.25539,
+              "score": 0.9871
+            },
+            {
+              "text": "last ",
+              "start": 115.35547,
+              "end": 115.67573,
+              "score": 0.94971
+            },
+            {
+              "text": "year ",
+              "start": 115.7558,
+              "end": 115.93594,
+              "score": 0.99902
+            },
+            {
+              "text": "passed ",
+              "start": 116.05604,
+              "end": 116.45637,
+              "score": 0.55473
+            },
+            {
+              "text": "supernaturally ",
+              "start": 116.81666,
+              "end": 117.63733,
+              "score": 0.9971
+            },
+            {
+              "text": "deficient ",
+              "start": 117.67736,
+              "end": 118.17777,
+              "score": 0.99858
+            },
+            {
+              "text": "in ",
+              "start": 118.25783,
+              "end": 118.29786,
+              "score": 0.99976
+            },
+            {
+              "text": "originality ",
+              "start": 118.37793,
+              "end": 119.13855,
+              "score": 0.99522
+            },
+            {
+              "text": "wrapped ",
+              "start": 119.55889,
+              "end": 119.83912,
+              "score": 0.90527
+            },
+            {
+              "text": "out ",
+              "start": 119.95921,
+              "end": 120.0593,
+              "score": 0.9873
+            },
+            {
+              "text": "theirs",
+              "start": 120.19941,
+              "end": 120.5597,
+              "score": 0.99957
+            }
+          ],
+          "duration": 13.61107,
+          "score": 0.96021
+        },
+        {
+          "start": 122.30919,
+          "end": 141.06445,
+          "text": "Mere messages in the earthly order of events had lately come to the English crown and people from a congress of British subjects in America, which, strange to relate, have proved more important to the human race than any communications yet received through any of the chickens of the Cock Lane brood.",
+          "words": [
+            {
+              "text": "Mere ",
+              "start": 122.30919,
+              "end": 122.52937,
+              "score": 0.9998
+            },
+            {
+              "text": "messages ",
+              "start": 122.72953,
+              "end": 123.33002,
+              "score": 0.9307
+            },
+            {
+              "text": "in ",
+              "start": 123.49015,
+              "end": 123.53018,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 123.59023,
+              "end": 123.6703,
+              "score": 0.88184
+            },
+            {
+              "text": "earthly ",
+              "start": 123.81041,
+              "end": 124.13067,
+              "score": 0.99976
+            },
+            {
+              "text": "order ",
+              "start": 124.2908,
+              "end": 124.49097,
+              "score": 0.98354
+            },
+            {
+              "text": "of ",
+              "start": 124.531,
+              "end": 124.59105,
+              "score": 0.99674
+            },
+            {
+              "text": "events ",
+              "start": 124.69113,
+              "end": 125.07144,
+              "score": 0.94902
+            },
+            {
+              "text": "had ",
+              "start": 125.1515,
+              "end": 125.2716,
+              "score": 0.99036
+            },
+            {
+              "text": "lately ",
+              "start": 125.35167,
+              "end": 125.67193,
+              "score": 0.99707
+            },
+            {
+              "text": "come ",
+              "start": 125.77201,
+              "end": 125.97217,
+              "score": 1.0
+            },
+            {
+              "text": "to ",
+              "start": 126.05224,
+              "end": 126.11229,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 126.17233,
+              "end": 126.2524,
+              "score": 0.9989
+            },
+            {
+              "text": "English ",
+              "start": 126.39251,
+              "end": 126.69276,
+              "score": 0.94136
+            },
+            {
+              "text": "crown ",
+              "start": 126.83287,
+              "end": 127.17315,
+              "score": 0.97681
+            },
+            {
+              "text": "and ",
+              "start": 127.33328,
+              "end": 127.41334,
+              "score": 0.99967
+            },
+            {
+              "text": "people ",
+              "start": 127.51342,
+              "end": 127.87372,
+              "score": 0.94016
+            },
+            {
+              "text": "from ",
+              "start": 128.25403,
+              "end": 128.37412,
+              "score": 0.95475
+            },
+            {
+              "text": "a ",
+              "start": 128.43417,
+              "end": 128.45419,
+              "score": 0.99902
+            },
+            {
+              "text": "congress ",
+              "start": 128.57429,
+              "end": 129.03466,
+              "score": 0.99783
+            },
+            {
+              "text": "of ",
+              "start": 129.11473,
+              "end": 129.15476,
+              "score": 0.99976
+            },
+            {
+              "text": "British ",
+              "start": 129.25484,
+              "end": 129.5751,
+              "score": 0.95628
+            },
+            {
+              "text": "subjects ",
+              "start": 129.65517,
+              "end": 130.09553,
+              "score": 0.99642
+            },
+            {
+              "text": "in ",
+              "start": 130.17559,
+              "end": 130.21562,
+              "score": 0.99487
+            },
+            {
+              "text": "America, ",
+              "start": 130.29569,
+              "end": 130.81611,
+              "score": 0.95768
+            },
+            {
+              "text": "which, ",
+              "start": 131.35655,
+              "end": 131.55671,
+              "score": 0.98382
+            },
+            {
+              "text": "strange ",
+              "start": 131.89699,
+              "end": 132.35737,
+              "score": 0.95378
+            },
+            {
+              "text": "to ",
+              "start": 132.45745,
+              "end": 132.5175,
+              "score": 1.0
+            },
+            {
+              "text": "relate, ",
+              "start": 132.57754,
+              "end": 132.93784,
+              "score": 0.90386
+            },
+            {
+              "text": "have ",
+              "start": 133.2581,
+              "end": 133.3782,
+              "score": 0.99939
+            },
+            {
+              "text": "proved ",
+              "start": 133.45826,
+              "end": 133.73849,
+              "score": 0.99426
+            },
+            {
+              "text": "more ",
+              "start": 133.83857,
+              "end": 134.03873,
+              "score": 0.93018
+            },
+            {
+              "text": "important ",
+              "start": 134.09878,
+              "end": 134.55916,
+              "score": 0.98136
+            },
+            {
+              "text": "to ",
+              "start": 134.6192,
+              "end": 134.67925,
+              "score": 0.99976
+            },
+            {
+              "text": "the ",
+              "start": 134.75932,
+              "end": 134.81937,
+              "score": 0.99967
+            },
+            {
+              "text": "human ",
+              "start": 134.87942,
+              "end": 135.19968,
+              "score": 0.98158
+            },
+            {
+              "text": "race ",
+              "start": 135.29976,
+              "end": 135.53995,
+              "score": 0.9584
+            },
+            {
+              "text": "than ",
+              "start": 135.6,
+              "end": 135.7201,
+              "score": 0.99922
+            },
+            {
+              "text": "any ",
+              "start": 135.94028,
+              "end": 136.08039,
+              "score": 0.99395
+            },
+            {
+              "text": "communications ",
+              "start": 136.18047,
+              "end": 137.14126,
+              "score": 0.97991
+            },
+            {
+              "text": "yet ",
+              "start": 137.20131,
+              "end": 137.38145,
+              "score": 0.9729
+            },
+            {
+              "text": "received ",
+              "start": 137.46152,
+              "end": 137.98194,
+              "score": 0.97476
+            },
+            {
+              "text": "through ",
+              "start": 138.28218,
+              "end": 138.52238,
+              "score": 0.90293
+            },
+            {
+              "text": "any ",
+              "start": 138.70253,
+              "end": 138.84264,
+              "score": 0.90078
+            },
+            {
+              "text": "of ",
+              "start": 138.90269,
+              "end": 138.96274,
+              "score": 0.95117
+            },
+            {
+              "text": "the ",
+              "start": 139.02279,
+              "end": 139.10285,
+              "score": 0.99219
+            },
+            {
+              "text": "chickens ",
+              "start": 139.18292,
+              "end": 139.60326,
+              "score": 0.99475
+            },
+            {
+              "text": "of ",
+              "start": 139.68332,
+              "end": 139.72336,
+              "score": 0.99829
+            },
+            {
+              "text": "the ",
+              "start": 139.78341,
+              "end": 139.86347,
+              "score": 0.99255
+            },
+            {
+              "text": "Cock ",
+              "start": 139.94354,
+              "end": 140.1437,
+              "score": 0.99988
+            },
+            {
+              "text": "Lane ",
+              "start": 140.32385,
+              "end": 140.62409,
+              "score": 0.8438
+            },
+            {
+              "text": "brood.",
+              "start": 140.74419,
+              "end": 141.06445,
+              "score": 0.9225
+            }
+          ],
+          "duration": 18.75526,
+          "score": 0.97208
+        },
+        {
+          "start": 143.21732,
+          "end": 155.38722,
+          "text": "france less favored on the whole as to matters spiritual than her sister of the shield and trident rolled with exceeding smoothness downhill making paper money and spending it",
+          "words": [
+            {
+              "text": "france ",
+              "start": 143.21732,
+              "end": 143.59763,
+              "score": 0.97971
+            },
+            {
+              "text": "less ",
+              "start": 144.11805,
+              "end": 144.31821,
+              "score": 0.9987
+            },
+            {
+              "text": "favored ",
+              "start": 144.43831,
+              "end": 144.7986,
+              "score": 0.94689
+            },
+            {
+              "text": "on ",
+              "start": 144.85865,
+              "end": 144.89868,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 144.97875,
+              "end": 145.05881,
+              "score": 0.96094
+            },
+            {
+              "text": "whole ",
+              "start": 145.11886,
+              "end": 145.39909,
+              "score": 0.99792
+            },
+            {
+              "text": "as ",
+              "start": 145.47916,
+              "end": 145.51919,
+              "score": 1.0
+            },
+            {
+              "text": "to ",
+              "start": 145.57924,
+              "end": 145.67932,
+              "score": 0.98438
+            },
+            {
+              "text": "matters ",
+              "start": 145.75938,
+              "end": 146.09966,
+              "score": 0.92151
+            },
+            {
+              "text": "spiritual ",
+              "start": 146.17973,
+              "end": 146.78021,
+              "score": 0.95493
+            },
+            {
+              "text": "than ",
+              "start": 147.10048,
+              "end": 147.24059,
+              "score": 0.99105
+            },
+            {
+              "text": "her ",
+              "start": 147.32065,
+              "end": 147.42074,
+              "score": 0.91235
+            },
+            {
+              "text": "sister ",
+              "start": 147.54083,
+              "end": 147.90113,
+              "score": 0.96777
+            },
+            {
+              "text": "of ",
+              "start": 147.98119,
+              "end": 148.02122,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 148.10129,
+              "end": 148.18135,
+              "score": 1.0
+            },
+            {
+              "text": "shield ",
+              "start": 148.28144,
+              "end": 148.6017,
+              "score": 0.99849
+            },
+            {
+              "text": "and ",
+              "start": 148.72179,
+              "end": 148.78184,
+              "score": 0.8973
+            },
+            {
+              "text": "trident ",
+              "start": 148.90194,
+              "end": 149.42236,
+              "score": 0.86823
+            },
+            {
+              "text": "rolled ",
+              "start": 149.98282,
+              "end": 150.30308,
+              "score": 0.99959
+            },
+            {
+              "text": "with ",
+              "start": 150.36313,
+              "end": 150.48323,
+              "score": 0.99727
+            },
+            {
+              "text": "exceeding ",
+              "start": 150.58331,
+              "end": 151.16378,
+              "score": 0.97994
+            },
+            {
+              "text": "smoothness ",
+              "start": 151.36394,
+              "end": 152.00446,
+              "score": 0.97475
+            },
+            {
+              "text": "downhill ",
+              "start": 152.08453,
+              "end": 152.68502,
+              "score": 0.99893
+            },
+            {
+              "text": "making ",
+              "start": 153.20544,
+              "end": 153.54572,
+              "score": 0.98396
+            },
+            {
+              "text": "paper ",
+              "start": 153.66582,
+              "end": 153.98608,
+              "score": 0.99919
+            },
+            {
+              "text": "money ",
+              "start": 154.06614,
+              "end": 154.32635,
+              "score": 0.99984
+            },
+            {
+              "text": "and ",
+              "start": 154.5065,
+              "end": 154.58656,
+              "score": 0.99854
+            },
+            {
+              "text": "spending ",
+              "start": 154.70666,
+              "end": 155.2471,
+              "score": 0.9334
+            },
+            {
+              "text": "it",
+              "start": 155.32717,
+              "end": 155.38722,
+              "score": 0.97591
+            }
+          ],
+          "duration": 12.1699,
+          "score": 0.97315
+        },
+        {
+          "start": 156.21618,
+          "end": 180.13564,
+          "text": "under the guidance of her christian pastors she entertained herself besides with such humane achievements as sentencing a youth to have his hands cut off his tongue torn out with pincers and his body burned alive because he had not kneeled down in the rain to do honour to a dirty procession of monks which passed within his view at a distance of some fifty or sixty yards",
+          "words": [
+            {
+              "text": "under ",
+              "start": 156.21618,
+              "end": 156.37631,
+              "score": 0.99902
+            },
+            {
+              "text": "the ",
+              "start": 156.43636,
+              "end": 156.51642,
+              "score": 1.0
+            },
+            {
+              "text": "guidance ",
+              "start": 156.59649,
+              "end": 157.07688,
+              "score": 0.99627
+            },
+            {
+              "text": "of ",
+              "start": 157.15695,
+              "end": 157.19698,
+              "score": 1.0
+            },
+            {
+              "text": "her ",
+              "start": 157.25703,
+              "end": 157.33709,
+              "score": 0.43302
+            },
+            {
+              "text": "christian ",
+              "start": 157.41716,
+              "end": 157.8375,
+              "score": 0.98633
+            },
+            {
+              "text": "pastors ",
+              "start": 157.99763,
+              "end": 158.5781,
+              "score": 0.88071
+            },
+            {
+              "text": "she ",
+              "start": 158.93839,
+              "end": 159.05849,
+              "score": 0.95671
+            },
+            {
+              "text": "entertained ",
+              "start": 159.13856,
+              "end": 159.69901,
+              "score": 0.9848
+            },
+            {
+              "text": "herself ",
+              "start": 159.75906,
+              "end": 160.15939,
+              "score": 0.99859
+            },
+            {
+              "text": "besides ",
+              "start": 160.2995,
+              "end": 160.89999,
+              "score": 0.94043
+            },
+            {
+              "text": "with ",
+              "start": 161.30032,
+              "end": 161.42041,
+              "score": 0.97969
+            },
+            {
+              "text": "such ",
+              "start": 161.50048,
+              "end": 161.74067,
+              "score": 0.95833
+            },
+            {
+              "text": "humane ",
+              "start": 161.82074,
+              "end": 162.2611,
+              "score": 0.99566
+            },
+            {
+              "text": "achievements ",
+              "start": 162.34116,
+              "end": 163.0017,
+              "score": 0.94915
+            },
+            {
+              "text": "as ",
+              "start": 163.14181,
+              "end": 163.20186,
+              "score": 0.97591
+            },
+            {
+              "text": "sentencing ",
+              "start": 163.34198,
+              "end": 163.92245,
+              "score": 0.97025
+            },
+            {
+              "text": "a ",
+              "start": 164.00251,
+              "end": 164.02253,
+              "score": 0.99951
+            },
+            {
+              "text": "youth ",
+              "start": 164.08258,
+              "end": 164.30276,
+              "score": 1.0
+            },
+            {
+              "text": "to ",
+              "start": 164.38282,
+              "end": 164.44287,
+              "score": 1.0
+            },
+            {
+              "text": "have ",
+              "start": 164.50292,
+              "end": 164.64304,
+              "score": 0.94863
+            },
+            {
+              "text": "his ",
+              "start": 164.68307,
+              "end": 164.80317,
+              "score": 0.96582
+            },
+            {
+              "text": "hands ",
+              "start": 164.88323,
+              "end": 165.22351,
+              "score": 0.91669
+            },
+            {
+              "text": "cut ",
+              "start": 165.34361,
+              "end": 165.56378,
+              "score": 1.0
+            },
+            {
+              "text": "off ",
+              "start": 165.66387,
+              "end": 165.80398,
+              "score": 0.99727
+            },
+            {
+              "text": "his ",
+              "start": 166.16427,
+              "end": 166.28437,
+              "score": 0.99593
+            },
+            {
+              "text": "tongue ",
+              "start": 166.42448,
+              "end": 166.76476,
+              "score": 0.9846
+            },
+            {
+              "text": "torn ",
+              "start": 166.86484,
+              "end": 167.12505,
+              "score": 0.9993
+            },
+            {
+              "text": "out ",
+              "start": 167.22514,
+              "end": 167.32522,
+              "score": 0.91675
+            },
+            {
+              "text": "with ",
+              "start": 167.40528,
+              "end": 167.52538,
+              "score": 0.88125
+            },
+            {
+              "text": "pincers ",
+              "start": 167.66549,
+              "end": 168.14588,
+              "score": 0.9186
+            },
+            {
+              "text": "and ",
+              "start": 168.48616,
+              "end": 168.56623,
+              "score": 0.86426
+            },
+            {
+              "text": "his ",
+              "start": 168.60626,
+              "end": 168.70634,
+              "score": 0.99902
+            },
+            {
+              "text": "body ",
+              "start": 168.82644,
+              "end": 169.10667,
+              "score": 0.95085
+            },
+            {
+              "text": "burned ",
+              "start": 169.2668,
+              "end": 169.58706,
+              "score": 0.97607
+            },
+            {
+              "text": "alive ",
+              "start": 169.66712,
+              "end": 170.14751,
+              "score": 0.90234
+            },
+            {
+              "text": "because ",
+              "start": 170.52782,
+              "end": 170.80805,
+              "score": 0.99263
+            },
+            {
+              "text": "he ",
+              "start": 170.8681,
+              "end": 170.94816,
+              "score": 0.99023
+            },
+            {
+              "text": "had ",
+              "start": 171.00821,
+              "end": 171.12831,
+              "score": 0.99146
+            },
+            {
+              "text": "not ",
+              "start": 171.22839,
+              "end": 171.38852,
+              "score": 1.0
+            },
+            {
+              "text": "kneeled ",
+              "start": 171.4886,
+              "end": 171.78885,
+              "score": 0.97195
+            },
+            {
+              "text": "down ",
+              "start": 171.82888,
+              "end": 172.06908,
+              "score": 0.94336
+            },
+            {
+              "text": "in ",
+              "start": 172.12912,
+              "end": 172.18917,
+              "score": 0.98633
+            },
+            {
+              "text": "the ",
+              "start": 172.24922,
+              "end": 172.30927,
+              "score": 0.99854
+            },
+            {
+              "text": "rain ",
+              "start": 172.42937,
+              "end": 172.68958,
+              "score": 0.82018
+            },
+            {
+              "text": "to ",
+              "start": 172.76965,
+              "end": 172.84971,
+              "score": 0.94727
+            },
+            {
+              "text": "do ",
+              "start": 172.88974,
+              "end": 172.98982,
+              "score": 0.98763
+            },
+            {
+              "text": "honour ",
+              "start": 173.10992,
+              "end": 173.37013,
+              "score": 0.93677
+            },
+            {
+              "text": "to ",
+              "start": 173.43018,
+              "end": 173.51025,
+              "score": 1.0
+            },
+            {
+              "text": "a ",
+              "start": 173.61033,
+              "end": 173.63035,
+              "score": 0.99902
+            },
+            {
+              "text": "dirty ",
+              "start": 173.77046,
+              "end": 174.17079,
+              "score": 0.99634
+            },
+            {
+              "text": "procession ",
+              "start": 174.25085,
+              "end": 174.81131,
+              "score": 0.97767
+            },
+            {
+              "text": "of ",
+              "start": 174.91139,
+              "end": 174.95142,
+              "score": 1.0
+            },
+            {
+              "text": "monks ",
+              "start": 175.09153,
+              "end": 175.41179,
+              "score": 0.97882
+            },
+            {
+              "text": "which ",
+              "start": 175.71204,
+              "end": 175.87217,
+              "score": 0.99693
+            },
+            {
+              "text": "passed ",
+              "start": 175.99227,
+              "end": 176.31253,
+              "score": 0.85822
+            },
+            {
+              "text": "within ",
+              "start": 176.35256,
+              "end": 176.57274,
+              "score": 0.98584
+            },
+            {
+              "text": "his ",
+              "start": 176.63279,
+              "end": 176.75289,
+              "score": 0.97617
+            },
+            {
+              "text": "view ",
+              "start": 176.87298,
+              "end": 177.05313,
+              "score": 0.99967
+            },
+            {
+              "text": "at ",
+              "start": 177.35337,
+              "end": 177.41342,
+              "score": 0.99447
+            },
+            {
+              "text": "a ",
+              "start": 177.49349,
+              "end": 177.5135,
+              "score": 0.99854
+            },
+            {
+              "text": "distance ",
+              "start": 177.57355,
+              "end": 177.9939,
+              "score": 0.98966
+            },
+            {
+              "text": "of ",
+              "start": 178.07396,
+              "end": 178.11399,
+              "score": 0.99902
+            },
+            {
+              "text": "some ",
+              "start": 178.17404,
+              "end": 178.35419,
+              "score": 1.0
+            },
+            {
+              "text": "fifty ",
+              "start": 178.47429,
+              "end": 178.8546,
+              "score": 0.97907
+            },
+            {
+              "text": "or ",
+              "start": 178.97469,
+              "end": 179.01473,
+              "score": 1.0
+            },
+            {
+              "text": "sixty ",
+              "start": 179.13482,
+              "end": 179.53515,
+              "score": 0.93349
+            },
+            {
+              "text": "yards",
+              "start": 179.65525,
+              "end": 180.13564,
+              "score": 0.95725
+            }
+          ],
+          "duration": 23.91946,
+          "score": 0.96189
+        },
+        {
+          "start": 181.40544,
+          "end": 200.7812,
+          "text": "it is likely enough that rooted in the woods of france and norway there were growing trees when that sufferer was put to death already marked by the woodman fate to come down and be sawn into boards to make a certain movable framework with a sack and a knife in it terrible in history",
+          "words": [
+            {
+              "text": "it ",
+              "start": 181.40544,
+              "end": 181.44547,
+              "score": 1.0
+            },
+            {
+              "text": "is ",
+              "start": 181.54556,
+              "end": 181.6056,
+              "score": 0.99967
+            },
+            {
+              "text": "likely ",
+              "start": 181.70569,
+              "end": 182.10601,
+              "score": 0.92207
+            },
+            {
+              "text": "enough ",
+              "start": 182.18608,
+              "end": 182.50634,
+              "score": 0.96431
+            },
+            {
+              "text": "that ",
+              "start": 182.64645,
+              "end": 182.86663,
+              "score": 1.0
+            },
+            {
+              "text": "rooted ",
+              "start": 183.10683,
+              "end": 183.42709,
+              "score": 0.97711
+            },
+            {
+              "text": "in ",
+              "start": 183.48713,
+              "end": 183.52717,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 183.60723,
+              "end": 183.66728,
+              "score": 1.0
+            },
+            {
+              "text": "woods ",
+              "start": 183.70731,
+              "end": 183.94751,
+              "score": 0.99992
+            },
+            {
+              "text": "of ",
+              "start": 184.04759,
+              "end": 184.08762,
+              "score": 0.99976
+            },
+            {
+              "text": "france ",
+              "start": 184.20772,
+              "end": 184.548,
+              "score": 0.97179
+            },
+            {
+              "text": "and ",
+              "start": 184.64808,
+              "end": 184.74816,
+              "score": 0.93872
+            },
+            {
+              "text": "norway ",
+              "start": 184.80821,
+              "end": 185.22855,
+              "score": 0.99693
+            },
+            {
+              "text": "there ",
+              "start": 185.58884,
+              "end": 185.72896,
+              "score": 0.99764
+            },
+            {
+              "text": "were ",
+              "start": 185.76899,
+              "end": 185.88909,
+              "score": 0.99082
+            },
+            {
+              "text": "growing ",
+              "start": 185.92912,
+              "end": 186.32945,
+              "score": 0.99399
+            },
+            {
+              "text": "trees ",
+              "start": 186.50959,
+              "end": 187.01,
+              "score": 0.99302
+            },
+            {
+              "text": "when ",
+              "start": 187.47037,
+              "end": 187.59047,
+              "score": 1.0
+            },
+            {
+              "text": "that ",
+              "start": 187.67054,
+              "end": 187.79064,
+              "score": 0.99963
+            },
+            {
+              "text": "sufferer ",
+              "start": 187.93075,
+              "end": 188.33108,
+              "score": 0.95527
+            },
+            {
+              "text": "was ",
+              "start": 188.37111,
+              "end": 188.47119,
+              "score": 0.94707
+            },
+            {
+              "text": "put ",
+              "start": 188.59129,
+              "end": 188.77143,
+              "score": 0.97253
+            },
+            {
+              "text": "to ",
+              "start": 188.83148,
+              "end": 188.93156,
+              "score": 1.0
+            },
+            {
+              "text": "death ",
+              "start": 188.99161,
+              "end": 189.23181,
+              "score": 0.99349
+            },
+            {
+              "text": "already ",
+              "start": 189.5921,
+              "end": 189.91236,
+              "score": 0.97255
+            },
+            {
+              "text": "marked ",
+              "start": 190.01244,
+              "end": 190.27265,
+              "score": 0.95581
+            },
+            {
+              "text": "by ",
+              "start": 190.35272,
+              "end": 190.47282,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 190.53287,
+              "end": 190.61293,
+              "score": 1.0
+            },
+            {
+              "text": "woodman ",
+              "start": 190.67298,
+              "end": 191.07331,
+              "score": 0.94341
+            },
+            {
+              "text": "fate ",
+              "start": 191.35353,
+              "end": 191.63376,
+              "score": 0.99951
+            },
+            {
+              "text": "to ",
+              "start": 191.99405,
+              "end": 192.07412,
+              "score": 0.99512
+            },
+            {
+              "text": "come ",
+              "start": 192.1742,
+              "end": 192.39438,
+              "score": 0.96523
+            },
+            {
+              "text": "down ",
+              "start": 192.49446,
+              "end": 192.77469,
+              "score": 1.0
+            },
+            {
+              "text": "and ",
+              "start": 193.07493,
+              "end": 193.155,
+              "score": 1.0
+            },
+            {
+              "text": "be ",
+              "start": 193.21505,
+              "end": 193.29511,
+              "score": 0.98079
+            },
+            {
+              "text": "sawn ",
+              "start": 193.43523,
+              "end": 193.69544,
+              "score": 0.65199
+            },
+            {
+              "text": "into ",
+              "start": 193.7755,
+              "end": 193.97567,
+              "score": 1.0
+            },
+            {
+              "text": "boards ",
+              "start": 194.17583,
+              "end": 194.73629,
+              "score": 0.87489
+            },
+            {
+              "text": "to ",
+              "start": 195.07656,
+              "end": 195.15663,
+              "score": 1.0
+            },
+            {
+              "text": "make ",
+              "start": 195.21668,
+              "end": 195.37681,
+              "score": 0.99648
+            },
+            {
+              "text": "a ",
+              "start": 195.45687,
+              "end": 195.47689,
+              "score": 0.99951
+            },
+            {
+              "text": "certain ",
+              "start": 195.617,
+              "end": 196.09739,
+              "score": 0.98212
+            },
+            {
+              "text": "movable ",
+              "start": 196.19747,
+              "end": 196.69788,
+              "score": 0.97026
+            },
+            {
+              "text": "framework ",
+              "start": 196.83799,
+              "end": 197.37843,
+              "score": 0.99379
+            },
+            {
+              "text": "with ",
+              "start": 197.4585,
+              "end": 197.5786,
+              "score": 1.0
+            },
+            {
+              "text": "a ",
+              "start": 197.65866,
+              "end": 197.67868,
+              "score": 0.99902
+            },
+            {
+              "text": "sack ",
+              "start": 197.85883,
+              "end": 198.15907,
+              "score": 0.94678
+            },
+            {
+              "text": "and ",
+              "start": 198.41928,
+              "end": 198.49935,
+              "score": 1.0
+            },
+            {
+              "text": "a ",
+              "start": 198.57941,
+              "end": 198.59943,
+              "score": 0.99951
+            },
+            {
+              "text": "knife ",
+              "start": 198.67949,
+              "end": 198.99975,
+              "score": 0.93793
+            },
+            {
+              "text": "in ",
+              "start": 199.09983,
+              "end": 199.15988,
+              "score": 0.85612
+            },
+            {
+              "text": "it ",
+              "start": 199.23995,
+              "end": 199.3,
+              "score": 0.84831
+            },
+            {
+              "text": "terrible ",
+              "start": 199.56021,
+              "end": 200.10065,
+              "score": 0.98087
+            },
+            {
+              "text": "in ",
+              "start": 200.18071,
+              "end": 200.24076,
+              "score": 1.0
+            },
+            {
+              "text": "history",
+              "start": 200.34084,
+              "end": 200.7812,
+              "score": 0.99985
+            }
+          ],
+          "duration": 19.37576,
+          "score": 0.97207
+        },
+        {
+          "start": 201.72294,
+          "end": 223.88097,
+          "text": "it is likely enough that in the rough outhouses of some tillers of the heavy lands adjacent to paris there were sheltered from the weather that very day rude carts bespattered with rustic mire snuffed about by pigs and roosted in by poultry which the farmer death had already set apart to be his tumbles of the revolution",
+          "words": [
+            {
+              "text": "it ",
+              "start": 201.72294,
+              "end": 201.76297,
+              "score": 1.0
+            },
+            {
+              "text": "is ",
+              "start": 201.84304,
+              "end": 201.90309,
+              "score": 0.95475
+            },
+            {
+              "text": "likely ",
+              "start": 202.00317,
+              "end": 202.36346,
+              "score": 0.99888
+            },
+            {
+              "text": "enough ",
+              "start": 202.44353,
+              "end": 202.72376,
+              "score": 0.96373
+            },
+            {
+              "text": "that ",
+              "start": 202.7838,
+              "end": 202.88389,
+              "score": 0.99817
+            },
+            {
+              "text": "in ",
+              "start": 202.96395,
+              "end": 203.00398,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 203.08405,
+              "end": 203.16411,
+              "score": 0.99634
+            },
+            {
+              "text": "rough ",
+              "start": 203.24418,
+              "end": 203.46436,
+              "score": 0.91174
+            },
+            {
+              "text": "outhouses ",
+              "start": 203.70455,
+              "end": 204.32506,
+              "score": 0.9562
+            },
+            {
+              "text": "of ",
+              "start": 204.40512,
+              "end": 204.46517,
+              "score": 0.99837
+            },
+            {
+              "text": "some ",
+              "start": 204.56525,
+              "end": 204.76542,
+              "score": 0.96396
+            },
+            {
+              "text": "tillers ",
+              "start": 204.90553,
+              "end": 205.26582,
+              "score": 0.9964
+            },
+            {
+              "text": "of ",
+              "start": 205.34589,
+              "end": 205.40594,
+              "score": 0.98617
+            },
+            {
+              "text": "the ",
+              "start": 205.46599,
+              "end": 205.54605,
+              "score": 0.99854
+            },
+            {
+              "text": "heavy ",
+              "start": 205.6061,
+              "end": 205.8463,
+              "score": 0.97377
+            },
+            {
+              "text": "lands ",
+              "start": 205.92636,
+              "end": 206.24662,
+              "score": 0.98818
+            },
+            {
+              "text": "adjacent ",
+              "start": 206.32669,
+              "end": 206.82709,
+              "score": 0.96899
+            },
+            {
+              "text": "to ",
+              "start": 206.88714,
+              "end": 206.96721,
+              "score": 1.0
+            },
+            {
+              "text": "paris ",
+              "start": 207.04727,
+              "end": 207.4476,
+              "score": 0.96887
+            },
+            {
+              "text": "there ",
+              "start": 207.92799,
+              "end": 208.10814,
+              "score": 0.99184
+            },
+            {
+              "text": "were ",
+              "start": 208.1882,
+              "end": 208.40838,
+              "score": 0.941
+            },
+            {
+              "text": "sheltered ",
+              "start": 208.56851,
+              "end": 208.96884,
+              "score": 0.98329
+            },
+            {
+              "text": "from ",
+              "start": 209.00887,
+              "end": 209.12897,
+              "score": 0.92578
+            },
+            {
+              "text": "the ",
+              "start": 209.18901,
+              "end": 209.26908,
+              "score": 0.99268
+            },
+            {
+              "text": "weather ",
+              "start": 209.32913,
+              "end": 209.56932,
+              "score": 0.94184
+            },
+            {
+              "text": "that ",
+              "start": 209.62937,
+              "end": 209.76949,
+              "score": 0.99976
+            },
+            {
+              "text": "very ",
+              "start": 209.86957,
+              "end": 210.1498,
+              "score": 0.93987
+            },
+            {
+              "text": "day ",
+              "start": 210.26989,
+              "end": 210.47006,
+              "score": 1.0
+            },
+            {
+              "text": "rude ",
+              "start": 210.83035,
+              "end": 211.11058,
+              "score": 0.96419
+            },
+            {
+              "text": "carts ",
+              "start": 211.33076,
+              "end": 211.85118,
+              "score": 0.97196
+            },
+            {
+              "text": "bespattered ",
+              "start": 212.39162,
+              "end": 213.09219,
+              "score": 0.94526
+            },
+            {
+              "text": "with ",
+              "start": 213.15224,
+              "end": 213.27234,
+              "score": 0.99824
+            },
+            {
+              "text": "rustic ",
+              "start": 213.41245,
+              "end": 213.85281,
+              "score": 0.99121
+            },
+            {
+              "text": "mire ",
+              "start": 214.03295,
+              "end": 214.37323,
+              "score": 0.96826
+            },
+            {
+              "text": "snuffed ",
+              "start": 214.75354,
+              "end": 215.15387,
+              "score": 0.9751
+            },
+            {
+              "text": "about ",
+              "start": 215.23393,
+              "end": 215.47413,
+              "score": 0.99909
+            },
+            {
+              "text": "by ",
+              "start": 215.57421,
+              "end": 215.71432,
+              "score": 0.96338
+            },
+            {
+              "text": "pigs ",
+              "start": 215.87445,
+              "end": 216.21473,
+              "score": 0.9974
+            },
+            {
+              "text": "and ",
+              "start": 216.55501,
+              "end": 216.65509,
+              "score": 0.85801
+            },
+            {
+              "text": "roosted ",
+              "start": 216.75517,
+              "end": 217.15549,
+              "score": 0.99046
+            },
+            {
+              "text": "in ",
+              "start": 217.21554,
+              "end": 217.25558,
+              "score": 1.0
+            },
+            {
+              "text": "by ",
+              "start": 217.39569,
+              "end": 217.51579,
+              "score": 0.99967
+            },
+            {
+              "text": "poultry ",
+              "start": 217.67592,
+              "end": 218.17633,
+              "score": 0.9069
+            },
+            {
+              "text": "which ",
+              "start": 218.59667,
+              "end": 218.7568,
+              "score": 0.99728
+            },
+            {
+              "text": "the ",
+              "start": 218.83686,
+              "end": 218.91693,
+              "score": 0.88184
+            },
+            {
+              "text": "farmer ",
+              "start": 219.01701,
+              "end": 219.41733,
+              "score": 0.99916
+            },
+            {
+              "text": "death ",
+              "start": 219.81766,
+              "end": 220.1179,
+              "score": 0.99967
+            },
+            {
+              "text": "had ",
+              "start": 220.43817,
+              "end": 220.51823,
+              "score": 0.98454
+            },
+            {
+              "text": "already ",
+              "start": 220.61831,
+              "end": 220.93857,
+              "score": 0.93608
+            },
+            {
+              "text": "set ",
+              "start": 221.07869,
+              "end": 221.27885,
+              "score": 0.99902
+            },
+            {
+              "text": "apart ",
+              "start": 221.37893,
+              "end": 221.73922,
+              "score": 1.0
+            },
+            {
+              "text": "to ",
+              "start": 221.81929,
+              "end": 221.89935,
+              "score": 1.0
+            },
+            {
+              "text": "be ",
+              "start": 221.9594,
+              "end": 222.03947,
+              "score": 1.0
+            },
+            {
+              "text": "his ",
+              "start": 222.13955,
+              "end": 222.25965,
+              "score": 0.99072
+            },
+            {
+              "text": "tumbles ",
+              "start": 222.37974,
+              "end": 222.92018,
+              "score": 0.90631
+            },
+            {
+              "text": "of ",
+              "start": 223.00025,
+              "end": 223.04028,
+              "score": 0.99976
+            },
+            {
+              "text": "the ",
+              "start": 223.10033,
+              "end": 223.1804,
+              "score": 1.0
+            },
+            {
+              "text": "revolution",
+              "start": 223.24044,
+              "end": 223.88097,
+              "score": 0.986
+            }
+          ],
+          "duration": 22.15802,
+          "score": 0.97498
+        },
+        {
+          "start": 225.20038,
+          "end": 243.6754,
+          "text": "But that woodman and that farmer, though they work unceasingly, work silently, and no one heard them as they went about with muffled tread, the rather, forasmuch as to entertain any suspicion that they were awake, was to be atheistical and traitorous.",
+          "words": [
+            {
+              "text": "But ",
+              "start": 225.20038,
+              "end": 225.34049,
+              "score": 0.8761
+            },
+            {
+              "text": "that ",
+              "start": 225.38052,
+              "end": 225.56067,
+              "score": 0.99251
+            },
+            {
+              "text": "woodman ",
+              "start": 225.66075,
+              "end": 226.10111,
+              "score": 0.96382
+            },
+            {
+              "text": "and ",
+              "start": 226.66156,
+              "end": 226.74163,
+              "score": 1.0
+            },
+            {
+              "text": "that ",
+              "start": 226.80168,
+              "end": 226.96181,
+              "score": 0.97266
+            },
+            {
+              "text": "farmer, ",
+              "start": 227.10192,
+              "end": 227.54228,
+              "score": 0.97742
+            },
+            {
+              "text": "though ",
+              "start": 227.86254,
+              "end": 228.02267,
+              "score": 0.99686
+            },
+            {
+              "text": "they ",
+              "start": 228.0627,
+              "end": 228.1828,
+              "score": 0.97021
+            },
+            {
+              "text": "work ",
+              "start": 228.24285,
+              "end": 228.46303,
+              "score": 0.99528
+            },
+            {
+              "text": "unceasingly, ",
+              "start": 228.62316,
+              "end": 229.48386,
+              "score": 0.91849
+            },
+            {
+              "text": "work ",
+              "start": 229.68402,
+              "end": 229.88419,
+              "score": 0.99922
+            },
+            {
+              "text": "silently, ",
+              "start": 230.16441,
+              "end": 231.08516,
+              "score": 0.94775
+            },
+            {
+              "text": "and ",
+              "start": 231.68565,
+              "end": 231.76572,
+              "score": 1.0
+            },
+            {
+              "text": "no ",
+              "start": 231.8658,
+              "end": 231.9859,
+              "score": 0.99479
+            },
+            {
+              "text": "one ",
+              "start": 232.18606,
+              "end": 232.26612,
+              "score": 0.99967
+            },
+            {
+              "text": "heard ",
+              "start": 232.38622,
+              "end": 232.62642,
+              "score": 0.9873
+            },
+            {
+              "text": "them ",
+              "start": 232.7265,
+              "end": 232.8466,
+              "score": 0.99902
+            },
+            {
+              "text": "as ",
+              "start": 233.12682,
+              "end": 233.16686,
+              "score": 1.0
+            },
+            {
+              "text": "they ",
+              "start": 233.22691,
+              "end": 233.347,
+              "score": 0.98047
+            },
+            {
+              "text": "went ",
+              "start": 233.40705,
+              "end": 233.5872,
+              "score": 0.99219
+            },
+            {
+              "text": "about ",
+              "start": 233.7073,
+              "end": 233.98752,
+              "score": 0.99623
+            },
+            {
+              "text": "with ",
+              "start": 234.08761,
+              "end": 234.22772,
+              "score": 0.99824
+            },
+            {
+              "text": "muffled ",
+              "start": 234.38785,
+              "end": 234.86824,
+              "score": 0.99067
+            },
+            {
+              "text": "tread, ",
+              "start": 235.10844,
+              "end": 235.48875,
+              "score": 0.94705
+            },
+            {
+              "text": "the ",
+              "start": 235.98915,
+              "end": 236.08923,
+              "score": 0.94861
+            },
+            {
+              "text": "rather, ",
+              "start": 236.18932,
+              "end": 236.62967,
+              "score": 0.97559
+            },
+            {
+              "text": "forasmuch ",
+              "start": 236.94993,
+              "end": 237.55042,
+              "score": 0.97856
+            },
+            {
+              "text": "as ",
+              "start": 237.6505,
+              "end": 237.69054,
+              "score": 0.99976
+            },
+            {
+              "text": "to ",
+              "start": 237.7706,
+              "end": 237.85067,
+              "score": 0.99772
+            },
+            {
+              "text": "entertain ",
+              "start": 238.0108,
+              "end": 238.47117,
+              "score": 0.99764
+            },
+            {
+              "text": "any ",
+              "start": 238.59127,
+              "end": 238.71137,
+              "score": 0.99984
+            },
+            {
+              "text": "suspicion ",
+              "start": 238.83146,
+              "end": 239.45197,
+              "score": 0.92859
+            },
+            {
+              "text": "that ",
+              "start": 239.51202,
+              "end": 239.63212,
+              "score": 0.99961
+            },
+            {
+              "text": "they ",
+              "start": 239.67215,
+              "end": 239.83228,
+              "score": 0.9986
+            },
+            {
+              "text": "were ",
+              "start": 239.89233,
+              "end": 240.05246,
+              "score": 0.99541
+            },
+            {
+              "text": "awake, ",
+              "start": 240.11251,
+              "end": 240.43277,
+              "score": 0.98478
+            },
+            {
+              "text": "was ",
+              "start": 240.79306,
+              "end": 240.91316,
+              "score": 1.0
+            },
+            {
+              "text": "to ",
+              "start": 240.99322,
+              "end": 241.0933,
+              "score": 0.99805
+            },
+            {
+              "text": "be ",
+              "start": 241.15335,
+              "end": 241.27345,
+              "score": 0.88135
+            },
+            {
+              "text": "atheistical ",
+              "start": 241.47361,
+              "end": 242.39436,
+              "score": 0.95071
+            },
+            {
+              "text": "and ",
+              "start": 242.65457,
+              "end": 242.73464,
+              "score": 0.90186
+            },
+            {
+              "text": "traitorous.",
+              "start": 242.97483,
+              "end": 243.6754,
+              "score": 0.9682
+            }
+          ],
+          "duration": 18.47503,
+          "score": 0.97621
+        },
+        {
+          "start": 245.44607,
+          "end": 266.96357,
+          "text": "in england there was scarcely an amount of order and protection to justify much national boasting daring burglaries by armed men and highway robberies took place in the capital itself every night families were publicly cautioned not to go out of town without removing their furniture to upholsterers warehouses for security",
+          "words": [
+            {
+              "text": "in ",
+              "start": 245.44607,
+              "end": 245.4861,
+              "score": 1.0
+            },
+            {
+              "text": "england ",
+              "start": 245.6062,
+              "end": 245.88642,
+              "score": 0.99957
+            },
+            {
+              "text": "there ",
+              "start": 245.92646,
+              "end": 246.06657,
+              "score": 0.92741
+            },
+            {
+              "text": "was ",
+              "start": 246.08659,
+              "end": 246.16665,
+              "score": 0.96912
+            },
+            {
+              "text": "scarcely ",
+              "start": 246.26673,
+              "end": 246.74712,
+              "score": 0.98597
+            },
+            {
+              "text": "an ",
+              "start": 246.78716,
+              "end": 246.82719,
+              "score": 0.99731
+            },
+            {
+              "text": "amount ",
+              "start": 246.88724,
+              "end": 247.18748,
+              "score": 0.9082
+            },
+            {
+              "text": "of ",
+              "start": 247.24753,
+              "end": 247.30758,
+              "score": 0.96322
+            },
+            {
+              "text": "order ",
+              "start": 247.46771,
+              "end": 247.68789,
+              "score": 0.99233
+            },
+            {
+              "text": "and ",
+              "start": 247.76796,
+              "end": 247.84802,
+              "score": 0.98511
+            },
+            {
+              "text": "protection ",
+              "start": 247.90807,
+              "end": 248.48854,
+              "score": 0.99573
+            },
+            {
+              "text": "to ",
+              "start": 248.56861,
+              "end": 248.64867,
+              "score": 1.0
+            },
+            {
+              "text": "justify ",
+              "start": 248.74875,
+              "end": 249.32923,
+              "score": 0.97812
+            },
+            {
+              "text": "much ",
+              "start": 249.44932,
+              "end": 249.62947,
+              "score": 1.0
+            },
+            {
+              "text": "national ",
+              "start": 249.76958,
+              "end": 250.18993,
+              "score": 0.97048
+            },
+            {
+              "text": "boasting ",
+              "start": 250.35006,
+              "end": 250.87048,
+              "score": 0.96537
+            },
+            {
+              "text": "daring ",
+              "start": 251.511,
+              "end": 251.95136,
+              "score": 1.0
+            },
+            {
+              "text": "burglaries ",
+              "start": 252.09147,
+              "end": 252.67194,
+              "score": 0.83691
+            },
+            {
+              "text": "by ",
+              "start": 252.77203,
+              "end": 252.89212,
+              "score": 1.0
+            },
+            {
+              "text": "armed ",
+              "start": 253.15234,
+              "end": 253.33248,
+              "score": 0.99637
+            },
+            {
+              "text": "men ",
+              "start": 253.43256,
+              "end": 253.65274,
+              "score": 0.99154
+            },
+            {
+              "text": "and ",
+              "start": 254.03305,
+              "end": 254.13313,
+              "score": 0.99512
+            },
+            {
+              "text": "highway ",
+              "start": 254.25323,
+              "end": 254.65356,
+              "score": 0.96937
+            },
+            {
+              "text": "robberies ",
+              "start": 254.75364,
+              "end": 255.23403,
+              "score": 0.96554
+            },
+            {
+              "text": "took ",
+              "start": 255.49424,
+              "end": 255.65437,
+              "score": 0.9998
+            },
+            {
+              "text": "place ",
+              "start": 255.77447,
+              "end": 256.0547,
+              "score": 0.9481
+            },
+            {
+              "text": "in ",
+              "start": 256.13476,
+              "end": 256.17479,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 256.23484,
+              "end": 256.29489,
+              "score": 0.99886
+            },
+            {
+              "text": "capital ",
+              "start": 256.37496,
+              "end": 256.81531,
+              "score": 0.9454
+            },
+            {
+              "text": "itself ",
+              "start": 256.99546,
+              "end": 257.45584,
+              "score": 0.95384
+            },
+            {
+              "text": "every ",
+              "start": 257.7761,
+              "end": 258.01629,
+              "score": 0.89414
+            },
+            {
+              "text": "night ",
+              "start": 258.13639,
+              "end": 258.3966,
+              "score": 0.98846
+            },
+            {
+              "text": "families ",
+              "start": 259.07715,
+              "end": 259.55755,
+              "score": 0.96129
+            },
+            {
+              "text": "were ",
+              "start": 259.59758,
+              "end": 259.73769,
+              "score": 0.92734
+            },
+            {
+              "text": "publicly ",
+              "start": 259.83777,
+              "end": 260.31816,
+              "score": 0.92948
+            },
+            {
+              "text": "cautioned ",
+              "start": 260.43826,
+              "end": 260.89864,
+              "score": 0.98481
+            },
+            {
+              "text": "not ",
+              "start": 261.05877,
+              "end": 261.23891,
+              "score": 0.94743
+            },
+            {
+              "text": "to ",
+              "start": 261.29896,
+              "end": 261.37903,
+              "score": 0.99544
+            },
+            {
+              "text": "go ",
+              "start": 261.41906,
+              "end": 261.51914,
+              "score": 1.0
+            },
+            {
+              "text": "out ",
+              "start": 261.65925,
+              "end": 261.79937,
+              "score": 0.97598
+            },
+            {
+              "text": "of ",
+              "start": 261.87943,
+              "end": 261.91947,
+              "score": 0.99976
+            },
+            {
+              "text": "town ",
+              "start": 262.01955,
+              "end": 262.33981,
+              "score": 0.99219
+            },
+            {
+              "text": "without ",
+              "start": 262.7001,
+              "end": 263.00035,
+              "score": 0.9957
+            },
+            {
+              "text": "removing ",
+              "start": 263.08041,
+              "end": 263.50075,
+              "score": 0.99991
+            },
+            {
+              "text": "their ",
+              "start": 263.5608,
+              "end": 263.70092,
+              "score": 0.99971
+            },
+            {
+              "text": "furniture ",
+              "start": 263.801,
+              "end": 264.3014,
+              "score": 0.99437
+            },
+            {
+              "text": "to ",
+              "start": 264.34144,
+              "end": 264.4215,
+              "score": 1.0
+            },
+            {
+              "text": "upholsterers ",
+              "start": 264.52158,
+              "end": 265.30222,
+              "score": 0.88461
+            },
+            {
+              "text": "warehouses ",
+              "start": 265.36227,
+              "end": 266.0228,
+              "score": 0.96862
+            },
+            {
+              "text": "for ",
+              "start": 266.08285,
+              "end": 266.20295,
+              "score": 0.99984
+            },
+            {
+              "text": "security",
+              "start": 266.28302,
+              "end": 266.96357,
+              "score": 0.99491
+            }
+          ],
+          "duration": 21.5175,
+          "score": 0.97398
+        },
+        {
+          "start": 268.18414,
+          "end": 280.99456,
+          "text": "The highwayman in the dark was a city tradesman in the light, and being recognized and challenged by his fellow tradesman, whom he stopped in his character of the captain, gallantly shot him through the head and rode away. ",
+          "words": [
+            {
+              "text": "The ",
+              "start": 268.18414,
+              "end": 268.24419,
+              "score": 0.97054
+            },
+            {
+              "text": "highwayman ",
+              "start": 268.34427,
+              "end": 268.90473,
+              "score": 0.92007
+            },
+            {
+              "text": "in ",
+              "start": 268.96478,
+              "end": 269.00481,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 269.06486,
+              "end": 269.14492,
+              "score": 0.99023
+            },
+            {
+              "text": "dark ",
+              "start": 269.22499,
+              "end": 269.52523,
+              "score": 0.99062
+            },
+            {
+              "text": "was ",
+              "start": 269.70538,
+              "end": 269.80546,
+              "score": 0.97485
+            },
+            {
+              "text": "a ",
+              "start": 269.90554,
+              "end": 269.92556,
+              "score": 0.93164
+            },
+            {
+              "text": "city ",
+              "start": 270.00562,
+              "end": 270.28585,
+              "score": 1.0
+            },
+            {
+              "text": "tradesman ",
+              "start": 270.38593,
+              "end": 270.96641,
+              "score": 0.96267
+            },
+            {
+              "text": "in ",
+              "start": 271.02645,
+              "end": 271.06649,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 271.12654,
+              "end": 271.2066,
+              "score": 0.95044
+            },
+            {
+              "text": "light, ",
+              "start": 271.26665,
+              "end": 271.52686,
+              "score": 0.99944
+            },
+            {
+              "text": "and ",
+              "start": 271.90717,
+              "end": 271.98724,
+              "score": 1.0
+            },
+            {
+              "text": "being ",
+              "start": 272.04729,
+              "end": 272.26746,
+              "score": 0.95312
+            },
+            {
+              "text": "recognized ",
+              "start": 272.38756,
+              "end": 273.02808,
+              "score": 0.91166
+            },
+            {
+              "text": "and ",
+              "start": 273.10815,
+              "end": 273.1682,
+              "score": 0.99951
+            },
+            {
+              "text": "challenged ",
+              "start": 273.26828,
+              "end": 273.68862,
+              "score": 0.99846
+            },
+            {
+              "text": "by ",
+              "start": 273.76869,
+              "end": 273.88878,
+              "score": 1.0
+            },
+            {
+              "text": "his ",
+              "start": 273.98886,
+              "end": 274.10896,
+              "score": 1.0
+            },
+            {
+              "text": "fellow ",
+              "start": 274.24908,
+              "end": 274.5293,
+              "score": 0.99316
+            },
+            {
+              "text": "tradesman, ",
+              "start": 274.62939,
+              "end": 275.18984,
+              "score": 0.95993
+            },
+            {
+              "text": "whom ",
+              "start": 275.5101,
+              "end": 275.6302,
+              "score": 1.0
+            },
+            {
+              "text": "he ",
+              "start": 275.69025,
+              "end": 275.7503,
+              "score": 1.0
+            },
+            {
+              "text": "stopped ",
+              "start": 275.85038,
+              "end": 276.19066,
+              "score": 0.99933
+            },
+            {
+              "text": "in ",
+              "start": 276.2507,
+              "end": 276.29074,
+              "score": 1.0
+            },
+            {
+              "text": "his ",
+              "start": 276.35079,
+              "end": 276.45087,
+              "score": 0.99414
+            },
+            {
+              "text": "character ",
+              "start": 276.57096,
+              "end": 277.05136,
+              "score": 0.94008
+            },
+            {
+              "text": "of ",
+              "start": 277.19147,
+              "end": 277.2315,
+              "score": 0.99951
+            },
+            {
+              "text": "the ",
+              "start": 277.43166,
+              "end": 277.53175,
+              "score": 0.99463
+            },
+            {
+              "text": "captain, ",
+              "start": 277.61181,
+              "end": 278.0922,
+              "score": 0.97432
+            },
+            {
+              "text": "gallantly ",
+              "start": 278.53256,
+              "end": 278.99293,
+              "score": 0.93506
+            },
+            {
+              "text": "shot ",
+              "start": 279.13305,
+              "end": 279.35323,
+              "score": 0.99971
+            },
+            {
+              "text": "him ",
+              "start": 279.41328,
+              "end": 279.49334,
+              "score": 0.43811
+            },
+            {
+              "text": "through ",
+              "start": 279.57341,
+              "end": 279.79359,
+              "score": 0.92656
+            },
+            {
+              "text": "the ",
+              "start": 279.83362,
+              "end": 279.91368,
+              "score": 0.94531
+            },
+            {
+              "text": "head ",
+              "start": 279.95372,
+              "end": 280.13386,
+              "score": 0.93034
+            },
+            {
+              "text": "and ",
+              "start": 280.21393,
+              "end": 280.29399,
+              "score": 0.87549
+            },
+            {
+              "text": "rode ",
+              "start": 280.37406,
+              "end": 280.61425,
+              "score": 0.96094
+            },
+            {
+              "text": "away. ",
+              "start": 280.71434,
+              "end": 280.99456,
+              "score": 1.0
+            }
+          ],
+          "duration": 12.81042,
+          "score": 0.95948
+        },
+        {
+          "start": 281.93533,
+          "end": 292.18366,
+          "text": "The mail was waylaid by seven robbers, and the guard shot three dead, and then got shot dead himself by the other four, in consequence of the failure of his ammunition.",
+          "words": [
+            {
+              "text": "The ",
+              "start": 281.93533,
+              "end": 282.01539,
+              "score": 0.99984
+            },
+            {
+              "text": "mail ",
+              "start": 282.11547,
+              "end": 282.33565,
+              "score": 0.78729
+            },
+            {
+              "text": "was ",
+              "start": 282.47577,
+              "end": 282.57585,
+              "score": 1.0
+            },
+            {
+              "text": "waylaid ",
+              "start": 282.69595,
+              "end": 283.15632,
+              "score": 0.95152
+            },
+            {
+              "text": "by ",
+              "start": 283.2564,
+              "end": 283.35648,
+              "score": 1.0
+            },
+            {
+              "text": "seven ",
+              "start": 283.53663,
+              "end": 283.85689,
+              "score": 0.98462
+            },
+            {
+              "text": "robbers, ",
+              "start": 283.95697,
+              "end": 284.3573,
+              "score": 0.95122
+            },
+            {
+              "text": "and ",
+              "start": 284.65754,
+              "end": 284.73761,
+              "score": 0.96387
+            },
+            {
+              "text": "the ",
+              "start": 284.77764,
+              "end": 284.85771,
+              "score": 0.93091
+            },
+            {
+              "text": "guard ",
+              "start": 284.93777,
+              "end": 285.19798,
+              "score": 0.98918
+            },
+            {
+              "text": "shot ",
+              "start": 285.3381,
+              "end": 285.55828,
+              "score": 0.9543
+            },
+            {
+              "text": "three ",
+              "start": 285.71841,
+              "end": 285.9586,
+              "score": 0.89463
+            },
+            {
+              "text": "dead, ",
+              "start": 286.0787,
+              "end": 286.31889,
+              "score": 0.89146
+            },
+            {
+              "text": "and ",
+              "start": 286.61914,
+              "end": 286.6992,
+              "score": 0.97546
+            },
+            {
+              "text": "then ",
+              "start": 286.71922,
+              "end": 286.85933,
+              "score": 0.6022
+            },
+            {
+              "text": "got ",
+              "start": 286.91938,
+              "end": 287.07951,
+              "score": 0.99577
+            },
+            {
+              "text": "shot ",
+              "start": 287.15958,
+              "end": 287.33972,
+              "score": 0.99976
+            },
+            {
+              "text": "dead ",
+              "start": 287.43981,
+              "end": 287.63997,
+              "score": 0.96211
+            },
+            {
+              "text": "himself ",
+              "start": 287.70002,
+              "end": 288.14038,
+              "score": 0.98695
+            },
+            {
+              "text": "by ",
+              "start": 288.28049,
+              "end": 288.40059,
+              "score": 0.97103
+            },
+            {
+              "text": "the ",
+              "start": 288.46064,
+              "end": 288.56072,
+              "score": 0.91797
+            },
+            {
+              "text": "other ",
+              "start": 288.62077,
+              "end": 288.80091,
+              "score": 0.96338
+            },
+            {
+              "text": "four, ",
+              "start": 288.90099,
+              "end": 289.16121,
+              "score": 0.99951
+            },
+            {
+              "text": "in ",
+              "start": 289.54152,
+              "end": 289.60156,
+              "score": 0.95443
+            },
+            {
+              "text": "consequence ",
+              "start": 289.74168,
+              "end": 290.42223,
+              "score": 0.99969
+            },
+            {
+              "text": "of ",
+              "start": 290.5023,
+              "end": 290.54233,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 290.60238,
+              "end": 290.70246,
+              "score": 0.94849
+            },
+            {
+              "text": "failure ",
+              "start": 290.82256,
+              "end": 291.18285,
+              "score": 0.98568
+            },
+            {
+              "text": "of ",
+              "start": 291.26292,
+              "end": 291.30295,
+              "score": 0.99976
+            },
+            {
+              "text": "his ",
+              "start": 291.363,
+              "end": 291.48309,
+              "score": 0.92773
+            },
+            {
+              "text": "ammunition.",
+              "start": 291.60319,
+              "end": 292.18366,
+              "score": 0.9696
+            }
+          ],
+          "duration": 10.24834,
+          "score": 0.95027
+        },
+        {
+          "start": 292.94371,
+          "end": 308.13607,
+          "text": "after which the mail was robbed in peace that magnificent potentate the lord mayor of london was made to stand and deliver on turnham green by one highwayman who despoiled the illustrious creature in sight of all his retinue",
+          "words": [
+            {
+              "text": "after ",
+              "start": 292.94371,
+              "end": 293.14388,
+              "score": 0.92773
+            },
+            {
+              "text": "which ",
+              "start": 293.18391,
+              "end": 293.32402,
+              "score": 0.99984
+            },
+            {
+              "text": "the ",
+              "start": 293.38407,
+              "end": 293.46414,
+              "score": 0.95056
+            },
+            {
+              "text": "mail ",
+              "start": 293.5442,
+              "end": 293.7844,
+              "score": 0.71988
+            },
+            {
+              "text": "was ",
+              "start": 293.86446,
+              "end": 293.98456,
+              "score": 0.97422
+            },
+            {
+              "text": "robbed ",
+              "start": 294.10466,
+              "end": 294.38489,
+              "score": 0.99902
+            },
+            {
+              "text": "in ",
+              "start": 294.44493,
+              "end": 294.50498,
+              "score": 0.92057
+            },
+            {
+              "text": "peace ",
+              "start": 294.66511,
+              "end": 294.94534,
+              "score": 0.95954
+            },
+            {
+              "text": "that ",
+              "start": 295.62589,
+              "end": 295.76601,
+              "score": 0.99824
+            },
+            {
+              "text": "magnificent ",
+              "start": 295.92614,
+              "end": 296.64673,
+              "score": 0.98873
+            },
+            {
+              "text": "potentate ",
+              "start": 296.74681,
+              "end": 297.40734,
+              "score": 0.9672
+            },
+            {
+              "text": "the ",
+              "start": 297.50743,
+              "end": 297.60751,
+              "score": 0.98877
+            },
+            {
+              "text": "lord ",
+              "start": 297.68757,
+              "end": 297.90775,
+              "score": 0.99951
+            },
+            {
+              "text": "mayor ",
+              "start": 298.00783,
+              "end": 298.24803,
+              "score": 0.93987
+            },
+            {
+              "text": "of ",
+              "start": 298.28806,
+              "end": 298.34811,
+              "score": 0.95573
+            },
+            {
+              "text": "london ",
+              "start": 298.42817,
+              "end": 298.80848,
+              "score": 0.9939
+            },
+            {
+              "text": "was ",
+              "start": 299.10873,
+              "end": 299.20881,
+              "score": 1.0
+            },
+            {
+              "text": "made ",
+              "start": 299.30889,
+              "end": 299.52907,
+              "score": 0.87974
+            },
+            {
+              "text": "to ",
+              "start": 299.58912,
+              "end": 299.66918,
+              "score": 1.0
+            },
+            {
+              "text": "stand ",
+              "start": 299.78928,
+              "end": 300.24966,
+              "score": 0.93956
+            },
+            {
+              "text": "and ",
+              "start": 300.36975,
+              "end": 300.4298,
+              "score": 0.99935
+            },
+            {
+              "text": "deliver ",
+              "start": 300.48985,
+              "end": 300.87016,
+              "score": 0.99957
+            },
+            {
+              "text": "on ",
+              "start": 301.03029,
+              "end": 301.07032,
+              "score": 1.0
+            },
+            {
+              "text": "turnham ",
+              "start": 301.23045,
+              "end": 301.63078,
+              "score": 0.982
+            },
+            {
+              "text": "green ",
+              "start": 301.73086,
+              "end": 302.01109,
+              "score": 0.97247
+            },
+            {
+              "text": "by ",
+              "start": 302.35137,
+              "end": 302.45145,
+              "score": 1.0
+            },
+            {
+              "text": "one ",
+              "start": 302.65161,
+              "end": 302.75169,
+              "score": 0.91855
+            },
+            {
+              "text": "highwayman ",
+              "start": 302.85177,
+              "end": 303.43224,
+              "score": 0.97709
+            },
+            {
+              "text": "who ",
+              "start": 303.79254,
+              "end": 303.89262,
+              "score": 0.99927
+            },
+            {
+              "text": "despoiled ",
+              "start": 303.97268,
+              "end": 304.63322,
+              "score": 0.9589
+            },
+            {
+              "text": "the ",
+              "start": 304.69327,
+              "end": 304.77334,
+              "score": 1.0
+            },
+            {
+              "text": "illustrious ",
+              "start": 304.8534,
+              "end": 305.63404,
+              "score": 0.98083
+            },
+            {
+              "text": "creature ",
+              "start": 305.77415,
+              "end": 306.21451,
+              "score": 0.9798
+            },
+            {
+              "text": "in ",
+              "start": 306.29457,
+              "end": 306.33461,
+              "score": 1.0
+            },
+            {
+              "text": "sight ",
+              "start": 306.5748,
+              "end": 306.83501,
+              "score": 0.97307
+            },
+            {
+              "text": "of ",
+              "start": 306.89506,
+              "end": 306.95511,
+              "score": 0.99902
+            },
+            {
+              "text": "all ",
+              "start": 307.17529,
+              "end": 307.29539,
+              "score": 1.0
+            },
+            {
+              "text": "his ",
+              "start": 307.37545,
+              "end": 307.51557,
+              "score": 0.99805
+            },
+            {
+              "text": "retinue",
+              "start": 307.63566,
+              "end": 308.13607,
+              "score": 0.95983
+            }
+          ],
+          "duration": 15.19236,
+          "score": 0.96924
+        },
+        {
+          "start": 308.95728,
+          "end": 319.1856,
+          "text": "Prisoners in London jails fought battles with their turnkeys, and the Majesty of the Law fired blunderbusses in among them, loaded with rounds of shot and ball. ",
+          "words": [
+            {
+              "text": "Prisoners ",
+              "start": 308.95728,
+              "end": 309.39764,
+              "score": 0.95523
+            },
+            {
+              "text": "in ",
+              "start": 309.47771,
+              "end": 309.51774,
+              "score": 0.99927
+            },
+            {
+              "text": "London ",
+              "start": 309.63784,
+              "end": 309.97811,
+              "score": 0.99969
+            },
+            {
+              "text": "jails ",
+              "start": 310.0782,
+              "end": 310.47852,
+              "score": 0.92076
+            },
+            {
+              "text": "fought ",
+              "start": 310.59862,
+              "end": 310.8188,
+              "score": 0.95724
+            },
+            {
+              "text": "battles ",
+              "start": 310.97893,
+              "end": 311.37925,
+              "score": 0.99929
+            },
+            {
+              "text": "with ",
+              "start": 311.45932,
+              "end": 311.59943,
+              "score": 0.99349
+            },
+            {
+              "text": "their ",
+              "start": 311.65948,
+              "end": 311.81961,
+              "score": 0.96558
+            },
+            {
+              "text": "turnkeys, ",
+              "start": 311.91969,
+              "end": 312.58023,
+              "score": 0.97021
+            },
+            {
+              "text": "and ",
+              "start": 312.96054,
+              "end": 313.04061,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 313.10065,
+              "end": 313.1607,
+              "score": 0.99984
+            },
+            {
+              "text": "Majesty ",
+              "start": 313.26078,
+              "end": 313.74118,
+              "score": 0.99619
+            },
+            {
+              "text": "of ",
+              "start": 313.80122,
+              "end": 313.84126,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 313.90131,
+              "end": 314.00139,
+              "score": 0.99658
+            },
+            {
+              "text": "Law ",
+              "start": 314.08145,
+              "end": 314.30163,
+              "score": 0.76025
+            },
+            {
+              "text": "fired ",
+              "start": 314.52181,
+              "end": 314.84207,
+              "score": 0.99792
+            },
+            {
+              "text": "blunderbusses ",
+              "start": 314.94215,
+              "end": 315.84288,
+              "score": 0.99328
+            },
+            {
+              "text": "in ",
+              "start": 315.94297,
+              "end": 315.983,
+              "score": 1.0
+            },
+            {
+              "text": "among ",
+              "start": 316.08308,
+              "end": 316.38332,
+              "score": 0.9814
+            },
+            {
+              "text": "them, ",
+              "start": 316.46339,
+              "end": 316.56347,
+              "score": 0.99976
+            },
+            {
+              "text": "loaded ",
+              "start": 316.90375,
+              "end": 317.22401,
+              "score": 0.95742
+            },
+            {
+              "text": "with ",
+              "start": 317.30407,
+              "end": 317.42417,
+              "score": 0.99883
+            },
+            {
+              "text": "rounds ",
+              "start": 317.54427,
+              "end": 317.90456,
+              "score": 0.95526
+            },
+            {
+              "text": "of ",
+              "start": 318.00464,
+              "end": 318.04468,
+              "score": 0.99976
+            },
+            {
+              "text": "shot ",
+              "start": 318.20481,
+              "end": 318.46502,
+              "score": 0.99639
+            },
+            {
+              "text": "and ",
+              "start": 318.66518,
+              "end": 318.76526,
+              "score": 0.97363
+            },
+            {
+              "text": "ball. ",
+              "start": 318.88536,
+              "end": 319.1856,
+              "score": 0.99927
+            }
+          ],
+          "duration": 10.22832,
+          "score": 0.97654
+        },
+        {
+          "start": 319.74606,
+          "end": 338.18106,
+          "text": "Thieves snipped off diamond crosses from the necks of noble lords at court drawing-rooms, musketeers went into St Giles's to search for contraband goods, and the mob fired on the musketeers, and the musketeers fired on the mob, and nobody thought any of these occurrences much out of the common way.",
+          "words": [
+            {
+              "text": "Thieves ",
+              "start": 319.74606,
+              "end": 320.06632,
+              "score": 0.98076
+            },
+            {
+              "text": "snipped ",
+              "start": 320.18642,
+              "end": 320.58674,
+              "score": 0.95166
+            },
+            {
+              "text": "off ",
+              "start": 320.66681,
+              "end": 320.76689,
+              "score": 1.0
+            },
+            {
+              "text": "diamond ",
+              "start": 320.86697,
+              "end": 321.2673,
+              "score": 0.9643
+            },
+            {
+              "text": "crosses ",
+              "start": 321.36738,
+              "end": 321.80774,
+              "score": 0.99302
+            },
+            {
+              "text": "from ",
+              "start": 321.86779,
+              "end": 321.98788,
+              "score": 0.99365
+            },
+            {
+              "text": "the ",
+              "start": 322.04793,
+              "end": 322.10798,
+              "score": 0.99984
+            },
+            {
+              "text": "necks ",
+              "start": 322.18805,
+              "end": 322.42824,
+              "score": 0.99863
+            },
+            {
+              "text": "of ",
+              "start": 322.52832,
+              "end": 322.56836,
+              "score": 0.99976
+            },
+            {
+              "text": "noble ",
+              "start": 322.70847,
+              "end": 323.04875,
+              "score": 0.9994
+            },
+            {
+              "text": "lords ",
+              "start": 323.14883,
+              "end": 323.44907,
+              "score": 0.92969
+            },
+            {
+              "text": "at ",
+              "start": 323.56917,
+              "end": 323.6092,
+              "score": 0.99976
+            },
+            {
+              "text": "court ",
+              "start": 323.7293,
+              "end": 323.94948,
+              "score": 0.8007
+            },
+            {
+              "text": "drawing-rooms, ",
+              "start": 324.10961,
+              "end": 324.89024,
+              "score": 0.97877
+            },
+            {
+              "text": "musketeers ",
+              "start": 325.39065,
+              "end": 326.11124,
+              "score": 0.97412
+            },
+            {
+              "text": "went ",
+              "start": 326.21132,
+              "end": 326.41148,
+              "score": 0.96126
+            },
+            {
+              "text": "into ",
+              "start": 326.51156,
+              "end": 326.67169,
+              "score": 0.93721
+            },
+            {
+              "text": "St ",
+              "start": 326.71173,
+              "end": 326.91189,
+              "score": 0.99951
+            },
+            {
+              "text": "Giles's ",
+              "start": 327.01197,
+              "end": 327.63248,
+              "score": 0.9353
+            },
+            {
+              "text": "to ",
+              "start": 327.71254,
+              "end": 327.81262,
+              "score": 1.0
+            },
+            {
+              "text": "search ",
+              "start": 327.9127,
+              "end": 328.19293,
+              "score": 0.99695
+            },
+            {
+              "text": "for ",
+              "start": 328.25298,
+              "end": 328.35306,
+              "score": 0.99577
+            },
+            {
+              "text": "contraband ",
+              "start": 328.45314,
+              "end": 329.15371,
+              "score": 0.93465
+            },
+            {
+              "text": "goods, ",
+              "start": 329.27381,
+              "end": 329.53402,
+              "score": 0.99967
+            },
+            {
+              "text": "and ",
+              "start": 329.95436,
+              "end": 330.03443,
+              "score": 0.99984
+            },
+            {
+              "text": "the ",
+              "start": 330.09448,
+              "end": 330.15453,
+              "score": 0.99984
+            },
+            {
+              "text": "mob ",
+              "start": 330.23459,
+              "end": 330.43475,
+              "score": 0.99984
+            },
+            {
+              "text": "fired ",
+              "start": 330.6149,
+              "end": 330.95518,
+              "score": 1.0
+            },
+            {
+              "text": "on ",
+              "start": 331.03524,
+              "end": 331.07528,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 331.13532,
+              "end": 331.19537,
+              "score": 0.99919
+            },
+            {
+              "text": "musketeers, ",
+              "start": 331.25542,
+              "end": 332.03606,
+              "score": 0.95871
+            },
+            {
+              "text": "and ",
+              "start": 332.11612,
+              "end": 332.2162,
+              "score": 0.93242
+            },
+            {
+              "text": "the ",
+              "start": 332.27625,
+              "end": 332.35632,
+              "score": 0.98999
+            },
+            {
+              "text": "musketeers ",
+              "start": 332.43638,
+              "end": 333.15697,
+              "score": 0.95746
+            },
+            {
+              "text": "fired ",
+              "start": 333.27707,
+              "end": 333.61734,
+              "score": 0.99944
+            },
+            {
+              "text": "on ",
+              "start": 333.69741,
+              "end": 333.75746,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 333.83752,
+              "end": 333.91759,
+              "score": 0.97058
+            },
+            {
+              "text": "mob, ",
+              "start": 333.99765,
+              "end": 334.21783,
+              "score": 1.0
+            },
+            {
+              "text": "and ",
+              "start": 334.63817,
+              "end": 334.71824,
+              "score": 0.95349
+            },
+            {
+              "text": "nobody ",
+              "start": 334.77829,
+              "end": 335.09855,
+              "score": 0.95691
+            },
+            {
+              "text": "thought ",
+              "start": 335.17861,
+              "end": 335.41881,
+              "score": 0.92468
+            },
+            {
+              "text": "any ",
+              "start": 335.53891,
+              "end": 335.63899,
+              "score": 0.87842
+            },
+            {
+              "text": "of ",
+              "start": 335.67902,
+              "end": 335.73907,
+              "score": 1.0
+            },
+            {
+              "text": "these ",
+              "start": 335.7791,
+              "end": 335.95925,
+              "score": 0.96704
+            },
+            {
+              "text": "occurrences ",
+              "start": 336.05933,
+              "end": 336.67983,
+              "score": 0.96708
+            },
+            {
+              "text": "much ",
+              "start": 336.79993,
+              "end": 337.04013,
+              "score": 0.99805
+            },
+            {
+              "text": "out ",
+              "start": 337.16023,
+              "end": 337.26031,
+              "score": 0.99984
+            },
+            {
+              "text": "of ",
+              "start": 337.32036,
+              "end": 337.36039,
+              "score": 0.99854
+            },
+            {
+              "text": "the ",
+              "start": 337.40042,
+              "end": 337.46047,
+              "score": 0.9987
+            },
+            {
+              "text": "common ",
+              "start": 337.56055,
+              "end": 337.88081,
+              "score": 0.98608
+            },
+            {
+              "text": "way.",
+              "start": 337.96088,
+              "end": 338.18106,
+              "score": 0.99951
+            }
+          ],
+          "duration": 18.435,
+          "score": 0.97569
+        },
+        {
+          "start": 339.84168,
+          "end": 354.73379,
+          "text": "In the midst of them the hangman, ever busy and ever worse than useless, was in constant requisition, now stringing up long rows of miscellaneous criminals, now hanging a housebreaker on Saturday who had been taken on Tuesday,",
+          "words": [
+            {
+              "text": "In ",
+              "start": 339.84168,
+              "end": 339.88171,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 339.94176,
+              "end": 340.04184,
+              "score": 0.97578
+            },
+            {
+              "text": "midst ",
+              "start": 340.1219,
+              "end": 340.40213,
+              "score": 0.96122
+            },
+            {
+              "text": "of ",
+              "start": 340.4822,
+              "end": 340.54225,
+              "score": 0.96582
+            },
+            {
+              "text": "them ",
+              "start": 340.62231,
+              "end": 340.76242,
+              "score": 0.99922
+            },
+            {
+              "text": "the ",
+              "start": 341.02264,
+              "end": 341.12272,
+              "score": 0.98755
+            },
+            {
+              "text": "hangman, ",
+              "start": 341.2228,
+              "end": 341.80327,
+              "score": 0.96045
+            },
+            {
+              "text": "ever ",
+              "start": 342.06348,
+              "end": 342.24363,
+              "score": 0.97917
+            },
+            {
+              "text": "busy ",
+              "start": 342.32369,
+              "end": 342.66397,
+              "score": 0.95977
+            },
+            {
+              "text": "and ",
+              "start": 342.8241,
+              "end": 342.88415,
+              "score": 0.99984
+            },
+            {
+              "text": "ever ",
+              "start": 343.0643,
+              "end": 343.22443,
+              "score": 0.9332
+            },
+            {
+              "text": "worse ",
+              "start": 343.32451,
+              "end": 343.62475,
+              "score": 0.99707
+            },
+            {
+              "text": "than ",
+              "start": 343.6848,
+              "end": 343.82492,
+              "score": 0.99805
+            },
+            {
+              "text": "useless, ",
+              "start": 344.02508,
+              "end": 344.48545,
+              "score": 0.91102
+            },
+            {
+              "text": "was ",
+              "start": 344.7857,
+              "end": 344.88578,
+              "score": 1.0
+            },
+            {
+              "text": "in ",
+              "start": 344.96584,
+              "end": 345.02589,
+              "score": 0.99382
+            },
+            {
+              "text": "constant ",
+              "start": 345.16601,
+              "end": 345.68643,
+              "score": 0.99588
+            },
+            {
+              "text": "requisition, ",
+              "start": 345.76649,
+              "end": 346.52711,
+              "score": 0.99921
+            },
+            {
+              "text": "now ",
+              "start": 347.02752,
+              "end": 347.26772,
+              "score": 0.97363
+            },
+            {
+              "text": "stringing ",
+              "start": 347.48789,
+              "end": 347.92825,
+              "score": 0.97555
+            },
+            {
+              "text": "up ",
+              "start": 348.00832,
+              "end": 348.06837,
+              "score": 0.97005
+            },
+            {
+              "text": "long ",
+              "start": 348.18846,
+              "end": 348.42866,
+              "score": 0.988
+            },
+            {
+              "text": "rows ",
+              "start": 348.54876,
+              "end": 348.82899,
+              "score": 0.90508
+            },
+            {
+              "text": "of ",
+              "start": 348.90905,
+              "end": 348.94908,
+              "score": 0.99976
+            },
+            {
+              "text": "miscellaneous ",
+              "start": 349.06918,
+              "end": 349.80978,
+              "score": 0.98682
+            },
+            {
+              "text": "criminals, ",
+              "start": 349.90987,
+              "end": 350.43029,
+              "score": 0.96487
+            },
+            {
+              "text": "now ",
+              "start": 350.91068,
+              "end": 351.13086,
+              "score": 1.0
+            },
+            {
+              "text": "hanging ",
+              "start": 351.27097,
+              "end": 351.59123,
+              "score": 0.99395
+            },
+            {
+              "text": "a ",
+              "start": 351.65128,
+              "end": 351.6713,
+              "score": 1.0
+            },
+            {
+              "text": "housebreaker ",
+              "start": 351.73135,
+              "end": 352.43192,
+              "score": 0.99863
+            },
+            {
+              "text": "on ",
+              "start": 352.55201,
+              "end": 352.59205,
+              "score": 0.99951
+            },
+            {
+              "text": "Saturday ",
+              "start": 352.75218,
+              "end": 353.21255,
+              "score": 0.95923
+            },
+            {
+              "text": "who ",
+              "start": 353.25258,
+              "end": 353.35267,
+              "score": 0.91191
+            },
+            {
+              "text": "had ",
+              "start": 353.41271,
+              "end": 353.49278,
+              "score": 0.99935
+            },
+            {
+              "text": "been ",
+              "start": 353.55283,
+              "end": 353.69294,
+              "score": 0.99492
+            },
+            {
+              "text": "taken ",
+              "start": 353.77301,
+              "end": 354.1333,
+              "score": 1.0
+            },
+            {
+              "text": "on ",
+              "start": 354.2534,
+              "end": 354.29343,
+              "score": 0.99927
+            },
+            {
+              "text": "Tuesday,",
+              "start": 354.41353,
+              "end": 354.73379,
+              "score": 0.33263
+            }
+          ],
+          "duration": 14.89211,
+          "score": 0.96237
+        },
+        {
+          "start": 355.40401,
+          "end": 381.92558,
+          "text": "now burning people in the hand at newgate by the dozen and now burning pamphlets at the door of westminster hall to-day taking the life of an atrocious murderer and to-morrow of a wretched pilfer who had robbed a farmer's boy of sixpence all these things and a thousand like them came to pass in and close upon the dear old year one thousand seven hundred and seventy-five",
+          "words": [
+            {
+              "text": "now ",
+              "start": 355.40401,
+              "end": 355.6442,
+              "score": 0.9764
+            },
+            {
+              "text": "burning ",
+              "start": 355.82435,
+              "end": 356.20466,
+              "score": 0.94345
+            },
+            {
+              "text": "people ",
+              "start": 356.28472,
+              "end": 356.58497,
+              "score": 0.904
+            },
+            {
+              "text": "in ",
+              "start": 356.64502,
+              "end": 356.68505,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 356.7451,
+              "end": 356.82516,
+              "score": 0.95557
+            },
+            {
+              "text": "hand ",
+              "start": 356.88521,
+              "end": 357.10539,
+              "score": 0.99961
+            },
+            {
+              "text": "at ",
+              "start": 357.20547,
+              "end": 357.2455,
+              "score": 0.99951
+            },
+            {
+              "text": "newgate ",
+              "start": 357.32557,
+              "end": 357.76593,
+              "score": 0.97005
+            },
+            {
+              "text": "by ",
+              "start": 357.84599,
+              "end": 357.96609,
+              "score": 0.94531
+            },
+            {
+              "text": "the ",
+              "start": 358.04616,
+              "end": 358.12622,
+              "score": 0.99854
+            },
+            {
+              "text": "dozen ",
+              "start": 358.20629,
+              "end": 358.56658,
+              "score": 0.94545
+            },
+            {
+              "text": "and ",
+              "start": 358.90686,
+              "end": 359.00694,
+              "score": 0.93203
+            },
+            {
+              "text": "now ",
+              "start": 359.10702,
+              "end": 359.26715,
+              "score": 1.0
+            },
+            {
+              "text": "burning ",
+              "start": 359.4473,
+              "end": 359.8276,
+              "score": 0.99961
+            },
+            {
+              "text": "pamphlets ",
+              "start": 359.96772,
+              "end": 360.54819,
+              "score": 0.94294
+            },
+            {
+              "text": "at ",
+              "start": 360.62826,
+              "end": 360.6883,
+              "score": 0.96729
+            },
+            {
+              "text": "the ",
+              "start": 360.72834,
+              "end": 360.8084,
+              "score": 0.99902
+            },
+            {
+              "text": "door ",
+              "start": 360.86845,
+              "end": 361.06861,
+              "score": 0.96468
+            },
+            {
+              "text": "of ",
+              "start": 361.14868,
+              "end": 361.18871,
+              "score": 1.0
+            },
+            {
+              "text": "westminster ",
+              "start": 361.28879,
+              "end": 361.9093,
+              "score": 0.96272
+            },
+            {
+              "text": "hall ",
+              "start": 361.96935,
+              "end": 362.22956,
+              "score": 0.9917
+            },
+            {
+              "text": "to-day ",
+              "start": 362.79001,
+              "end": 363.17032,
+              "score": 0.95996
+            },
+            {
+              "text": "taking ",
+              "start": 363.35047,
+              "end": 363.69075,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 363.7508,
+              "end": 363.83086,
+              "score": 0.99967
+            },
+            {
+              "text": "life ",
+              "start": 363.91093,
+              "end": 364.17114,
+              "score": 0.87533
+            },
+            {
+              "text": "of ",
+              "start": 364.27122,
+              "end": 364.31125,
+              "score": 1.0
+            },
+            {
+              "text": "an ",
+              "start": 364.39132,
+              "end": 364.43135,
+              "score": 0.99731
+            },
+            {
+              "text": "atrocious ",
+              "start": 364.51141,
+              "end": 365.17195,
+              "score": 0.94023
+            },
+            {
+              "text": "murderer ",
+              "start": 365.31207,
+              "end": 365.81247,
+              "score": 0.9737
+            },
+            {
+              "text": "and ",
+              "start": 366.19278,
+              "end": 366.27285,
+              "score": 0.9834
+            },
+            {
+              "text": "to-morrow ",
+              "start": 366.3329,
+              "end": 366.73322,
+              "score": 0.96191
+            },
+            {
+              "text": "of ",
+              "start": 366.81329,
+              "end": 366.85332,
+              "score": 0.92505
+            },
+            {
+              "text": "a ",
+              "start": 366.89335,
+              "end": 366.91337,
+              "score": 0.32324
+            },
+            {
+              "text": "wretched ",
+              "start": 367.15356,
+              "end": 367.55389,
+              "score": 0.96401
+            },
+            {
+              "text": "pilfer ",
+              "start": 367.71402,
+              "end": 368.19441,
+              "score": 0.81939
+            },
+            {
+              "text": "who ",
+              "start": 368.27448,
+              "end": 368.37456,
+              "score": 0.96152
+            },
+            {
+              "text": "had ",
+              "start": 368.41459,
+              "end": 368.49465,
+              "score": 0.97083
+            },
+            {
+              "text": "robbed ",
+              "start": 368.63477,
+              "end": 368.915,
+              "score": 0.995
+            },
+            {
+              "text": "a ",
+              "start": 368.99506,
+              "end": 369.01508,
+              "score": 0.98975
+            },
+            {
+              "text": "farmer's ",
+              "start": 369.13518,
+              "end": 369.59555,
+              "score": 0.98649
+            },
+            {
+              "text": "boy ",
+              "start": 369.71565,
+              "end": 369.95584,
+              "score": 0.99984
+            },
+            {
+              "text": "of ",
+              "start": 370.07594,
+              "end": 370.11597,
+              "score": 0.99976
+            },
+            {
+              "text": "sixpence ",
+              "start": 370.37619,
+              "end": 370.95666,
+              "score": 0.92765
+            },
+            {
+              "text": "all ",
+              "start": 372.39783,
+              "end": 372.51793,
+              "score": 0.99927
+            },
+            {
+              "text": "these ",
+              "start": 372.59799,
+              "end": 372.77814,
+              "score": 0.89429
+            },
+            {
+              "text": "things ",
+              "start": 372.93827,
+              "end": 373.31858,
+              "score": 0.99951
+            },
+            {
+              "text": "and ",
+              "start": 373.51874,
+              "end": 373.59881,
+              "score": 0.99756
+            },
+            {
+              "text": "a ",
+              "start": 373.65886,
+              "end": 373.67887,
+              "score": 0.99414
+            },
+            {
+              "text": "thousand ",
+              "start": 373.79897,
+              "end": 374.27936,
+              "score": 0.96809
+            },
+            {
+              "text": "like ",
+              "start": 374.35943,
+              "end": 374.59962,
+              "score": 0.93783
+            },
+            {
+              "text": "them ",
+              "start": 374.71972,
+              "end": 374.83982,
+              "score": 0.99951
+            },
+            {
+              "text": "came ",
+              "start": 375.28017,
+              "end": 375.52037,
+              "score": 0.9954
+            },
+            {
+              "text": "to ",
+              "start": 375.60043,
+              "end": 375.6805,
+              "score": 1.0
+            },
+            {
+              "text": "pass ",
+              "start": 375.8006,
+              "end": 376.16089,
+              "score": 0.98779
+            },
+            {
+              "text": "in ",
+              "start": 376.32102,
+              "end": 376.38107,
+              "score": 1.0
+            },
+            {
+              "text": "and ",
+              "start": 376.70133,
+              "end": 376.80141,
+              "score": 0.99341
+            },
+            {
+              "text": "close ",
+              "start": 376.96154,
+              "end": 377.30182,
+              "score": 0.97559
+            },
+            {
+              "text": "upon ",
+              "start": 377.4019,
+              "end": 377.74218,
+              "score": 0.92208
+            },
+            {
+              "text": "the ",
+              "start": 377.90231,
+              "end": 378.00239,
+              "score": 0.90283
+            },
+            {
+              "text": "dear ",
+              "start": 378.08245,
+              "end": 378.30263,
+              "score": 0.97786
+            },
+            {
+              "text": "old ",
+              "start": 378.44275,
+              "end": 378.56284,
+              "score": 0.90156
+            },
+            {
+              "text": "year ",
+              "start": 378.66293,
+              "end": 378.90312,
+              "score": 0.96737
+            },
+            {
+              "text": "one ",
+              "start": 379.3635,
+              "end": 379.48359,
+              "score": 0.90234
+            },
+            {
+              "text": "thousand ",
+              "start": 379.56366,
+              "end": 380.04405,
+              "score": 0.98505
+            },
+            {
+              "text": "seven ",
+              "start": 380.16415,
+              "end": 380.42436,
+              "score": 0.95424
+            },
+            {
+              "text": "hundred ",
+              "start": 380.50442,
+              "end": 380.80467,
+              "score": 0.92738
+            },
+            {
+              "text": "and ",
+              "start": 380.86472,
+              "end": 380.94478,
+              "score": 0.95337
+            },
+            {
+              "text": "seventy-five",
+              "start": 381.02485,
+              "end": 381.92558,
+              "score": 0.95582
+            }
+          ],
+          "duration": 26.52157,
+          "score": 0.95653
+        },
+        {
+          "start": 383.0511,
+          "end": 398.20342,
+          "text": "Environment by them, while the woodman and the farmer worked unheeded, those two of the large jaws, and those other two of the plain and the fair faces, trod with stir enough, and carried their divine rights with a high hand. ",
+          "words": [
+            {
+              "text": "Environment ",
+              "start": 383.0511,
+              "end": 383.73165,
+              "score": 0.76534
+            },
+            {
+              "text": "by ",
+              "start": 383.7917,
+              "end": 383.97185,
+              "score": 0.99976
+            },
+            {
+              "text": "them, ",
+              "start": 384.07193,
+              "end": 384.21204,
+              "score": 0.92326
+            },
+            {
+              "text": "while ",
+              "start": 384.55232,
+              "end": 384.73247,
+              "score": 0.99487
+            },
+            {
+              "text": "the ",
+              "start": 384.79252,
+              "end": 384.87258,
+              "score": 1.0
+            },
+            {
+              "text": "woodman ",
+              "start": 384.91261,
+              "end": 385.29292,
+              "score": 0.95725
+            },
+            {
+              "text": "and ",
+              "start": 385.33296,
+              "end": 385.41302,
+              "score": 0.91577
+            },
+            {
+              "text": "the ",
+              "start": 385.45305,
+              "end": 385.5131,
+              "score": 0.99821
+            },
+            {
+              "text": "farmer ",
+              "start": 385.61318,
+              "end": 385.95346,
+              "score": 0.98669
+            },
+            {
+              "text": "worked ",
+              "start": 386.03353,
+              "end": 386.31375,
+              "score": 0.98956
+            },
+            {
+              "text": "unheeded, ",
+              "start": 386.47388,
+              "end": 387.03434,
+              "score": 0.99712
+            },
+            {
+              "text": "those ",
+              "start": 387.41465,
+              "end": 387.63483,
+              "score": 0.99935
+            },
+            {
+              "text": "two ",
+              "start": 387.75493,
+              "end": 387.91506,
+              "score": 0.90527
+            },
+            {
+              "text": "of ",
+              "start": 387.9751,
+              "end": 388.01514,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 388.07519,
+              "end": 388.17527,
+              "score": 0.97925
+            },
+            {
+              "text": "large ",
+              "start": 388.23532,
+              "end": 388.53556,
+              "score": 0.9999
+            },
+            {
+              "text": "jaws, ",
+              "start": 388.67567,
+              "end": 389.09602,
+              "score": 0.99824
+            },
+            {
+              "text": "and ",
+              "start": 389.53637,
+              "end": 389.61644,
+              "score": 0.99984
+            },
+            {
+              "text": "those ",
+              "start": 389.67649,
+              "end": 389.87665,
+              "score": 0.94238
+            },
+            {
+              "text": "other ",
+              "start": 390.09683,
+              "end": 390.29699,
+              "score": 0.99798
+            },
+            {
+              "text": "two ",
+              "start": 390.39707,
+              "end": 390.57722,
+              "score": 0.85664
+            },
+            {
+              "text": "of ",
+              "start": 390.75737,
+              "end": 390.7974,
+              "score": 0.99976
+            },
+            {
+              "text": "the ",
+              "start": 390.83743,
+              "end": 390.93751,
+              "score": 0.81836
+            },
+            {
+              "text": "plain ",
+              "start": 391.0376,
+              "end": 391.35786,
+              "score": 0.82168
+            },
+            {
+              "text": "and ",
+              "start": 391.538,
+              "end": 391.63808,
+              "score": 0.99927
+            },
+            {
+              "text": "the ",
+              "start": 391.71815,
+              "end": 391.79821,
+              "score": 0.99109
+            },
+            {
+              "text": "fair ",
+              "start": 391.91831,
+              "end": 392.13849,
+              "score": 0.99941
+            },
+            {
+              "text": "faces, ",
+              "start": 392.27861,
+              "end": 392.79903,
+              "score": 0.95776
+            },
+            {
+              "text": "trod ",
+              "start": 393.27942,
+              "end": 393.55965,
+              "score": 0.99089
+            },
+            {
+              "text": "with ",
+              "start": 393.67974,
+              "end": 393.81986,
+              "score": 0.90215
+            },
+            {
+              "text": "stir ",
+              "start": 393.93996,
+              "end": 394.30025,
+              "score": 0.90444
+            },
+            {
+              "text": "enough, ",
+              "start": 394.4804,
+              "end": 394.78064,
+              "score": 0.99191
+            },
+            {
+              "text": "and ",
+              "start": 395.16095,
+              "end": 395.24101,
+              "score": 1.0
+            },
+            {
+              "text": "carried ",
+              "start": 395.36111,
+              "end": 395.72141,
+              "score": 0.97038
+            },
+            {
+              "text": "their ",
+              "start": 395.76144,
+              "end": 395.92157,
+              "score": 0.99449
+            },
+            {
+              "text": "divine ",
+              "start": 395.98162,
+              "end": 396.40196,
+              "score": 0.93533
+            },
+            {
+              "text": "rights ",
+              "start": 396.52206,
+              "end": 396.84232,
+              "score": 0.77059
+            },
+            {
+              "text": "with ",
+              "start": 396.92238,
+              "end": 397.08251,
+              "score": 0.99414
+            },
+            {
+              "text": "a ",
+              "start": 397.16258,
+              "end": 397.18259,
+              "score": 0.98828
+            },
+            {
+              "text": "high ",
+              "start": 397.34272,
+              "end": 397.66298,
+              "score": 0.99951
+            },
+            {
+              "text": "hand. ",
+              "start": 397.8031,
+              "end": 398.20342,
+              "score": 0.99922
+            }
+          ],
+          "duration": 15.15233,
+          "score": 0.95696
+        },
+        {
+          "start": 399.06412,
+          "end": 412.09472,
+          "text": "Thus did the year one thousand seven hundred and seventy-five conduct their greatnesses, and myriads of small creatures, the creatures of this chronicle among the rest, along the roads that lay before them.",
+          "words": [
+            {
+              "text": "Thus ",
+              "start": 399.06412,
+              "end": 399.26429,
+              "score": 0.98954
+            },
+            {
+              "text": "did ",
+              "start": 399.36437,
+              "end": 399.50448,
+              "score": 1.0
+            },
+            {
+              "text": "the ",
+              "start": 399.58455,
+              "end": 399.68463,
+              "score": 0.89922
+            },
+            {
+              "text": "year ",
+              "start": 399.72466,
+              "end": 399.92482,
+              "score": 0.94615
+            },
+            {
+              "text": "one ",
+              "start": 400.08496,
+              "end": 400.18504,
+              "score": 0.99902
+            },
+            {
+              "text": "thousand ",
+              "start": 400.30513,
+              "end": 400.74549,
+              "score": 0.99146
+            },
+            {
+              "text": "seven ",
+              "start": 400.82556,
+              "end": 401.10579,
+              "score": 0.96159
+            },
+            {
+              "text": "hundred ",
+              "start": 401.20587,
+              "end": 401.48609,
+              "score": 1.0
+            },
+            {
+              "text": "and ",
+              "start": 401.56616,
+              "end": 401.62621,
+              "score": 0.99723
+            },
+            {
+              "text": "seventy-five ",
+              "start": 401.70627,
+              "end": 402.50693,
+              "score": 0.97852
+            },
+            {
+              "text": "conduct ",
+              "start": 402.80717,
+              "end": 403.24753,
+              "score": 0.95137
+            },
+            {
+              "text": "their ",
+              "start": 403.38764,
+              "end": 403.54777,
+              "score": 0.9939
+            },
+            {
+              "text": "greatnesses, ",
+              "start": 403.66787,
+              "end": 404.38846,
+              "score": 0.98336
+            },
+            {
+              "text": "and ",
+              "start": 404.74875,
+              "end": 404.82881,
+              "score": 1.0
+            },
+            {
+              "text": "myriads ",
+              "start": 404.94891,
+              "end": 405.38927,
+              "score": 0.95805
+            },
+            {
+              "text": "of ",
+              "start": 405.46933,
+              "end": 405.50937,
+              "score": 1.0
+            },
+            {
+              "text": "small ",
+              "start": 405.70953,
+              "end": 406.10986,
+              "score": 0.9975
+            },
+            {
+              "text": "creatures, ",
+              "start": 406.22995,
+              "end": 406.73036,
+              "score": 0.97503
+            },
+            {
+              "text": "the ",
+              "start": 407.09065,
+              "end": 407.17072,
+              "score": 0.927
+            },
+            {
+              "text": "creatures ",
+              "start": 407.25078,
+              "end": 407.67113,
+              "score": 0.98295
+            },
+            {
+              "text": "of ",
+              "start": 407.73117,
+              "end": 407.77121,
+              "score": 0.99951
+            },
+            {
+              "text": "this ",
+              "start": 407.83126,
+              "end": 407.95135,
+              "score": 0.9998
+            },
+            {
+              "text": "chronicle ",
+              "start": 408.09147,
+              "end": 408.57186,
+              "score": 0.9722
+            },
+            {
+              "text": "among ",
+              "start": 408.65192,
+              "end": 408.91214,
+              "score": 0.9439
+            },
+            {
+              "text": "the ",
+              "start": 408.9922,
+              "end": 409.09228,
+              "score": 0.99727
+            },
+            {
+              "text": "rest, ",
+              "start": 409.15233,
+              "end": 409.43256,
+              "score": 0.93973
+            },
+            {
+              "text": "along ",
+              "start": 409.8529,
+              "end": 410.11311,
+              "score": 0.94587
+            },
+            {
+              "text": "the ",
+              "start": 410.19318,
+              "end": 410.27324,
+              "score": 0.9707
+            },
+            {
+              "text": "roads ",
+              "start": 410.37332,
+              "end": 410.7136,
+              "score": 0.91492
+            },
+            {
+              "text": "that ",
+              "start": 410.79367,
+              "end": 410.93378,
+              "score": 0.99988
+            },
+            {
+              "text": "lay ",
+              "start": 411.03386,
+              "end": 411.21401,
+              "score": 1.0
+            },
+            {
+              "text": "before ",
+              "start": 411.35412,
+              "end": 411.85453,
+              "score": 0.96968
+            },
+            {
+              "text": "them.",
+              "start": 411.93459,
+              "end": 412.09472,
+              "score": 0.95667
+            }
+          ],
+          "duration": 13.0306,
+          "score": 0.974
+        },
+        {
+          "start": 416.38353,
+          "end": 417.84472,
+          "text": "End of Book One, Chapter One. ",
+          "words": [
+            {
+              "text": "End ",
+              "start": 416.38353,
+              "end": 416.48362,
+              "score": 0.93379
+            },
+            {
+              "text": "of ",
+              "start": 416.56368,
+              "end": 416.60371,
+              "score": 0.9978
+            },
+            {
+              "text": "Book ",
+              "start": 416.68378,
+              "end": 416.82389,
+              "score": 0.98804
+            },
+            {
+              "text": "One, ",
+              "start": 416.98402,
+              "end": 417.0841,
+              "score": 0.99821
+            },
+            {
+              "text": "Chapter ",
+              "start": 417.18419,
+              "end": 417.54448,
+              "score": 0.95844
+            },
+            {
+              "text": "One. ",
+              "start": 417.72462,
+              "end": 417.84472,
+              "score": 0.98047
+            }
+          ],
+          "duration": 1.46119,
+          "score": 0.97612
+        },
+        {
+          "start": 418.28508,
+          "end": 419.82633,
+          "text": "Recording by Paul Adams. ",
+          "words": [
+            {
+              "text": "Recording ",
+              "start": 418.28508,
+              "end": 418.70542,
+              "score": 0.8054
+            },
+            {
+              "text": "by ",
+              "start": 418.76547,
+              "end": 418.86555,
+              "score": 1.0
+            },
+            {
+              "text": "Paul ",
+              "start": 418.98565,
+              "end": 419.26588,
+              "score": 0.97461
+            },
+            {
+              "text": "Adams. ",
+              "start": 419.46604,
+              "end": 419.82633,
+              "score": 0.93815
+            }
+          ],
+          "duration": 1.54125,
+          "score": 0.92954
+        },
+        {
+          "start": 420.50689,
+          "end": 423.74953,
+          "text": "www.jornguy.com.",
+          "words": [
+            {
+              "text": "www.jornguy.com.",
+              "start": 420.50689,
+              "end": 423.74953,
+              "score": 0.81796
+            }
+          ],
+          "duration": 3.24264,
+          "score": 0.81796
+        }
+      ],
+      "duration": 422.17875,
+      "audio_frames": null,
+      "probs_path": "taleoftwocities_01_dickens_64kb_trimmed/0.npy",
+      "metadata": null
+    }
+  ],
+  "metadata": null
+}

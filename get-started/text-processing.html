@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,6 +65,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../get-started/pipelines.html" rel="next">
+<link href="../get-started/overview.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -41,8 +78,8 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f055453bf5c6f63e9b894934d5b0dc26.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-9ba7254411b574ae9777a917f44d17c1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-5f53e196a2178d245accc371ac19f050.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-d2be07560ea121de3029aecc67d70911.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -80,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
 <meta property="og:site_name" content="easytranscriber">
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating nav-fixed slimcontent quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -316,6 +353,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../get-started/pipelines.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pipelines</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../benchmarks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Benchmarks</span></a>
   </div>
@@ -330,16 +373,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#text-processing" id="toc-text-processing" class="nav-link active" data-scroll-target="#text-processing">Text processing</a>
+  <li><a href="#normalization" id="toc-normalization" class="nav-link active" data-scroll-target="#normalization">Normalization</a>
   <ul class="collapse">
-  <li><a href="#normalization" id="toc-normalization" class="nav-link" data-scroll-target="#normalization">Normalization</a></li>
-  <li><a href="#sentence-tokenization" id="toc-sentence-tokenization" class="nav-link" data-scroll-target="#sentence-tokenization">Sentence tokenization</a></li>
+  <li><a href="#default-text_normalizer" id="toc-default-text_normalizer" class="nav-link" data-scroll-target="#default-text_normalizer">Default text_normalizer</a></li>
   </ul></li>
+  <li><a href="#sentence-tokenization" id="toc-sentence-tokenization" class="nav-link" data-scroll-target="#sentence-tokenization">Sentence tokenization</a></li>
+  <li><a href="#arbitrary-tokenization" id="toc-arbitrary-tokenization" class="nav-link" data-scroll-target="#arbitrary-tokenization">Arbitrary tokenization</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -361,17 +405,203 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="text-processing" class="level2">
-<h2 class="anchored" data-anchor-id="text-processing">Text processing</h2>
-<section id="normalization" class="level3">
-<h3 class="anchored" data-anchor-id="normalization">Normalization</h3>
+<p><code>easytranscriber</code> supports custom regex-based text normalization functions to preprocess ASR outputs before alignment. By reconciling the outputs of the ASR model and the emissions model, the forced alignment algorithm has an opportunity to perform better.</p>
+<p>Wav2vec2 models tend to produce all lowercase or all uppercase outputs without punctuation, whereas Whisper models output mixed case text with punctuation. Whisper furthermore outputs non-verbal tokens (often within parentheses or brackets), symbols and abbreviations.</p>
+<p>Normalizing these outputs can substantially improve the quality of forced alignment.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The normalizations are reversible, meaning that the original text can be recovered after forced alignment has been performed<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Whitespace is not always recoverable, depending on the regex patterns used</p></div></div><section id="normalization" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="normalization">Normalization</h2>
+<p>Let’s apply some basic normalization to our example from A Tale of Two Cities. To explore the effect of our normalizations, we will import the <a href="https://github.com/kb-labb/easyaligner/blob/fd9453903b17d9176be2fc6b6df5693cff00eaf8/src/easyaligner/text/normalization.py#L48"><code>SpanMapNormalizer</code></a> class from the <code>easyaligner</code> library, and remove punctuation.</p>
+<div id="13c87334" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.text.normalization <span class="im">import</span> SpanMapNormalizer</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"""Book 1. Chapter 1, The Period. It was the best of times. It was the worst of times. </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">It was the age of wisdom. It was the age of foolishness. It was the epoch of belief. </span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">It was the epoch of incredulity. It was the season of light. </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">It was the season of darkness. It was the spring of hope."""</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>normalizer <span class="op">=</span> SpanMapNormalizer(text)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>normalizer.transform(<span class="vs">r"</span><span class="pp">[^</span><span class="dv">\w\s</span><span class="pp">]</span><span class="vs">"</span>, <span class="st">""</span>)  <span class="co"># Remove punctuation and special characters</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalizer.current_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Book 1 Chapter 1 The Period It was the best of times It was the worst of times 
+It was the age of wisdom It was the age of foolishness It was the epoch of belief 
+It was the epoch of incredulity It was the season of light 
+It was the season of darkness It was the spring of hope</code></pre>
+</div>
+</div>
+<p>Let’s make it all lowercase as well:</p>
+<div id="1c1f38da" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>normalizer.transform(<span class="vs">r"</span><span class="dv">\S</span><span class="op">+</span><span class="vs">"</span>, <span class="kw">lambda</span> m: m.group().lower())  <span class="co">#</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalizer.current_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>book 1 chapter 1 the period it was the best of times it was the worst of times 
+it was the age of wisdom it was the age of foolishness it was the epoch of belief 
+it was the epoch of incredulity it was the season of light 
+it was the season of darkness it was the spring of hope</code></pre>
+</div>
+</div>
+<p>We may also want to convert the numbers to their word forms. The library <code>num2words</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> can help with this:</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;<code>pip install num2words</code></p></div></div><div id="e62ef280" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> num2words <span class="im">import</span> num2words</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>normalizer.transform(<span class="vs">r"</span><span class="dv">\d</span><span class="op">+</span><span class="vs">"</span>, <span class="kw">lambda</span> m: num2words(<span class="bu">int</span>(m.group())))  <span class="co"># Convert numbers to words</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalizer.current_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>book one chapter one the period it was the best of times it was the worst of times 
+it was the age of wisdom it was the age of foolishness it was the epoch of belief 
+it was the epoch of incredulity it was the season of light 
+it was the season of darkness it was the spring of hope</code></pre>
+</div>
+</div>
+<p>When you’re feeling done, it’s a good idea to always apply whitespace normalization as the final transformation step:</p>
+<div id="f447a15a" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>normalizer.transform(<span class="vs">r"</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>)  <span class="co"># Normalize whitespace to a single space</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>normalizer.transform(<span class="vs">r"</span><span class="dv">^\s</span><span class="op">+</span><span class="cf">|</span><span class="dv">\s</span><span class="op">+</span><span class="dv">$</span><span class="vs">"</span>, <span class="st">""</span>)  <span class="co"># Strip leading and trailing whitespace</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalizer.current_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>book one chapter one the period it was the best of times it was the worst of times it was the age of wisdom it was the age of foolishness it was the epoch of belief it was the epoch of incredulity it was the season of light it was the season of darkness it was the spring of hope</code></pre>
+</div>
+</div>
+<p>Our text is now ready for forced alignment. However, if we want to recover the original text, it does not suffice to pass only the normalized text to the forced alignment algorithm. We also need to pass a mapping between the original text and the normalized text. Any user supplied text normalization function in <code>easytranscriber</code> needs to return the following two objects:</p>
+<div id="94e8fa63" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mapping <span class="op">=</span> normalizer.get_token_map()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>normalized_tokens <span class="op">=</span> [item[<span class="st">"normalized_token"</span>] <span class="cf">for</span> item <span class="kw">in</span> mapping]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let’s inspect what’s in the first five items of the mapping:</p>
+<div id="e28dd013" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> mapping[:<span class="dv">5</span>]:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'normalized_token': 'book', 'text': 'Book', 'start_char': 0, 'end_char': 4}
+{'normalized_token': 'one', 'text': '1', 'start_char': 5, 'end_char': 6}
+{'normalized_token': 'chapter', 'text': 'Chapter', 'start_char': 8, 'end_char': 15}
+{'normalized_token': 'one', 'text': '1', 'start_char': 16, 'end_char': 17}
+{'normalized_token': 'the', 'text': 'The', 'start_char': 19, 'end_char': 22}</code></pre>
+</div>
+</div>
+<p>We can see that <code>text</code> contains the token in the original text.</p>
+<section id="default-text_normalizer" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="default-text_normalizer">Default text_normalizer</h3>
+<p><code>easytranscriber</code> provides a conservative default text normalization function. This default function is applied<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> unless the user specificies their own function.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;See <a href="../reference/pipeline.html#parameters">pipeline</a> and the arg <code>text_normalizer_fn</code></p></div></div><p>Here is the default normalization function, for reference:</p>
+<div id="4b1985fd" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> text_normalizer(text: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Default text normalization function.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Applies</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">        - Unicode normalization (NFKC)</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">        - Lowercasing</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">        - Normalization of whitespace</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">        - Remove parentheses and special characters</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">    text : str</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">        Input text to normalize.</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">    tuple</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">        Tuple containing (normalized_tokens, mapping).</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Unicode normalization</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    normalizer <span class="op">=</span> SpanMapNormalizer(text)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># # Remove parentheses, brackets, stars, and their content</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># normalizer.transform(r"\(.*?\)", "")</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># normalizer.transform(r"\[.*?\]", "")</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># normalizer.transform(r"\*.*?\*", "")</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Unicode normalization on tokens and lowercasing</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    normalizer.transform(<span class="vs">r"</span><span class="dv">\S</span><span class="op">+</span><span class="vs">"</span>, <span class="kw">lambda</span> m: unicodedata.normalize(<span class="st">"NFKC"</span>, m.group()))</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    normalizer.transform(<span class="vs">r"</span><span class="dv">\S</span><span class="op">+</span><span class="vs">"</span>, <span class="kw">lambda</span> m: m.group().lower())</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    normalizer.transform(<span class="vs">r"</span><span class="pp">[^</span><span class="dv">\w\s</span><span class="pp">]</span><span class="vs">"</span>, <span class="st">""</span>)  <span class="co"># Remove punctuation and special characters</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    normalizer.transform(<span class="vs">r"</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>)  <span class="co"># Normalize whitespace to a single space</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>    normalizer.transform(<span class="vs">r"</span><span class="dv">^\s</span><span class="op">+</span><span class="cf">|</span><span class="dv">\s</span><span class="op">+</span><span class="dv">$</span><span class="vs">"</span>, <span class="st">""</span>)  <span class="co"># Strip leading and trailing whitespace</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    mapping <span class="op">=</span> normalizer.get_token_map()</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    normalized_tokens <span class="op">=</span> [item[<span class="st">"normalized_token"</span>] <span class="cf">for</span> item <span class="kw">in</span> mapping]</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> normalized_tokens, mapping</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>In many cases you may want, or need, to be more careful with how removal of punctuation and special characters is applied. Words with hyphens, em dashes, or scores in sports games (e.g.&nbsp;<code>3-2</code>) are examples where you may want to insert a whitespace instead of removing the characters entirely. Beware, also, that the ordering of the transformations can sometimes matter.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Avoid overly broad regex patterns. A pattern that matches everything will produce a useless mapping.</p>
+</div>
+</div>
+</div></div><p>It is highly recommended to inspect the intermediate outputs of the applied transformations as described in the <a href="#normalization">previous section</a>.</p>
 </section>
-<section id="sentence-tokenization" class="level3">
-<h3 class="anchored" data-anchor-id="sentence-tokenization">Sentence tokenization</h3>
+</section>
+<section id="sentence-tokenization" class="level2">
+<h2 class="anchored" data-anchor-id="sentence-tokenization">Sentence tokenization</h2>
+<p>For sentence tokenization, we recommend using <code>nltk.tokenize.punkt.PunktTokenizer</code>. The <code>load_tokenizer</code> function from the <a href="https://kb-labb.github.io/easyaligner/"><code>easyaligner</code></a> library provides a convenient way to load an appropriate tokenizer for your language:</p>
+<div id="22b74236" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.text <span class="im">import</span> load_tokenizer</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> load_tokenizer(language<span class="op">=</span><span class="st">"swedish"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>PunktTokenizer</code> maintains lists of abbreviations to avoid incorrectly splitting sentences. We can inspect the loaded tokenizer’s list of abbreviations as follows:</p>
+<div id="602a19d6" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Current abbreviations:"</span>, tokenizer._params.abbrev_types)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Length of abbreviations: </span><span class="sc">{</span><span class="bu">len</span>(tokenizer._params.abbrev_types)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Current abbreviations: {'rif', 'föreläsn.-fören', 'kap', 'ordf', 'dir', 'prop', 'f.d', 'hrm', 't.ex', 'o.s.v', 's.k', 'z.b', 'ital', 'åk', 'm.m', 'postst', 'resp', 'aig', 'bf', 'f.m', 't.o.m', 'jaha', 'p.g.a', 'rskr', 'e.m', 'm.fl', 'hushålln.-sällsk', 'mm', 'dna', 'ex', 'f.n', 'p', 'o.d', 'mom', 'bl.a', 'ppm', 'osv', 'fig', 'landtm.-förb'}
+Length of abbreviations: 39</code></pre>
+</div>
+</div>
+<p>One may however want to add custom abbreviations to the tokenizer depending on the domain of one’s data:</p>
+<div id="0603aacd" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>new_abbreviations <span class="op">=</span> {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"d.v.s"</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"dvs"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"fr.o.m"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"kungl"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"m.m"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"milj"</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"o.s.v"</span>,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"t.o.m"</span>,</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"milj.kr"</span>,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>tokenizer._params.abbrev_types.update(new_abbreviations)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Updated abbreviations:"</span>, tokenizer._params.abbrev_types)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Length of abbreviations: </span><span class="sc">{</span><span class="bu">len</span>(tokenizer._params.abbrev_types)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Updated abbreviations: {'rif', 'föreläsn.-fören', 'kap', 'ordf', 'dir', 'prop', 'f.d', 'hrm', 't.ex', 'o.s.v', 's.k', 'kungl', 'z.b', 'ital', 'åk', 'm.m', 'postst', 'resp', 'aig', 'bf', 'fr.o.m', 'f.m', 't.o.m', 'jaha', 'p.g.a', 'rskr', 'milj.kr', 'e.m', 'm.fl', 'hushålln.-sällsk', 'mm', 'milj', 'dna', 'ex', 'dvs', 'f.n', 'p', 'o.d', 'mom', 'bl.a', 'ppm', 'osv', 'd.v.s', 'fig', 'landtm.-förb'}
+Length of abbreviations: 45</code></pre>
+</div>
+</div>
+<p>This tokenizer can be passed to the <code>pipeline</code> function in <code>easytranscriber</code>. After forced alignment is performed, the best possible start and end timestamps will be assigned to each sentence.</p>
+</section>
+<section id="arbitrary-tokenization" class="level2">
+<h2 class="anchored" data-anchor-id="arbitrary-tokenization">Arbitrary tokenization</h2>
+<p>The <code>tokenizer</code> argument of the <code>pipeline</code> function accepts any function that takes in a string and outputs a list of <code>(start_char, end_char)</code> tuples, so you can define custom tokenization functions based on any arbitrary segmentation of the source text.</p>
+<p>In our case, however, the source text is Whisper’s ASR output. Since Whisper inference is restricted to 30-second audio chunks, paragraph-level tokenization is generally infeasible.</p>
+<p>A more in-depth guide on custom tokenization will be available in the <a href="https://kb-labb.github.io/easyaligner/"><code>easyaligner</code></a> documentation, with a focus on aligning ground truth texts with longer audio segments.</p>
 
 
 </section>
-</section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -787,6 +1017,18 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../get-started/overview.html" class="pagination-link" aria-label="Overview">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Overview</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../get-started/pipelines.html" class="pagination-link" aria-label="Pipelines">
+        <span class="nav-page-text">Pipelines</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
