@@ -411,7 +411,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><code>easytranscriber</code> is an automatic speech recognition library (ASR) that offers similar functionality to <a href="https://github.com/m-bain/whisperX"><code>WhisperX</code></a>. Although transcription is highly optimized in most ASR libraries, there still remains ample room for improvement in several other parts of the inference pipeline. The goal of <code>easytranscriber</code> is to squeeze out as much performance as possible from these ancillary parts. This is achieved by implementing:</p>
+<p><code>easytranscriber</code> is an automatic speech recognition (ASR) library that offers similar functionality to <a href="https://github.com/m-bain/whisperX"><code>WhisperX</code></a>. While transcription is highly optimized in most ASR libraries, significant room for improvement remains in several stages of the inference pipeline. <code>easytranscriber</code> aims to squeeze as much performance as possible out of these components by implementing:</p>
 <ul>
 <li>GPU-accelerated forced alignment using Pytorch’s forced alignment API <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</li>
 <li>Parallel loading and pre-fetching of audio files, enabling efficient, non-blocking data loading and batching.</li>
@@ -462,7 +462,8 @@ Tip
 <section id="usage" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="usage">Usage</h2>
 <p>For our quickstart guide, we will be transcribing a short clip of the first book and chapter of “A Tale of Two Cities” from LibriVox <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
-<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;The original recording can be found <a href="https://librivox.org/a-tale-of-two-cities-by-charles-dickens-2/">here</a></p></div></div><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;The original recording can be found <a href="https://librivox.org/a-tale-of-two-cities-by-charles-dickens-2/">here</a></p></div></div><div id="ecd9e300" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.text <span class="im">import</span> load_tokenizer</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> huggingface_hub <span class="im">import</span> snapshot_download</span>
@@ -487,11 +488,28 @@ Tip
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    transcription_model<span class="op">=</span><span class="st">"distil-whisper/distil-large-v3.5"</span>,</span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    audio_paths<span class="op">=</span>audio_files,</span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    audio_dir<span class="op">=</span><span class="st">"data/tutorials/tale-of-two-cities_short-en"</span>,</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    language<span class="op">=</span><span class="st">"en"</span>,</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    tokenizer<span class="op">=</span>tokenizer,</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    text_normalizer_fn<span class="op">=</span>text_normalizer,</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    cache_dir<span class="op">=</span><span class="st">"models"</span>,</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    backend<span class="op">=</span><span class="st">"ct2"</span>, <span class="co"># easytranscriber handles conversion between ct2 and hf formats. </span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    language<span class="op">=</span><span class="st">"en"</span>,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    tokenizer<span class="op">=</span>tokenizer,</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    text_normalizer_fn<span class="op">=</span>text_normalizer,</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    cache_dir<span class="op">=</span><span class="st">"models"</span>,</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You can specify any repo with a Whisper model on Hugging Face. <code>easytranscriber</code> will handle the download and conversion to <code>ct2</code><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;<a href="https://github.com/OpenNMT/CTranslate2">Ctranslate2</a> provides C++ optimized inference for Whisper</p></div></div><div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The default VAD model is from <code>pyannote</code>. Their models are gated. To use them, you need to create a Hugging Face <a href="https://huggingface.co/docs/hub/en/security-tokens">access token</a> and accept <a href="https://huggingface.co/pyannote/segmentation-3.0">terms and conditions</a>. Then, either i) save the access token at <code>~/.cache/huggingface/token</code> or ii) install and use the Hugging Face CLI and run <code>hf auth login</code>. See the <a href="https://huggingface.co/docs/huggingface_hub/en/quick-start#login-command">Hugging Face Hub quick start guide</a> for more details.</p>
+<p>Alternatively, you can switch to <code>silero</code> VAD (CPU-only, slightly slower). Silero can be used without authentication, and performs well. See the <a href="../reference/pipelines.pipeline.html#parameters">vad_model</a> parameter in the docs.</p>
+</div>
+</div>
 <section id="output" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="output">Output</h3>
 <p>By default, <code>easytranscriber</code> outputs a JSON file for each stage of the pipeline (VAD, emissions, transcription, forced alignment). The final aligned output can be found in <code>output/alignments</code>. The directory structure will look as follows:</p>
@@ -502,7 +520,7 @@ Tip
 └── vad</code></pre>
 <section id="demo" class="level4 page-columns page-full">
 <h4 class="anchored" data-anchor-id="demo">Demo</h4>
-<p>Let’s preview the results as an interactive demo. The transcript below the audio player will automatically automatically be highlighted in sync with the words spoken in the audio.</p>
+<p>Let’s preview the results as an interactive demo. The text transcript below the audio player will automatically be highlighted in sync with the words spoken in the audio.</p>
 <div id="audio-player" class="audio-card">
 <div class="audio-card-label">
 Sample audio
@@ -534,8 +552,8 @@ Tip
 </section>
 <section id="reading-the-output" class="level4">
 <h4 class="anchored" data-anchor-id="reading-the-output">Reading the output</h4>
-<p>Let’s read the final aligned output and print out one of the aligned segments. We can either read using Python’s build-in <code>json</code> library, or use a convenience function provided in <code>easyaligner</code> that reads in the file as an <a href="../reference/AudioMetadata.html#easytranscriber.data.datamodel.AudioMetadata"><code>AudioMetadata</code></a> object.</p>
-<div id="1035efc3" class="cell" data-execution_count="1">
+<p>Let’s read the final aligned output and print out one of the aligned segments. We can either read it using Python’s build-in <code>json</code> library, or use a convenience function provided in <code>easyaligner</code> that reads in the file as an <a href="../reference/AudioMetadata.html#easytranscriber.data.datamodel.AudioMetadata"><code>AudioMetadata</code></a> object.</p>
+<div id="4360a450" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.data.utils <span class="im">import</span> read_json</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
