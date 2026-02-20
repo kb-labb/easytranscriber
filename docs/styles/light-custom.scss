@@ -25,6 +25,13 @@ $border-color: #ddd8d0;
 // Code styling
 $code-color: #16a34a;
 
+// Callout colors
+$callout-color-note: #2563eb;
+$callout-color-tip: #16a34a;
+$callout-color-warning: #ca8a04;
+$callout-color-caution: #ea580c;
+$callout-color-important: #dc2626;
+
 /*-- scss:rules --*/
 
 iframe {
@@ -65,10 +72,15 @@ iframe {
 // Code cell output box
 .cell-output pre {
     color: #3a3a3a;
-    background-color: #e8e5df;
+    background-color: #f0ede4 !important;
     border-left: 3px solid #2563eb;
     padding: 0.75em 1em;
     border-radius: 4px;
+}
+
+.cell-output pre code {
+    color: #3a3a3a;
+    background-color: transparent !important;
 }
 
 // Headings
@@ -90,6 +102,28 @@ figcaption code,
 h1 code, h2 code, h3 code, h4 code {
     color: #16a34a;
     background-color: #eeece7;
+}
+
+// Audio player card
+.audio-card {
+    background: #ffffff;
+    border: 1px solid #ddd8d0;
+}
+
+// Interactive transcript card
+.transcript-card {
+    background: #eeece7;
+    border: 1px solid #ddd8d0;
+}
+
+// Interactive transcript highlights
+.highlight-sentence {
+    background-color: rgba(37, 99, 235, 0.08);
+}
+
+.highlight-word {
+    background-color: rgba(37, 99, 235, 0.25);
+    color: #1a1a1a;
 }
 
 // Landing page cards

@@ -22,6 +22,13 @@ $border-color: #1e2230;
 // Code styling
 $code-color: #7ee8a2;
 
+// Callout colors
+$callout-color-note: #5ebbf7;
+$callout-color-tip: #7ee8a2;
+$callout-color-warning: #facc15;
+$callout-color-caution: #fb923c;
+$callout-color-important: #f87171;
+
 /*-- scss:rules --*/
 
 // Smooth transition for the iframe to blend with the page
@@ -50,10 +57,15 @@ iframe {
 // Code cell output box
 .cell-output pre {
     color: #c0c0cc;
-    background-color: #0e1018;
+    background-color: #1a1820 !important;
     border-left: 3px solid #5ebbf7;
     padding: 0.75em 1em;
     border-radius: 4px;
+}
+
+.cell-output pre code {
+    color: #c0c0cc;
+    background-color: transparent !important;
 }
 
 // Tone down heading color slightly
@@ -79,9 +91,34 @@ pre:not(.sourceCode) {
 // Code in captions and headings
 figcaption code,
 .figure-caption code,
-h1 code, h2 code, h3 code, h4 code {
+h1 code,
+h2 code,
+h3 code,
+h4 code {
     color: #7ee8a2;
     background-color: #12141c;
+}
+
+// Audio player card
+.audio-card {
+    background: #181b26;
+    border: 1px solid #1e2230;
+}
+
+// Interactive transcript card
+.transcript-card {
+    background: #12141c;
+    border: 1px solid #1e2230;
+}
+
+// Interactive transcript highlights
+.highlight-sentence {
+    background-color: rgba(94, 187, 247, 0.1);
+}
+
+.highlight-word {
+    background-color: rgba(94, 187, 247, 0.3);
+    color: #f0f0f5;
 }
 
 // Landing page cards

@@ -6,6 +6,7 @@ execute:
 
 website:
   title: "easytranscriber"
+  page-navigation: true
   navbar:
     background: light
     search: true
@@ -26,6 +27,7 @@ website:
       contents:
         - get-started/overview.qmd
         - get-started/text-processing.qmd
+        - get-started/pipelines.qmd
         - benchmarks.qmd
   open-graph: 
     title: "easytranscriber: Speech recognition with accurate timestamps, made easy"

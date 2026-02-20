@@ -30,9 +30,16 @@ uv pip install easytranscriber
 
 ## Usage
 
-```python
+Below, an example is provided of how transcribe an audio file with `easytranscriber`. We transcribe the first chapter of an audiobook recording of "A Tale of Two Cities". The recording is sourced from [LibriVox](https://librivox.org/a-tale-of-two-cities-by-charles-dickens-2/). 
 
+```python
+from pathlib import Path
+
+from easyaligner.text import load_tokenizer
 from huggingface_hub import snapshot_download
+
+from easytranscriber.pipelines import pipeline
+from easytranscriber.text.normalization import text_normalizer
 
 # Download Tale of Two Cities book 1 chapter 1 LibriVox audiobook recording for testing
 snapshot_download(
@@ -58,15 +65,26 @@ pipeline(
 )
 ```
 
-
-
 ## Benchmarks
+
+We present throughput comparisons between `easytranscriber` and `WhisperX`. See the [benchmarks](https://github.com/kb-labb/easytranscriber/tree/main/benchmarks) directory for code and details.  
+
+`WhisperX` relies on single-threaded data loading and CPU-based forced alignment, creating a bottleneck that is especially pronounced on hardware with slower single-core performance.
 
 ![Benchmarks](benchmarks/plots/all_speedup.png)
 
+All `easytranscriber` benchmarks were run using the `ctranslate2` backend for transcription. 
+
+* PyTorch version: 2.8.0
+* CUDA: 12.8
+* WhisperX version: 3.7.6
+* Model: `KBLab/kb-whisper-large`
+* Language: Swedish (`sv`)
 
 ## Acknowledgements
 
-`easytranscriber` is inspired by [`WhisperX`](https://github.com/m-bain/whisperX).
+`easytranscriber` draws heavy inspiration from [`WhisperX`](https://github.com/m-bain/whisperX) [(Bain et al., 2023)](https://www.isca-archive.org/interspeech_2023/bain23_interspeech.pdf).
 
-The forced alignment component of `easytranscriber` is based on Pytorch's forced alignment API, which implements a GPU-accelerated version of the Viterbi algorithm as described in [Pratap et al., 2024](https://jmlr.org/papers/volume25/23-1318/23-1318.pdf#page=8).
+The forced alignment component of `easytranscriber` is based on Pytorch's forced alignment API, which implements a GPU-accelerated version of the Viterbi algorithm as described in [Pratap et al., 2024](https://jmlr.org/papers/volume25/23-1318/23-1318.pdf#page=8). 
+
+LibriVox for public domain audiobooks used as tutorial examples. 

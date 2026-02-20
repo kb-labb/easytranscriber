@@ -32,10 +32,10 @@
     <h3>Benchmarks</h3>
     <p>Speed comparisons between easytranscriber and WhisperX.</p>
   </a>
-  <a href="reference/index.html" class="landing-card">
-    <div class="landing-card-icon"><i class="bi bi-book"></i></div>
-    <h3>Reference</h3>
-    <p>Explore the API — pipelines, datasets, data models, and text processing.</p>
+  <a href="get-started/overview.html#demo" class="landing-card">
+    <div class="landing-card-icon"><i class="bi bi-headphones"></i></div>
+    <h3>Interactive Demo</h3>
+    <p>Listen along as the transcript highlights each word in real time.</p>
   </a>
 </div>
 ```

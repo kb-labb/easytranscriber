@@ -2,4 +2,16 @@
 title: "About easytranscriber"
 ---
 
-`easytranscriber` was developed by [Faton Rekathati](https://github.com/Lauler) at [KBLab](https://huggingface.co/KBLab). KBLab is a national research infrastructure for digital research and and development of artificial intelligence at the [National Library of Sweden](https://www.kb.se/eng.html). 
+`easytranscriber` was developed by [Faton Rekathati](https://github.com/Lauler) at [KBLab](https://huggingface.co/KBLab). KBLab is a national research infrastructure for digital research and development of artificial intelligence at the [National Library of Sweden](https://www.kb.se/eng.html). 
+
+## License
+
+`easytranscriber` is licensed under the [MIT License](https://github.com/kb-labb/easytranscriber/blob/main/LICENSE).
+
+## Acknowledgements
+
+`easytranscriber` draws heavy inspiration from [`WhisperX`](https://github.com/m-bain/whisperX) [(Bain et al., 2023)](https://www.isca-archive.org/interspeech_2023/bain23_interspeech.pdf).
+
+The forced alignment component is based on Pytorch's forced alignment API, which implements a GPU-accelerated version of the Viterbi algorithm as described in [Pratap et al., 2024](https://jmlr.org/papers/volume25/23-1318/23-1318.pdf#page=8). 
+
+LibriVox audiobooks in the public domain are used as examples in the `easytranscriber` tutorials. 

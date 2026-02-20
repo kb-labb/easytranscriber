@@ -4,10 +4,18 @@ lightbox: true
 toc: true
 ---
 
-We present throughput comparisons between `easytranscriber` and `WhisperX`. See the [github repository](https://github.com/kb-labb/easytranscriber/tree/main/benchmarks) for more details, and inference code.  
+We present throughput comparisons between `easytranscriber` and `WhisperX`. See the [github repository](https://github.com/kb-labb/easytranscriber/tree/main/benchmarks) for details, and inference code.  
 
-In general, `easytranscriber` achieves a bigger boost on hardware that feature slower single-core CPU performance. The CPU increasingly acts as a bottleneck due to the sequential nature of data loading and forced alignment in `WhisperX`. 
+In general, `easytranscriber` achieves a greater speedup on hardware with slower single-core CPU performance. The CPU bottlenecks performance in `WhisperX` due to the library's use of sequential data loading, along with its  CPU-based single-threaded forced alignment implementation. 
 
 ::: {.column-page-inset}
 ![`easytranscriber` vs `WhisperX`](_assets/all_speedup.png)
 :::
+
+All `easytranscriber` benchmarks were run using the `ctranslate2` backend for transcription. 
+
+* PyTorch version: 2.8.0
+* CUDA: 12.8
+* WhisperX version: 3.7.6
+* Model: `KBLab/kb-whisper-large`
+* Language: Swedish (`sv`)

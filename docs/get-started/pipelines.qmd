@@ -1,0 +1,17 @@
+---
+title: Pipelines
+format:
+  html:
+    embed-resources: false
+    toc: true
+    toc-depth: 3
+reference-location: margin
+freeze: true
+conda: 
+    environment: easywhisper
+---
+
+## Transcription with decomposed pipelines
+
+Docs work in progress. 
+

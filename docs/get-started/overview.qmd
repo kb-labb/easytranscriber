@@ -8,8 +8,10 @@ format:
 lightbox: true
 reference-location: margin
 freeze: true
-conda: 
+conda:
     environment: easywhisper
+resources:
+  - ../_assets/taleoftwocities_01_dickens_64kb_trimmed.json
 ---
 
 `easytranscriber` is an automatic speech recognition library (ASR) that offers similar functionality to [`WhisperX`](https://github.com/m-bain/whisperX). Although transcription is highly optimized in most ASR libraries, there still remains ample room for improvement in several other parts of the inference pipeline. The goal of `easytranscriber` is to squeeze out as much performance as possible from these ancillary parts. This is achieved by implementing:
@@ -21,7 +23,7 @@ conda:
 
 Additionally, `easytranscriber` supports flexible regex-based normalization of transcribed text as a means of improving forced alignment quality. The normalizations are reversible, meaning that the original text can be recovered after forced alignment. `easytranscriber` also supports using Hugging Face [`transformers`](https://github.com/huggingface/transformers) as the backend for inference. 
 
-::: {.column-page-inset}
+::: {.column-body-outset}
 ![The easytranscriber pipeline](images/pipelines_light.svg){#fig-pipeline width=100% fig-align="center"}
 :::
 
@@ -98,6 +100,31 @@ output
 └── vad
 ```
 
+#### Demo
+
+Let's preview the results as an interactive demo. The transcript below the audio player will automatically automatically be highlighted in sync with the words spoken in the audio. 
+
+<div id="audio-player" class="audio-card">
+  <div class="audio-card-label">Sample audio</div>
+  <div class="audio-card-title"><em>A Tale of Two Cities</em> — Chapter 1 (LibriVox)</div>
+  <audio controls>
+    <source src="https://huggingface.co/datasets/Lauler/easytranscriber_tutorials/resolve/main/tale-of-two-cities_short-en/taleoftwocities_01_dickens_64kb_trimmed.mp3"
+    type="audio/mpeg">
+  </audio>
+</div>
+
+<div id="transcript-container" class="transcript-container transcript-card"></div>
+
+::: {.column-margin}
+::: {.callout-tip}
+You can click anywhere in the text to jump to that point (sentence) in the audio. The text is also highlighted when you drag the audio slider!
+:::
+:::
+
+<script src="demo.js"></script>
+
+#### Reading the output
+
 Let's read the final aligned output and print out one of the aligned segments. We can either read using Python's build-in `json` library, or use a convenience function provided in `easyaligner` that reads in the file as an [`AudioMetadata`](../reference/AudioMetadata.html#easytranscriber.data.datamodel.AudioMetadata) object.
 
 ```{python}
@@ -110,10 +137,6 @@ pprint(results.speeches[0].alignments[2].to_dict())
 ```
 
 
-<audio controls style="width: 100%">
-  <source src="https://huggingface.co/datasets/Lauler/easytranscriber_tutorials/resolve/main/tale-of-two-cities_short-en/taleoftwocities_01_dickens_64kb_trimmed.mp3"
-  type="audio/mpeg">
-</audio>
 
 ## Schema
 
