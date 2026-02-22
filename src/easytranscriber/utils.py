@@ -6,7 +6,33 @@ logger = logging.getLogger(__name__)
 
 
 def hf_to_ct2_converter(model_path, cache_dir="models"):
-    model_name = Path(model_path).stem
+    """
+    Convert a Hugging Face Transformers model to CTranslate2 format.
+
+    Saves the converted model to the specified cache directory.
+    If the converted model already exists, it will be reused.
+
+    Parameters
+    ----------
+    model_path : str
+        The Hugging Face model identifier or local path to the model to be converted.
+    cache_dir : str, optional
+        The directory where the converted CTranslate2 model will be saved. Default is "models".
+
+    Returns
+    -------
+    str
+        The path to the converted CTranslate2 model directory.
+
+    Example
+    -------
+    ```python
+    ct2_model_path = hf_to_ct2_converter("KBLab/kb-whisper-large")
+    ```
+    """
+    p = Path(model_path)
+    # Handle model names like "distil-whisper/distil-large-v3.5" with a false suffix
+    model_name = p.stem + p.suffix if p.suffix and p.suffix[1:].isdigit() else p.stem
     output_dir = Path(cache_dir) / "ct2" / model_name
 
     if output_dir.exists():

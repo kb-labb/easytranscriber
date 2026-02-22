@@ -18,7 +18,7 @@ tokenizer = load_tokenizer("swedish")
 
 if __name__ == "__main__":
     AUDIO_DIR = "data/sv"
-    audio_files = [file.name for file in Path(AUDIO_DIR).glob("*.wav")]
+    audio_files = [file.name for file in Path(AUDIO_DIR).glob("*")]
     start = time.time()
     pipeline(
         vad_model="pyannote",

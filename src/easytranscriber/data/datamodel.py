@@ -30,7 +30,7 @@ class WordSegment(msgspec.Struct):
 
 class AudioChunk(msgspec.Struct):
     """
-    Segment of audio, usually created by VAD.
+    Segment of audio, usually created by Voice Activity Detection (VAD).
 
     Attributes
     ----------
@@ -50,6 +50,8 @@ class AudioChunk(msgspec.Struct):
         Language code for the chunk.
     language_prob : float, optional
         Probability/confidence of the detected language.
+    id : str or int, optional
+        Optional unique identifier for the chunk.
     """
 
     start: float
@@ -60,6 +62,7 @@ class AudioChunk(msgspec.Struct):
     num_logits: int | None = None
     language: str | None = None
     language_prob: float | None = None
+    id: str | int | None = None
 
     def to_dict(self):
         return {f: getattr(self, f) for f in self.__struct_fields__}
@@ -89,6 +92,8 @@ class AlignmentSegment(msgspec.Struct):
         The aligned text segment.
     words : list[WordSegment]
         List of word-level alignment data within this segment.
+    id : str or int, optional
+        Optional unique identifier for the alignment segment.
     duration : float, optional
         Duration of the aligned segment in seconds.
     score : float, optional
@@ -99,6 +104,7 @@ class AlignmentSegment(msgspec.Struct):
     end: float  # in seconds
     text: str
     words: list[WordSegment] = []
+    id: str | int | None = None
     duration: float | None = None  # in seconds
     score: float | None = None  # Optional confidence score
 
@@ -116,7 +122,7 @@ class AlignmentSegment(msgspec.Struct):
 
 class SpeechSegment(msgspec.Struct):
     """
-    A slice of the audio that contains speech of interest to be aligned.
+    A slice of the audio file that contains speech of interest to be aligned.
 
     A `SpeechSegment` may be a speech given by a single speaker, a dialogue between
     multiple speakers, a book chapter, or whatever unit of organisational abstraction
@@ -198,6 +204,8 @@ class AudioMetadata(msgspec.Struct):
         Sample rate of the audio file.
     duration : float
         Duration of the audio file in seconds.
+    id : str or int, optional
+        Optional unique identifier for the document.
     speeches : list[SpeechSegment], optional
         List of speech segments in the audio.
     metadata : dict, optional
@@ -207,6 +215,7 @@ class AudioMetadata(msgspec.Struct):
     audio_path: str
     sample_rate: int
     duration: float  # in seconds
+    id: str | int | None = None
     speeches: list[SpeechSegment] | None = None  # List of speech segments in the audio
     metadata: dict | None = None  # Optional extra metadata
 

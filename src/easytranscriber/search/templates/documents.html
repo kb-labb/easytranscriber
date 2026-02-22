@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Documents — easysearch{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Documents</h1>
+<div class="results-meta">
+    {{ total }} indexed document{{ "s" if total != 1 else "" }}
+</div>
+
+{% if results %}
+    <div class="results-list">
+    {% for doc in results %}
+        <div class="result-card">
+            <div class="result-header">
+                <a href="/document/{{ doc.id }}" class="result-title">
+                    {{ doc.audio_path }}
+                </a>
+                <span class="result-duration">{{ doc.duration | duration }}</span>
+            </div>
+            <div class="result-info">
+                {{ doc.num_alignments }} segment{{ "s" if doc.num_alignments != 1 else "" }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endif %}
+
+{% if total_pages > 1 %}
+    <nav class="pagination">
+        {% if page > 1 %}
+            <a href="/documents?page={{ page - 1 }}">&laquo; Prev</a>
+        {% else %}
+            <span class="disabled">&laquo; Prev</span>
+        {% endif %}
+
+        <span class="page-info">Page {{ page }} of {{ total_pages }}</span>
+
+        {% if page < total_pages %}
+            <a href="/documents?page={{ page + 1 }}">Next &raquo;</a>
+        {% else %}
+            <span class="disabled">Next &raquo;</span>
+        {% endif %}
+    </nav>
+{% endif %}
+{% endblock %}

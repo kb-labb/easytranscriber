@@ -65,6 +65,17 @@ pipeline(
 )
 ```
 
+## easysearch
+
+`easysearch` is a built-in lightweight search interface for browsing and querying your transcription outputs. It indexes alignment segments into a SQLite database with full-text search and serves a web UI with audio playback and synchronized transcript highlighting.
+
+```bash
+pip install easytranscriber[search]
+easysearch --alignments-dir output/alignments --audio-dir data/audio
+```
+
+See the [search documentation](https://kb-labb.github.io/easytranscriber/get-started/search.html) for details on search syntax, indexing, and configuration options.
+
 ## Benchmarks
 
 We present throughput comparisons between `easytranscriber` and `WhisperX`. See the [benchmarks](https://github.com/kb-labb/easytranscriber/tree/main/benchmarks) directory for code and details.  

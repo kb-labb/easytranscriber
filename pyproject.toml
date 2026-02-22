@@ -24,6 +24,16 @@ dependencies = [
   "easyaligner==0.*"
 ]
 
+[project.optional-dependencies]
+search = [
+  "fastapi>=0.104.0",
+  "uvicorn[standard]>=0.24.0",
+  "jinja2>=3.1.0",
+]
+
+[project.scripts]
+easysearch = "easytranscriber.search.__main__:main"
+
 [project.urls]
 Repository = "https://github.com/kb-labb/easytranscriber"
 

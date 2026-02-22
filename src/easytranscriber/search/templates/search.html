@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}{% if query %}{{ query }} — {% endif %}easysearch{% endblock %}
+
+{% block content %}
+<div class="search-row">
+    <form class="search-form" action="/" method="get">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search transcripts..." autofocus autocomplete="off">
+        <button type="submit">Search</button>
+    </form>
+    <div class="tips-wrapper">
+        <button class="tips-toggle" type="button" aria-label="Search tips" title="Search tips">?</button>
+        <div class="tips-popover">
+            <p>
+                Search is performed at the <strong>alignment segment</strong> level. If you
+                used a sentence tokenizer, this corresponds to individual sentences.
+                A query matches when all search terms appear within the same segment.
+                Words spanning adjacent segments won't match as a combined query.
+            </p>
+            <table class="tips-table">
+                <thead>
+                    <tr><th>Query</th><th>Matches</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>climate change</code></td>
+                        <td>Segments containing both words (implicit AND)</td>
+                    </tr>
+                    <tr>
+                        <td><code>"climate change"</code></td>
+                        <td>Exact phrase</td>
+                    </tr>
+                    <tr>
+                        <td><code>climate OR weather</code></td>
+                        <td>Either word</td>
+                    </tr>
+                    <tr>
+                        <td><code>climate NOT weather</code></td>
+                        <td><em>climate</em> but not <em>weather</em></td>
+                    </tr>
+                    <tr>
+                        <td><code>econom*</code></td>
+                        <td>Prefix match: <em>economy</em>, <em>economic</em>, etc.</td>
+                    </tr>
+                    <tr>
+                        <td><code>NEAR(climate change, 3)</code></td>
+                        <td>Both words within 3 tokens of each other</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                Clicking a result takes you to the document at the matching timestamp.
+                The transcript highlights the currently playing word in real time.
+                Click any sentence to jump to that point in the audio.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% if has_query %}
+    <div class="results-meta">
+        {{ total }} document{{ "s" if total != 1 else "" }} found for <strong>{{ query }}</strong>
+    </div>
+
+    {% if results %}
+        <div class="results-list">
+        {% for doc in results %}
+            <div class="result-card">
+                <div class="result-header">
+                    <a href="/document/{{ doc.id }}?q={{ query | urlencode }}" class="result-title">
+                        {{ doc.audio_path }}
+                    </a>
+                    <span class="result-duration">{{ doc.duration | duration }}</span>
+                </div>
+                {% if doc.snippets %}
+                    <div class="result-snippets">
+                    {% for s in doc.snippets %}
+                        <a href="/document/{{ doc.id }}?t={{ s.start_time }}&q={{ query | urlencode }}" class="snippet-link">
+                            <span class="snippet-time">{{ s.start_time | timestamp }}</span>
+                            <span class="snippet-text">{{ s.snippet_text | safe }}</span>
+                        </a>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+{% else %}
+    <div class="search-hint">
+        <p>Search across {{ total }} indexed document{{ "s" if total != 1 else "" }}.
+           Browse all on the <a href="/documents">Documents</a> page.</p>
+    </div>
+{% endif %}
+
+{% if total_pages > 1 %}
+    <nav class="pagination">
+        {% if page > 1 %}
+            <a href="/?q={{ query | urlencode }}&page={{ page - 1 }}">&laquo; Prev</a>
+        {% else %}
+            <span class="disabled">&laquo; Prev</span>
+        {% endif %}
+
+        <span class="page-info">Page {{ page }} of {{ total_pages }}</span>
+
+        {% if page < total_pages %}
+            <a href="/?q={{ query | urlencode }}&page={{ page + 1 }}">Next &raquo;</a>
+        {% else %}
+            <span class="disabled">Next &raquo;</span>
+        {% endif %}
+    </nav>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+    var btn = document.querySelector('.tips-toggle');
+    var pop = document.querySelector('.tips-popover');
+    if (!btn || !pop) return;
+
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        pop.classList.toggle('visible');
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!pop.contains(e.target)) {
+            pop.classList.remove('visible');
+        }
+    });
+})();
+</script>
+{% endblock %}

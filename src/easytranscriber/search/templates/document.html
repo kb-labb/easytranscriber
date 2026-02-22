@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ document.audio_path }} — easysearch{% endblock %}
+
+{% block content %}
+<div class="doc-header">
+    <a href="/?q={{ query | urlencode }}" class="back-link">&larr; Back to search</a>
+    <h1 class="doc-title">{{ document.audio_path }}</h1>
+    <div class="doc-meta">
+        {{ document.duration | duration }} &middot;
+        {{ document.num_alignments }} segment{{ "s" if document.num_alignments != 1 else "" }} &middot;
+        {{ document.num_speeches }} speech{{ "es" if document.num_speeches != 1 else "" }}
+    </div>
+</div>
+
+<div id="audio-player" class="audio-card">
+    <audio controls preload="metadata"{% if seek_time > 0 %} autoplay{% endif %}>
+        <source src="/audio/{{ document.audio_path }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</div>
+
+<div id="transcript-container"
+     class="transcript-container transcript-card"
+     data-document-id="{{ document.id }}"
+     data-seek-time="{{ seek_time }}"
+     data-query="{{ query }}">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/transcript.js"></script>
+{% endblock %}

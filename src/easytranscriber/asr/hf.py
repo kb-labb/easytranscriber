@@ -2,11 +2,11 @@ import logging
 from pathlib import Path
 
 import torch
-from easyaligner.data.dataset import AudioFileDataset
 from easyaligner.utils import save_metadata_json
-from easytranscriber.data.collators import transcribe_collate_fn
 from tqdm import tqdm
 from transformers import WhisperForConditionalGeneration, WhisperProcessor
+
+from easytranscriber.data.collators import transcribe_collate_fn
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ def transcribe(
     language: str | None = None,
     task: str = "transcribe",
     batch_size: int = 4,
-    beam_size: int = 5,
+    beam_size: int = 3,
     length_penalty: float = 1.0,
     repetition_penalty: float = 1.0,
     max_length: int = 250,
@@ -43,7 +43,7 @@ def transcribe(
     batch_size : int, optional
         Batch size for inference.
     beam_size : int, optional
-        Number of beams for beam search. Default is 5.
+        Number of beams for beam search. Default is 3.
     length_penalty : float, optional
         Length penalty. Default is 1.0.
     repetition_penalty : float, optional
