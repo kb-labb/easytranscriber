@@ -15,7 +15,12 @@ resources:
   - ../_assets/taleoftwocities_01_dickens_64kb_trimmed.json
 ---
 
-`easytranscriber` is an automatic speech recognition (ASR) library that offers similar functionality to [`WhisperX`](https://github.com/m-bain/whisperX). While transcription is highly optimized in most ASR libraries, significant room for improvement remains in several stages of the inference pipeline. `easytranscriber` aims to squeeze as much performance as possible out of these components by implementing: 
+`easytranscriber` is an automatic speech recognition (ASR) library that offers similar
+functionality to [`WhisperX`](https://github.com/m-bain/whisperX) -- transcription with
+precise word-level timestamps. While the transcription step itself is well-optimized in
+most ASR libraries, the surrounding pipeline components (data loading, emission extraction,
+forced alignment) are often bottlenecks. `easytranscriber` addresses these by implementing:
+
 
 * GPU-accelerated forced alignment using Pytorch's forced alignment API ^[There's a tutorial in Pytorch's official [documentation](https://docs.pytorch.org/audio/main/tutorials/ctc_forced_alignment_api_tutorial.html). See also [Pratap et al., 2024](https://jmlr.org/papers/volume25/23-1318/23-1318.pdf#page=8)].
 * Parallel loading and pre-fetching of audio files, enabling efficient, non-blocking data loading and batching.
@@ -93,6 +98,12 @@ pipeline(
 
 You can specify any repo with a Whisper model on Hugging Face. `easytranscriber` will handle the download and conversion to `ct2`^[[Ctranslate2](https://github.com/OpenNMT/CTranslate2) provides C++ optimized inference for Whisper].
 
+::: {.callout-tip}
+A list of suitable emission models for different languages can be found in the [WhisperX library](https://github.com/m-bain/whisperX/blob/d8a078eed46b139f90d7f33b472119e9be9ff969/whisperx/alignment.py#L41-L77).
+
+Hugging Face `transformers` is also supported as a backend for transcription with `backend="hf"`. 
+:::
+
 ::: {.callout-note}
 The default VAD model is from `pyannote`. Their models are gated. To use them, you need to create a Hugging Face [access token](https://huggingface.co/docs/hub/en/security-tokens) and accept [terms and conditions](https://huggingface.co/pyannote/segmentation-3.0). Then, either i) save the access token at `~/.cache/huggingface/token` or ii) install and use the Hugging Face CLI and run `hf auth login`. See the [Hugging Face Hub quick start guide](https://huggingface.co/docs/huggingface_hub/en/quick-start#login-command) for more details. 
 
@@ -105,10 +116,10 @@ By default, `easytranscriber` outputs a JSON file for each stage of the pipeline
 
 ```
 output
-├── alignments
-├── emissions
-├── transcriptions
-└── vad
+├── vad                  ← SpeechSegments with AudioChunks
+├── transcriptions       ← + transcribed text per chunk
+├── emissions            ← + emission file paths (.npy)
+└── alignments           ← + AlignmentSegments with word timestamps
 ```
 
 #### Demo
@@ -133,6 +144,10 @@ You can click anywhere in the text to jump to that point (sentence) in the audio
 :::
 
 <script src="demo.js"></script>
+
+::: {.callout-tip}
+To browse and search your own transcriptions with the same synchronized playback, see [easysearch](search.qmd).
+:::
 
 #### Reading the output
 

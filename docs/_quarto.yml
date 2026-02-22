@@ -28,6 +28,7 @@ website:
         - get-started/overview.qmd
         - get-started/text-processing.qmd
         - get-started/pipelines.qmd
+        - get-started/search.qmd
         - benchmarks.qmd
   open-graph: 
     title: "easytranscriber: Speech recognition with accurate timestamps, made easy"
@@ -105,3 +106,8 @@ quartodoc:
         - WordSegment
         - AlignmentSegment
         - AudioChunk
+    - title: Utilities
+      desc: 
+        Utility functions for various tasks.
+      contents:
+        - utils.hf_to_ct2_converter
