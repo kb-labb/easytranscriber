@@ -359,6 +359,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../get-started/search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Search Interface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../benchmarks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Benchmarks</span></a>
   </div>
@@ -424,7 +430,7 @@ Note
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Whitespace is not always recoverable, depending on the regex patterns used</p></div></div><section id="normalization" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="normalization">Normalization</h2>
 <p>Let’s apply some basic normalization to our example from A Tale of Two Cities. To explore the effect of our normalizations, we will import the <a href="https://github.com/kb-labb/easyaligner/blob/fd9453903b17d9176be2fc6b6df5693cff00eaf8/src/easyaligner/text/normalization.py#L48"><code>SpanMapNormalizer</code></a> class from the <code>easyaligner</code> library, and remove punctuation.</p>
-<div id="13c87334" class="cell" data-execution_count="1">
+<div id="31a68c41" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.text.normalization <span class="im">import</span> SpanMapNormalizer</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"""Book 1. Chapter 1, The Period. It was the best of times. It was the worst of times. </span></span>
@@ -443,7 +449,7 @@ It was the season of darkness It was the spring of hope</code></pre>
 </div>
 </div>
 <p>Let’s make it all lowercase as well:</p>
-<div id="1c1f38da" class="cell" data-execution_count="2">
+<div id="f5df070f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>normalizer.transform(<span class="vs">r"</span><span class="dv">\S</span><span class="op">+</span><span class="vs">"</span>, <span class="kw">lambda</span> m: m.group().lower())  <span class="co">#</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalizer.current_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -454,7 +460,7 @@ it was the season of darkness it was the spring of hope</code></pre>
 </div>
 </div>
 <p>We may also want to convert the numbers to their word forms. The library <code>num2words</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> can help with this:</p>
-<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;<code>pip install num2words</code></p></div></div><div id="e62ef280" class="cell" data-execution_count="3">
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;<code>pip install num2words</code></p></div></div><div id="9d166c70" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> num2words <span class="im">import</span> num2words</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>normalizer.transform(<span class="vs">r"</span><span class="dv">\d</span><span class="op">+</span><span class="vs">"</span>, <span class="kw">lambda</span> m: num2words(<span class="bu">int</span>(m.group())))  <span class="co"># Convert numbers to words</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalizer.current_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -466,7 +472,7 @@ it was the season of darkness it was the spring of hope</code></pre>
 </div>
 </div>
 <p>When you’re feeling done, it’s a good idea to always apply whitespace normalization as the final transformation step:</p>
-<div id="f447a15a" class="cell" data-execution_count="4">
+<div id="68616371" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>normalizer.transform(<span class="vs">r"</span><span class="dv">\s</span><span class="op">+</span><span class="vs">"</span>, <span class="st">" "</span>)  <span class="co"># Normalize whitespace to a single space</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>normalizer.transform(<span class="vs">r"</span><span class="dv">^\s</span><span class="op">+</span><span class="cf">|</span><span class="dv">\s</span><span class="op">+</span><span class="dv">$</span><span class="vs">"</span>, <span class="st">""</span>)  <span class="co"># Strip leading and trailing whitespace</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(normalizer.current_text)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -475,12 +481,12 @@ it was the season of darkness it was the spring of hope</code></pre>
 </div>
 </div>
 <p>Our text is now ready for forced alignment. However, if we want to recover the original text, it does not suffice to pass only the normalized text to the forced alignment algorithm. We also need to pass a mapping between the original text and the normalized text. Any user supplied text normalization function in <code>easytranscriber</code> needs to return the following two objects:</p>
-<div id="94e8fa63" class="cell" data-execution_count="5">
+<div id="a8e15cf5" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mapping <span class="op">=</span> normalizer.get_token_map()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>normalized_tokens <span class="op">=</span> [item[<span class="st">"normalized_token"</span>] <span class="cf">for</span> item <span class="kw">in</span> mapping]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s inspect what’s in the first five items of the mapping:</p>
-<div id="e28dd013" class="cell" data-execution_count="6">
+<div id="c3dc0d30" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> mapping[:<span class="dv">5</span>]:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(item)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -491,12 +497,25 @@ it was the season of darkness it was the spring of hope</code></pre>
 {'normalized_token': 'the', 'text': 'The', 'start_char': 19, 'end_char': 22}</code></pre>
 </div>
 </div>
-<p>We can see that <code>text</code> contains the token in the original text.</p>
+<p>We can see that <code>normalized_token</code> and <code>text</code> contain the token in the normalized and original text, respectively, while <code>start_char</code> and <code>end_char</code> indicate the character indices of the token in the original text.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When you are done testing your transformations, combine them into a function that takes in a string and outputs the normalized tokens and the mapping. See below for an example of how the default normalization function in <code>easytranscriber</code> is implemented.</p>
+</div>
+</div>
 <section id="default-text_normalizer" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="default-text_normalizer">Default text_normalizer</h3>
 <p><code>easytranscriber</code> provides a conservative default text normalization function. This default function is applied<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> unless the user specificies their own function.</p>
 <div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;See <a href="../reference/pipeline.html#parameters">pipeline</a> and the arg <code>text_normalizer_fn</code></p></div></div><p>Here is the default normalization function, for reference:</p>
-<div id="4b1985fd" class="cell" data-execution_count="7">
+<div id="4fc2a195" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> text_normalizer(text: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Default text normalization function.</span></span>
@@ -556,22 +575,23 @@ Warning
 </section>
 <section id="sentence-tokenization" class="level2">
 <h2 class="anchored" data-anchor-id="sentence-tokenization">Sentence tokenization</h2>
+<p><code>easytranscriber</code> supports passing a tokenizer to the <code>pipeline</code> function that segments the input text according to the user’s preferences. The best matching <code>start</code> and <code>end</code> timestamps will be assigned to each tokenized segment based on the outputs from forced alignment.</p>
 <p>For sentence tokenization, we recommend using <code>nltk.tokenize.punkt.PunktTokenizer</code>. The <code>load_tokenizer</code> function from the <a href="https://kb-labb.github.io/easyaligner/"><code>easyaligner</code></a> library provides a convenient way to load an appropriate tokenizer for your language:</p>
-<div id="22b74236" class="cell" data-execution_count="8">
+<div id="2d512fc7" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.text <span class="im">import</span> load_tokenizer</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> load_tokenizer(language<span class="op">=</span><span class="st">"swedish"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>PunktTokenizer</code> maintains lists of abbreviations to avoid incorrectly splitting sentences. We can inspect the loaded tokenizer’s list of abbreviations as follows:</p>
-<div id="602a19d6" class="cell" data-execution_count="9">
+<div id="852536a6" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Current abbreviations:"</span>, tokenizer._params.abbrev_types)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Length of abbreviations: </span><span class="sc">{</span><span class="bu">len</span>(tokenizer._params.abbrev_types)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Current abbreviations: {'rif', 'föreläsn.-fören', 'kap', 'ordf', 'dir', 'prop', 'f.d', 'hrm', 't.ex', 'o.s.v', 's.k', 'z.b', 'ital', 'åk', 'm.m', 'postst', 'resp', 'aig', 'bf', 'f.m', 't.o.m', 'jaha', 'p.g.a', 'rskr', 'e.m', 'm.fl', 'hushålln.-sällsk', 'mm', 'dna', 'ex', 'f.n', 'p', 'o.d', 'mom', 'bl.a', 'ppm', 'osv', 'fig', 'landtm.-förb'}
+<pre><code>Current abbreviations: {'rif', 'kap', 'ital', 'dna', 'p.g.a', 'o.d', 'm.m', 'e.m', 'ppm', 'osv', 's.k', 'bf', 'jaha', 'f.m', 'hushålln.-sällsk', 'resp', 'z.b', 'föreläsn.-fören', 'ordf', 'landtm.-förb', 'o.s.v', 'åk', 'hrm', 'bl.a', 'p', 'f.d', 'ex', 'rskr', 't.o.m', 'fig', 'f.n', 'mom', 'prop', 'postst', 't.ex', 'mm', 'aig', 'm.fl', 'dir'}
 Length of abbreviations: 39</code></pre>
 </div>
 </div>
 <p>One may however want to add custom abbreviations to the tokenizer depending on the domain of one’s data:</p>
-<div id="0603aacd" class="cell" data-execution_count="10">
+<div id="be201b18" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>new_abbreviations <span class="op">=</span> {</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"d.v.s"</span>,</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"dvs"</span>,</span>
@@ -587,17 +607,17 @@ Length of abbreviations: 39</code></pre>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Updated abbreviations:"</span>, tokenizer._params.abbrev_types)</span>
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Length of abbreviations: </span><span class="sc">{</span><span class="bu">len</span>(tokenizer._params.abbrev_types)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Updated abbreviations: {'rif', 'föreläsn.-fören', 'kap', 'ordf', 'dir', 'prop', 'f.d', 'hrm', 't.ex', 'o.s.v', 's.k', 'kungl', 'z.b', 'ital', 'åk', 'm.m', 'postst', 'resp', 'aig', 'bf', 'fr.o.m', 'f.m', 't.o.m', 'jaha', 'p.g.a', 'rskr', 'milj.kr', 'e.m', 'm.fl', 'hushålln.-sällsk', 'mm', 'milj', 'dna', 'ex', 'dvs', 'f.n', 'p', 'o.d', 'mom', 'bl.a', 'ppm', 'osv', 'd.v.s', 'fig', 'landtm.-förb'}
+<pre><code>Updated abbreviations: {'rif', 'kap', 'ital', 'dna', 'p.g.a', 'o.d', 'm.m', 'e.m', 'ppm', 'osv', 's.k', 'bf', 'jaha', 'dvs', 'f.m', 'hushålln.-sällsk', 'fr.o.m', 'resp', 'z.b', 'milj', 'föreläsn.-fören', 'ordf', 'landtm.-förb', 'o.s.v', 'åk', 'hrm', 'bl.a', 'p', 'f.d', 'ex', 'rskr', 't.o.m', 'fig', 'f.n', 'mom', 'milj.kr', 'prop', 'd.v.s', 'postst', 't.ex', 'mm', 'aig', 'm.fl', 'kungl', 'dir'}
 Length of abbreviations: 45</code></pre>
 </div>
 </div>
-<p>This tokenizer can be passed to the <code>pipeline</code> function in <code>easytranscriber</code>. After forced alignment is performed, the best possible start and end timestamps will be assigned to each sentence.</p>
+<p>When you are done: pass the tokenizer to the <code>pipeline</code> function in <code>easytranscriber</code>.</p>
 </section>
 <section id="arbitrary-tokenization" class="level2">
 <h2 class="anchored" data-anchor-id="arbitrary-tokenization">Arbitrary tokenization</h2>
-<p>The <code>tokenizer</code> argument of the <code>pipeline</code> function accepts any function that takes in a string and outputs a list of <code>(start_char, end_char)</code> tuples, so you can define custom tokenization functions based on any arbitrary segmentation of the source text.</p>
-<p>In our case, however, the source text is Whisper’s ASR output. Since Whisper inference is restricted to 30-second audio chunks, paragraph-level tokenization is generally infeasible.</p>
-<p>A more in-depth guide on custom tokenization will be available in the <a href="https://kb-labb.github.io/easyaligner/"><code>easyaligner</code></a> documentation, with a focus on aligning ground truth texts with longer audio segments.</p>
+<p>The <code>tokenizer</code> argument of the <code>pipeline</code> function accepts any function that takes in a string and outputs a list of <code>(start_char, end_char)</code> tuples. Custom tokenization functions can therefore be defined based on any arbitrary segmentation of the source text.</p>
+<p>In our case, however, the source text is Whisper’s ASR output. Since Whisper inference is restricted to 30-second audio chunks, a coarser level of tokenization (e.g.&nbsp;paragraph-level) is generally infeasible.</p>
+<p>Arbitrary tokenization is more relevant when aligning existing ground truth texts with longer audio segments. <code>easytranscriber</code> is built on top of <a href="https://kb-labb.github.io/easyaligner/"><code>easyaligner</code></a>, which is designed for this purpose. A more in-depth guide on custom tokenization will be available in the <a href="https://kb-labb.github.io/easyaligner/"><code>easyaligner</code></a> documentation.</p>
 
 
 </section>

@@ -419,6 +419,23 @@ ul.task-list li input[type="checkbox"] {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Utilities</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/utils.hf_to_ct2_converter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">utils.hf_to_ct2_converter</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -507,7 +524,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td><a href="../reference/SpeechSegment.html#easytranscriber.data.datamodel.SpeechSegment">SpeechSegment</a></td>
-<td>A slice of the audio that contains speech of interest to be aligned.</td>
+<td>A slice of the audio file that contains speech of interest to be aligned.</td>
 </tr>
 <tr class="odd">
 <td><a href="../reference/WordSegment.html#easytranscriber.data.datamodel.WordSegment">WordSegment</a></td>
@@ -519,7 +536,19 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><a href="../reference/AudioChunk.html#easytranscriber.data.datamodel.AudioChunk">AudioChunk</a></td>
-<td>Segment of audio, usually created by VAD.</td>
+<td>Segment of audio, usually created by Voice Activity Detection (VAD).</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="utilities" class="level2">
+<h2 class="anchored" data-anchor-id="utilities">Utilities</h2>
+<p>Utility functions for various tasks.</p>
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td><a href="../reference/utils.hf_to_ct2_converter.html#easytranscriber.utils.hf_to_ct2_converter">utils.hf_to_ct2_converter</a></td>
+<td>Convert a Hugging Face Transformers model to CTranslate2 format.</td>
 </tr>
 </tbody>
 </table>

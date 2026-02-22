@@ -455,6 +455,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Utilities</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/utils.hf_to_ct2_converter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">utils.hf_to_ct2_converter</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -471,7 +488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="easytranscriber.data.datamodel.SpeechSegment" class="level1">
 <h1>SpeechSegment</h1>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data.datamodel.SpeechSegment()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>A slice of the audio that contains speech of interest to be aligned.</p>
+<p>A slice of the audio file that contains speech of interest to be aligned.</p>
 <p>A <code>SpeechSegment</code> may be a speech given by a single speaker, a dialogue between multiple speakers, a book chapter, or whatever unit of organisational abstraction the user prefers.</p>
 <p>If no SpeechSegment is defined, one will automatically be added, treating the entire audio as a single speech.</p>
 <section id="attributes" class="level2 doc-section doc-section-attributes">

@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,7 +65,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../benchmarks.html" rel="next">
+<link href="../get-started/search.html" rel="next">
 <link href="../get-started/text-processing.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -82,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
 <meta property="og:site_name" content="easytranscriber">
 </head>
 
-<body class="nav-sidebar floating nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating nav-fixed slimcontent quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -324,6 +359,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../get-started/search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Search Interface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../benchmarks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Benchmarks</span></a>
   </div>
@@ -338,12 +379,22 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#transcription-with-decomposed-pipelines" id="toc-transcription-with-decomposed-pipelines" class="nav-link active" data-scroll-target="#transcription-with-decomposed-pipelines">Transcription with decomposed pipelines</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#vad" id="toc-vad" class="nav-link" data-scroll-target="#vad">Step 1: Voice Activity Detection (VAD)</a></li>
+  <li><a href="#transcription" id="toc-transcription" class="nav-link" data-scroll-target="#transcription">Step 2: Transcription</a>
+  <ul class="collapse">
+  <li><a href="#ctranslate2-backend" id="toc-ctranslate2-backend" class="nav-link" data-scroll-target="#ctranslate2-backend">CTranslate2 backend</a></li>
+  <li><a href="#hugging-face-backend" id="toc-hugging-face-backend" class="nav-link" data-scroll-target="#hugging-face-backend">Hugging Face backend</a></li>
+  <li><a href="#data-loading" id="toc-data-loading" class="nav-link" data-scroll-target="#data-loading">Data loading</a></li>
+  </ul></li>
+  <li><a href="#emissions" id="toc-emissions" class="nav-link" data-scroll-target="#emissions">Step 3: Emission extraction</a></li>
+  <li><a href="#alignment" id="toc-alignment" class="nav-link" data-scroll-target="#alignment">Step 4: Forced alignment</a></li>
+  <li><a href="#output" id="toc-output" class="nav-link" data-scroll-target="#output">Output</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -365,12 +416,271 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="transcription-with-decomposed-pipelines" class="level2">
-<h2 class="anchored" data-anchor-id="transcription-with-decomposed-pipelines">Transcription with decomposed pipelines</h2>
-<p>Docs work in progress.</p>
+<p>The <a href="../get-started/overview.html">overview</a> guide shows how to run the full transcription pipeline with a single <code>pipeline()</code> call. Under the hood, this runs four stages in sequence: VAD, transcription, emission extraction, and forced alignment.</p>
+<p>For more control – e.g.&nbsp;tuning parameters per stage, parallelizing on different hardware, or resuming from intermediate outputs – you can run each stage independently. This page walks through each step.</p>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>We’ll use a longer version of the <em>A Tale of Two Cities</em> dataset (8 chapters) from the same <a href="https://huggingface.co/datasets/Lauler/easytranscriber_tutorials">tutorial repository</a> used in the <a href="../get-started/overview.html">overview</a>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> huggingface_hub <span class="im">import</span> snapshot_download</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>snapshot_download(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Lauler/easytranscriber_tutorials"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    repo_type<span class="op">=</span><span class="st">"dataset"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    local_dir<span class="op">=</span><span class="st">"data/tutorials"</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    allow_patterns<span class="op">=</span><span class="st">"tale-of-two-cities_long-en/*"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    max_workers<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>AUDIO_DIR <span class="op">=</span> <span class="st">"data/tutorials/tale-of-two-cities_long-en"</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>audio_files <span class="op">=</span> [<span class="bu">file</span>.name <span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> Path(AUDIO_DIR).glob(<span class="st">"*"</span>)]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>json_paths <span class="op">=</span> [Path(p).with_suffix(<span class="st">".json"</span>) <span class="cf">for</span> p <span class="kw">in</span> audio_files]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="vad" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="vad">Step 1: Voice Activity Detection (VAD)</h2>
+<p>VAD segments each audio file into regions containing speech. The output is a set of JSON files containing <code>AudioMetadata</code> with <code>SpeechSegment</code> objects, each of which holds a list of <code>AudioChunk</code> objects<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;See the <a href="../get-started/overview.html#schema">output schema</a> for details on the data structure.</p></div></div><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.pipelines <span class="im">import</span> vad_pipeline</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.vad.pyannote <span class="im">import</span> load_vad_model</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>model_vad <span class="op">=</span> load_vad_model()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>vad_pipeline(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>model_vad,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    audio_paths<span class="op">=</span>audio_files,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    audio_dir<span class="op">=</span>AUDIO_DIR,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    chunk_size<span class="op">=</span><span class="dv">30</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    sample_rate<span class="op">=</span><span class="dv">16000</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    num_workers<span class="op">=</span><span class="dv">1</span>, <span class="co"># No need for too many workers</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    prefetch_factor<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    save_json<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"output/vad"</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>chunk_size</code> parameter controls the maximum duration (in seconds) of each VAD chunk, when smaller chunks are merged<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;See <code>merge_chunks</code> in <a href="https://github.com/kb-labb/easyaligner/blob/fd9453903b17d9176be2fc6b6df5693cff00eaf8/src/easyaligner/vad/silero.py#L28-L63">silero</a> and <a href="https://github.com/kb-labb/easyaligner/blob/fd9453903b17d9176be2fc6b6df5693cff00eaf8/src/easyaligner/vad/pyannote.py#L333-L401">pyannote</a> VAD implementations</p></div></div><div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The default VAD model is from <code>pyannote</code> and is gated. You need to accept <a href="https://huggingface.co/pyannote/segmentation-3.0">terms and conditions</a> and authenticate with Hugging Face. Alternatively, use <code>silero</code> VAD (CPU-only, no authentication required):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.vad.silero <span class="im">import</span> load_vad_model</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>model_vad <span class="op">=</span> load_vad_model()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>See the <a href="https://kb-labb.github.io/easyaligner/reference/vad_pipeline.html#easyaligner.pipelines.vad_pipeline"><code>vad_pipeline</code></a> reference for all parameters.</p>
+</section>
+<section id="transcription" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="transcription">Step 2: Transcription</h2>
+<p>Transcription runs a Whisper model over each VAD chunk to produce text. <code>easytranscriber</code> supports two backends:</p>
+<ul>
+<li><strong><code>ctranslate2</code></strong> — C++ optimized inference for Whisper. Recommended for production use.</li>
+<li><strong><code>transformers</code></strong> — Hugging Face’s native implementation.</li>
+</ul>
+<section id="ctranslate2-backend" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="ctranslate2-backend">CTranslate2 backend</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ctranslate2</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> WhisperProcessor</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.data.collators <span class="im">import</span> audiofile_collate_fn</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.data.dataset <span class="im">import</span> JSONMetadataDataset</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easytranscriber.asr.ct2 <span class="im">import</span> transcribe</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easytranscriber.data <span class="im">import</span> StreamingAudioFileDataset</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>processor <span class="op">=</span> WhisperProcessor.from_pretrained(</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"distil-whisper/distil-large-v3.5"</span>, cache_dir<span class="op">=</span><span class="st">"models"</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ctranslate2.models.Whisper(<span class="st">"models/ct2/distil-large-v3.5"</span>, device<span class="op">=</span><span class="st">"cuda"</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>json_dataset <span class="op">=</span> JSONMetadataDataset(</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    json_paths<span class="op">=</span>[<span class="bu">str</span>(Path(<span class="st">"output/vad"</span>) <span class="op">/</span> p) <span class="cf">for</span> p <span class="kw">in</span> json_paths]</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>file_dataset <span class="op">=</span> StreamingAudioFileDataset(</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    metadata<span class="op">=</span>json_dataset,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    processor<span class="op">=</span>processor,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    audio_dir<span class="op">=</span>AUDIO_DIR,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    sample_rate<span class="op">=</span><span class="dv">16000</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    chunk_size<span class="op">=</span><span class="dv">30</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    alignment_strategy<span class="op">=</span><span class="st">"chunk"</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>file_dataloader <span class="op">=</span> torch.utils.data.DataLoader(</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    file_dataset,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    shuffle<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    collate_fn<span class="op">=</span>audiofile_collate_fn,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    num_workers<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    prefetch_factor<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>transcribe(</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>model,</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    processor<span class="op">=</span>processor,</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    file_dataloader<span class="op">=</span>file_dataloader,</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">16</span>,</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"output/transcriptions"</span>,</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    language<span class="op">=</span><span class="st">"en"</span>,</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    task<span class="op">=</span><span class="st">"transcribe"</span>,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    beam_size<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>easytranscriber</code> handles automatic conversion from Hugging Face format to CTranslate2 format when using the unified <code>pipeline()</code> function. When running the decomposed pipeline, you however need to either, i) convert the model yourself with <a href="../reference/utils.hf_to_ct2_converter.html"><code>hf_to_ct2_converter</code></a>, or ii) download a pre-converted model, or iii) run <code>pipeline()</code> once so it handles the conversion for you.</p>
+</div>
+</div>
+</div></div></section>
+<section id="hugging-face-backend" class="level3">
+<h3 class="anchored" data-anchor-id="hugging-face-backend">Hugging Face backend</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> WhisperForConditionalGeneration, WhisperProcessor</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easytranscriber.asr.hf <span class="im">import</span> transcribe</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>processor <span class="op">=</span> WhisperProcessor.from_pretrained(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"distil-whisper/distil-large-v3.5"</span>, cache_dir<span class="op">=</span><span class="st">"models"</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> WhisperForConditionalGeneration.from_pretrained(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"distil-whisper/distil-large-v3.5"</span>, cache_dir<span class="op">=</span><span class="st">"models"</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>).to(<span class="st">"cuda"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ... create file_dataloader as above ...</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>transcribe(</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>model,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    processor<span class="op">=</span>processor,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    file_dataloader<span class="op">=</span>file_dataloader,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    num_workers<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    prefetch_factor<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"output/transcriptions"</span>,</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    language<span class="op">=</span><span class="st">"en"</span>,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    beam_size<span class="op">=</span><span class="dv">1</span>,  <span class="co"># beam search is slow in HF transformers</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    device<span class="op">=</span><span class="st">"cuda"</span>,</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>See the <a href="../reference/asr.ct2.transcribe.html"><code>transcribe</code></a> (ct2) and <a href="../reference/asr.hf.transcribe.html"><code>transcribe</code></a> (hf) reference for all parameters.</p>
+</section>
+<section id="data-loading" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="data-loading">Data loading</h3>
+<p>Both backends require a <code>DataLoader</code> that yields batches of audio chunks. <code>easytranscriber</code> provides <code>StreamingAudioFileDataset</code>, which reads audio chunks on demand via <code>ffmpeg</code> rather than loading entire files into memory. This is the recommended approach for trancribing with predictable memory usage<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;Under the hood, each chunk is decoded by an <code>ffmpeg</code> subprocess. The overhead is negligible or non-existent in most use cases, since GPU inference, not data loading, acts as the primary bottleneck</p></div></div><p>Alternatively, <code>easyaligner</code> provides <a href="https://github.com/kb-labb/easyaligner/blob/fd9453903b17d9176be2fc6b6df5693cff00eaf8/src/easyaligner/data/dataset.py#L168-L352"><code>AudioFileDataset</code></a>, which loads the full audio file into memory before chunking. This can potentially be slightly faster for some datasets, but uses more memory.</p>
+</section>
+</section>
+<section id="emissions" class="level2">
+<h2 class="anchored" data-anchor-id="emissions">Step 3: Emission extraction</h2>
+<p>Emission extraction runs a wav2vec2 model over the audio to produce frame-level CTC logits. These emissions are then used for forced alignment in the next step.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoModelForCTC, Wav2Vec2Processor</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.data.dataset <span class="im">import</span> JSONMetadataDataset</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.pipelines <span class="im">import</span> emissions_pipeline</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>model_w2v <span class="op">=</span> AutoModelForCTC.from_pretrained(</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"facebook/wav2vec2-base-960h"</span>, cache_dir<span class="op">=</span><span class="st">"models"</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>).to(<span class="st">"cuda"</span>).half()</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>processor_w2v <span class="op">=</span> Wav2Vec2Processor.from_pretrained(</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"facebook/wav2vec2-base-960h"</span>, cache_dir<span class="op">=</span><span class="st">"models"</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>json_dataset <span class="op">=</span> JSONMetadataDataset(</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    json_paths<span class="op">=</span>[<span class="bu">str</span>(Path(<span class="st">"output/transcriptions"</span>) <span class="op">/</span> p) <span class="cf">for</span> p <span class="kw">in</span> json_paths]</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>emissions_pipeline(</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>model_w2v,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    processor<span class="op">=</span>processor_w2v,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    metadata<span class="op">=</span>json_dataset,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    audio_dir<span class="op">=</span>AUDIO_DIR,</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    sample_rate<span class="op">=</span><span class="dv">16000</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    chunk_size<span class="op">=</span><span class="dv">30</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    alignment_strategy<span class="op">=</span><span class="st">"chunk"</span>,</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    batch_size_files<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    num_workers_files<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    prefetch_factor_files<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    batch_size_features<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    num_workers_features<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    save_json<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    save_emissions<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"output/emissions"</span>,</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A list of suitable wav2vec2 emission models for different languages can be found in the <a href="https://github.com/m-bain/whisperX/blob/d8a078eed46b139f90d7f33b472119e9be9ff969/whisperx/alignment.py#L41-L77">WhisperX library</a>.</p>
+</div>
+</div>
+<p>See the <a href="https://kb-labb.github.io/easyaligner/reference/emissions_pipeline.html#easyaligner.pipelines.emissions_pipeline"><code>emissions_pipeline</code></a> reference for all parameters.</p>
+</section>
+<section id="alignment" class="level2">
+<h2 class="anchored" data-anchor-id="alignment">Step 4: Forced alignment</h2>
+<p>Forced alignment matches the transcribed text to the audio at word level using the CTC emissions from the previous step. This is where word-level and sentence-level timestamps are produced.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.data.collators <span class="im">import</span> metadata_collate_fn</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.data.dataset <span class="im">import</span> JSONMetadataDataset</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.pipelines <span class="im">import</span> alignment_pipeline</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easytranscriber.text.normalization <span class="im">import</span> text_normalizer</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>json_dataset <span class="op">=</span> JSONMetadataDataset(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    json_paths<span class="op">=</span>[<span class="bu">str</span>(Path(<span class="st">"output/emissions"</span>) <span class="op">/</span> p) <span class="cf">for</span> p <span class="kw">in</span> json_paths]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>audiometa_loader <span class="op">=</span> torch.utils.data.DataLoader(</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    json_dataset,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    num_workers<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    prefetch_factor<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    collate_fn<span class="op">=</span>metadata_collate_fn,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>alignment_pipeline(</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    dataloader<span class="op">=</span>audiometa_loader,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    text_normalizer_fn<span class="op">=</span>text_normalizer,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    processor<span class="op">=</span>processor_w2v,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    tokenizer<span class="op">=</span><span class="va">None</span>,  <span class="co"># or pass an nltk PunktTokenizer for sentence segmentation</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    emissions_dir<span class="op">=</span><span class="st">"output/emissions"</span>,</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"output/alignments"</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    alignment_strategy<span class="op">=</span><span class="st">"chunk"</span>,</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    start_wildcard<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    end_wildcard<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    blank_id<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    word_boundary<span class="op">=</span><span class="st">"|"</span>,</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    chunk_size<span class="op">=</span><span class="dv">30</span>,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    ndigits<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    save_json<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    device<span class="op">=</span><span class="st">"cuda"</span>,</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>text_normalizer_fn</code> preprocesses ASR output before alignment (lowercasing, removing punctuation, etc.). See <a href="../get-started/text-processing.html">text processing</a> for details on writing custom normalization functions.</p>
+<p>The <code>tokenizer</code> parameter controls how the aligned text is segmented. Passing an <code>nltk</code> <code>PunktTokenizer</code> produces sentence-level alignment segments. See <a href="../get-started/text-processing.html#sentence-tokenization">sentence tokenization</a> for details.</p>
+<p>See the <a href="https://kb-labb.github.io/easyaligner/reference/alignment_pipeline.html#easyaligner.pipelines.alignment_pipeline"><code>alignment_pipeline</code></a> reference for all parameters.</p>
+</section>
+<section id="output" class="level2">
+<h2 class="anchored" data-anchor-id="output">Output</h2>
+<p>Each step writes JSON files to its output directory. The final aligned output in <code>output/alignments</code> contains the complete data structure with word-level timestamps. See the <a href="../get-started/overview.html#schema">output schema</a> in the overview for the full structure.</p>
+<pre><code>output
+├── vad                  ← SpeechSegments with AudioChunks
+├── transcriptions       ← + transcribed text per chunk
+├── emissions            ← + emission file paths (.npy)
+└── alignments           ← + AlignmentSegments with word timestamps</code></pre>
+<p>Since each step reads JSON from the previous step’s output directory, you can resume the pipeline from any intermediate stage. For example, if you want to re-run alignment with different parameters, you can skip VAD, transcription, and emission extraction entirely.</p>
 
 
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -793,8 +1103,8 @@ ul.task-list li input[type="checkbox"] {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../benchmarks.html" class="pagination-link" aria-label="Benchmarks">
-        <span class="nav-page-text">Benchmarks</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../get-started/search.html" class="pagination-link" aria-label="Search Interface">
+        <span class="nav-page-text">Search Interface</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

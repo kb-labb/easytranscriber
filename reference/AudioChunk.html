@@ -65,6 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../reference/utils.hf_to_ct2_converter.html" rel="next">
 <link href="../reference/AlignmentSegment.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -454,6 +455,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Utilities</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/utils.hf_to_ct2_converter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">utils.hf_to_ct2_converter</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -470,14 +488,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="easytranscriber.data.datamodel.AudioChunk" class="level1">
 <h1>AudioChunk</h1>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data.datamodel.AudioChunk()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Segment of audio, usually created by VAD.</p>
+<p>Segment of audio, usually created by Voice Activity Detection (VAD).</p>
 <section id="attributes" class="level2 doc-section doc-section-attributes">
 <h2 class="doc-section doc-section-attributes anchored" data-anchor-id="attributes">Attributes</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 18%">
-<col style="width: 22%">
-<col style="width: 57%">
+<col style="width: 17%">
+<col style="width: 26%">
+<col style="width: 54%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -526,6 +544,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>language_prob</td>
 <td>(float, optional)</td>
 <td>Probability/confidence of the detected language.</td>
+</tr>
+<tr class="odd">
+<td>id</td>
+<td>(str or int, optional)</td>
+<td>Optional unique identifier for the chunk.</td>
 </tr>
 </tbody>
 </table>
@@ -955,6 +978,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../reference/utils.hf_to_ct2_converter.html" class="pagination-link" aria-label="utils.hf_to_ct2_converter">
+        <span class="nav-page-text">utils.hf_to_ct2_converter</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
