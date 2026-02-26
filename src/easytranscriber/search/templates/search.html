@@ -12,10 +12,10 @@
         <button class="tips-toggle" type="button" aria-label="Search tips" title="Search tips">?</button>
         <div class="tips-popover">
             <p>
-                Search is performed at the <strong>alignment segment</strong> level. If you
-                used a sentence tokenizer, this corresponds to individual sentences.
-                A query matches when all search terms appear within the same segment.
-                Words spanning adjacent segments won't match as a combined query.
+                Search is performed at the <strong>chunk</strong> level. Each chunk
+                is a continuous speech region (~20–30 seconds) that may span
+                multiple sentences. A query matches when all search terms appear
+                within the same chunk.
             </p>
             <table class="tips-table">
                 <thead>
@@ -24,7 +24,7 @@
                 <tbody>
                     <tr>
                         <td><code>climate change</code></td>
-                        <td>Segments containing both words (implicit AND)</td>
+                        <td>Chunks containing both words (implicit AND)</td>
                     </tr>
                     <tr>
                         <td><code>"climate change"</code></td>

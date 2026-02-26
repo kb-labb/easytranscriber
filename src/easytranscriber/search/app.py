@@ -12,7 +12,7 @@ from easytranscriber.search.db import (
     get_all_documents,
     get_document,
     get_document_alignments,
-    search_alignments,
+    search_chunks,
 )
 
 SEARCH_DIR = Path(__file__).parent
@@ -60,7 +60,7 @@ def create_app(
     ):
         if q.strip():
             try:
-                results, total = search_alignments(
+                results, total = search_chunks(
                     db_conn, q.strip(), page, per_page, snippets_per_doc
                 )
             except Exception:

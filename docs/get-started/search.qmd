@@ -46,14 +46,15 @@ Some browsers block autoplay by default. If audio doesn't start automatically wh
 
 ## How indexing works
 
-`easysearch` indexes transcriptions at the **alignment segment** level. Each alignment segment in the JSON output becomes a searchable row in the database. If you used a sentence tokenizer during transcription, each segment corresponds to a single sentence.
+`easysearch` indexes transcriptions at the **chunk** level. Each chunk is a continuous speech region (~20--30 seconds) produced by voice activity detection, and may span multiple sentences. Each chunk becomes a searchable row in the database.
 
 This means:
 
-- A search query matches when **all terms appear within the same segment**.
-- Words that span across adjacent segments won't match as a combined query.
+- A search query matches when **all terms appear within the same chunk**.
+- Words that span across adjacent chunks won't match as a combined query.
+- Because chunks are larger than individual sentences, cross-sentence queries within the same chunk will match.
 
-For example, if one segment contains *"It was the best of times."* and the next contains *"It was the worst of times."*, the query `best worst` will **not** match either segment, because no single segment contains both words. Searching for `best times` will match the first segment.
+The document page still displays the transcript at the **alignment segment** (sentence) level, so you can click any sentence to jump to that point in the audio.
 
 ## Search syntax
 
@@ -61,7 +62,7 @@ The search uses SQLite's [FTS5](https://www.sqlite.org/fts5.html) full-text sear
 
 | Query | Matches |
 |-------|---------|
-| `climate change` | Segments containing both words (implicit AND) |
+| `climate change` | Chunks containing both words (implicit AND) |
 | `"climate change"` | Exact phrase |
 | `climate OR weather` | Either word |
 | `climate NOT weather` | *climate* but not *weather* |

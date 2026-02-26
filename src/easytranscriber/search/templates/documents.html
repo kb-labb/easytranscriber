@@ -19,7 +19,7 @@
                 <span class="result-duration">{{ doc.duration | duration }}</span>
             </div>
             <div class="result-info">
-                {{ doc.num_alignments }} segment{{ "s" if doc.num_alignments != 1 else "" }}
+                {{ doc.num_chunks }} chunk{{ "s" if doc.num_chunks != 1 else "" }}
             </div>
         </div>
     {% endfor %}

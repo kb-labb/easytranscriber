@@ -19,6 +19,7 @@
     --accent-hover: #1d4ed8;
     --accent-light: rgba(37, 99, 235, 0.08);
     --accent-medium: rgba(37, 99, 235, 0.25);
+    --search-match: rgba(217, 170, 60, 0.22);
     --green: #16a34a;
     --radius: 8px;
     --radius-lg: 12px;
@@ -36,6 +37,7 @@
         --accent-hover: #7dcbff;
         --accent-light: rgba(94, 187, 247, 0.1);
         --accent-medium: rgba(94, 187, 247, 0.3);
+        --search-match: rgba(234, 190, 60, 0.18);
         --green: #7ee8a2;
     }
 }
@@ -479,7 +481,7 @@ a:hover {
 }
 
 .transcript-container .search-match {
-    background: var(--accent-medium);
+    background: var(--search-match);
     border-radius: 2px;
     padding: 0 1px;
 }

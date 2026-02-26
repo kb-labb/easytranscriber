@@ -65,13 +65,18 @@
   function buildTranscript(data) {
     if (!data.speeches) return;
 
-    // Build regex for search term highlighting
-    const searchRe = searchQuery
-      ? new RegExp(
-          `(${searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
-          "gi"
-        )
-      : null;
+    // Build regex for search term highlighting — split on whitespace
+    // so each word is highlighted independently across word spans
+    let searchRe = null;
+    if (searchQuery) {
+      const terms = searchQuery
+        .split(/\s+/)
+        .filter((t) => t && !/^(AND|OR|NOT|NEAR)$/i.test(t))
+        .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+      if (terms.length) {
+        searchRe = new RegExp(`(${terms.join("|")})`, "gi");
+      }
+    }
 
     data.speeches.forEach((speech) => {
       let para = document.createElement("p");

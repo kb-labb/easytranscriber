@@ -30,15 +30,15 @@ def index_file(conn: sqlite3.Connection, json_path: Path) -> bool:
     metadata = msgspec.json.decode(raw, type=AudioMetadata)
 
     num_speeches = len(metadata.speeches) if metadata.speeches else 0
-    num_alignments = 0
+    num_chunks = 0
     if metadata.speeches:
         for speech in metadata.speeches:
-            num_alignments += len(speech.alignments)
+            num_chunks += len(speech.chunks)
 
     # Insert document
     cur = conn.execute(
         """INSERT INTO documents (audio_path, json_path, duration, sample_rate,
-                                  num_speeches, num_alignments, mtime)
+                                  num_speeches, num_chunks, mtime)
            VALUES (?, ?, ?, ?, ?, ?, ?)""",
         (
             metadata.audio_path,
@@ -46,33 +46,34 @@ def index_file(conn: sqlite3.Connection, json_path: Path) -> bool:
             metadata.duration,
             metadata.sample_rate,
             num_speeches,
-            num_alignments,
+            num_chunks,
             mtime,
         ),
     )
     doc_id = cur.lastrowid
 
-    # Insert alignments
+    # Insert chunks
     if metadata.speeches:
         rows = []
         for speech_idx, speech in enumerate(metadata.speeches):
-            for align_idx, alignment in enumerate(speech.alignments):
+            for chunk_idx, chunk in enumerate(speech.chunks):
+                if not chunk.text:
+                    continue
                 rows.append(
                     (
                         doc_id,
                         speech_idx,
-                        align_idx,
-                        alignment.text,
-                        alignment.start,
-                        alignment.end,
-                        alignment.duration,
-                        alignment.score,
+                        chunk_idx,
+                        chunk.text,
+                        chunk.start,
+                        chunk.end,
+                        chunk.duration,
                     )
                 )
         conn.executemany(
-            """INSERT INTO alignments
-               (document_id, speech_idx, alignment_idx, text, start_time, end_time, duration, score)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            """INSERT INTO chunks
+               (document_id, speech_idx, chunk_idx, text, start_time, end_time, duration)
+               VALUES (?, ?, ?, ?, ?, ?, ?)""",
             rows,
         )
 
@@ -88,10 +89,10 @@ def index_directory(
     Returns (indexed_count, skipped_count).
     """
     if force:
-        conn.execute("DELETE FROM alignments")
+        conn.execute("DELETE FROM chunks")
         conn.execute("DELETE FROM documents")
         # Rebuild FTS index
-        conn.execute("INSERT INTO alignments_fts(alignments_fts) VALUES('rebuild')")
+        conn.execute("INSERT INTO chunks_fts(chunks_fts) VALUES('rebuild')")
         conn.commit()
 
     json_files = sorted(alignments_dir.glob("*.json"))

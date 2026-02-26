@@ -9,43 +9,42 @@ CREATE TABLE IF NOT EXISTS documents (
     duration        REAL NOT NULL,
     sample_rate     INTEGER NOT NULL,
     num_speeches    INTEGER NOT NULL,
-    num_alignments  INTEGER NOT NULL,
+    num_chunks      INTEGER NOT NULL,
     mtime           REAL NOT NULL,
     indexed_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
-CREATE TABLE IF NOT EXISTS alignments (
+CREATE TABLE IF NOT EXISTS chunks (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     document_id     INTEGER NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
     speech_idx      INTEGER NOT NULL,
-    alignment_idx   INTEGER NOT NULL,
+    chunk_idx       INTEGER NOT NULL,
     text            TEXT NOT NULL,
     start_time      REAL NOT NULL,
     end_time        REAL NOT NULL,
-    duration        REAL,
-    score           REAL
+    duration        REAL
 );
 
-CREATE VIRTUAL TABLE IF NOT EXISTS alignments_fts USING fts5(
+CREATE VIRTUAL TABLE IF NOT EXISTS chunks_fts USING fts5(
     text,
-    content='alignments',
+    content='chunks',
     content_rowid='id',
     tokenize='unicode61 remove_diacritics 0'
 );
 
-CREATE TRIGGER IF NOT EXISTS alignments_ai AFTER INSERT ON alignments BEGIN
-    INSERT INTO alignments_fts(rowid, text) VALUES (new.id, new.text);
+CREATE TRIGGER IF NOT EXISTS chunks_ai AFTER INSERT ON chunks BEGIN
+    INSERT INTO chunks_fts(rowid, text) VALUES (new.id, new.text);
 END;
 
-CREATE TRIGGER IF NOT EXISTS alignments_ad AFTER DELETE ON alignments BEGIN
-    INSERT INTO alignments_fts(alignments_fts, rowid, text)
+CREATE TRIGGER IF NOT EXISTS chunks_ad AFTER DELETE ON chunks BEGIN
+    INSERT INTO chunks_fts(chunks_fts, rowid, text)
         VALUES('delete', old.id, old.text);
 END;
 
-CREATE TRIGGER IF NOT EXISTS alignments_au AFTER UPDATE ON alignments BEGIN
-    INSERT INTO alignments_fts(alignments_fts, rowid, text)
+CREATE TRIGGER IF NOT EXISTS chunks_au AFTER UPDATE ON chunks BEGIN
+    INSERT INTO chunks_fts(chunks_fts, rowid, text)
         VALUES('delete', old.id, old.text);
-    INSERT INTO alignments_fts(rowid, text) VALUES (new.id, new.text);
+    INSERT INTO chunks_fts(rowid, text) VALUES (new.id, new.text);
 END;
 """
 
@@ -65,32 +64,32 @@ def init_db(db_path: Path) -> sqlite3.Connection:
     return conn
 
 
-def search_alignments(
+def search_chunks(
     conn: sqlite3.Connection,
     query: str,
     page: int = 1,
     per_page: int = 20,
     snippets_per_doc: int = 5,
 ):
-    """Search alignments using FTS5, returning results grouped by document."""
+    """Search chunks using FTS5, returning results grouped by document."""
     offset = (page - 1) * per_page
 
     # Count total matching documents
     count_sql = """
-        SELECT COUNT(DISTINCT a.document_id)
-        FROM alignments_fts fts
-        JOIN alignments a ON a.id = fts.rowid
-        WHERE alignments_fts MATCH ?
+        SELECT COUNT(DISTINCT c.document_id)
+        FROM chunks_fts fts
+        JOIN chunks c ON c.id = fts.rowid
+        WHERE chunks_fts MATCH ?
     """
     total_docs = conn.execute(count_sql, (query,)).fetchone()[0]
 
     # Get matching document IDs (paginated)
     doc_ids_sql = """
-        SELECT a.document_id, MIN(rank) as best_rank
-        FROM alignments_fts fts
-        JOIN alignments a ON a.id = fts.rowid
-        WHERE alignments_fts MATCH ?
-        GROUP BY a.document_id
+        SELECT c.document_id, MIN(rank) as best_rank
+        FROM chunks_fts fts
+        JOIN chunks c ON c.id = fts.rowid
+        WHERE chunks_fts MATCH ?
+        GROUP BY c.document_id
         ORDER BY best_rank
         LIMIT ? OFFSET ?
     """
@@ -110,12 +109,11 @@ def search_alignments(
     for doc_id in doc_ids:
         doc = docs[doc_id]
         snippets_sql = """
-            SELECT a.id, a.speech_idx, a.alignment_idx, a.start_time, a.end_time,
-                   a.score,
-                   snippet(alignments_fts, 0, '<mark>', '</mark>', '...', 48) as snippet_text
-            FROM alignments_fts fts
-            JOIN alignments a ON a.id = fts.rowid
-            WHERE alignments_fts MATCH ? AND a.document_id = ?
+            SELECT c.id, c.speech_idx, c.chunk_idx, c.start_time, c.end_time,
+                   snippet(chunks_fts, 0, '<mark>', '</mark>', '...', 48) as snippet_text
+            FROM chunks_fts fts
+            JOIN chunks c ON c.id = fts.rowid
+            WHERE chunks_fts MATCH ? AND c.document_id = ?
             ORDER BY rank
             LIMIT ?
         """

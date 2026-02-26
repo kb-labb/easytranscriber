@@ -19,7 +19,7 @@ resources:
 functionality to [`WhisperX`](https://github.com/m-bain/whisperX) -- transcription with
 precise word-level timestamps. While the transcription step itself is well-optimized in
 most ASR libraries, the surrounding pipeline components (data loading, emission extraction,
-forced alignment) are often bottlenecks. `easytranscriber` addresses these by implementing:
+forced alignment) are often bottlenecks. `easytranscriber` addresses these inefficiencies by implementing:
 
 
 * GPU-accelerated forced alignment using Pytorch's forced alignment API ^[There's a tutorial in Pytorch's official [documentation](https://docs.pytorch.org/audio/main/tutorials/ctc_forced_alignment_api_tutorial.html). See also [Pratap et al., 2024](https://jmlr.org/papers/volume25/23-1318/23-1318.pdf#page=8)].
