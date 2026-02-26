@@ -78,8 +78,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5f53e196a2178d245accc371ac19f050.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-d2be07560ea121de3029aecc67d70911.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-65e694df801fadb16aa9e48d400e9636.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-65a3b16f04f65ab4039ba7f8b4d4cdcc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -448,13 +448,14 @@ Note
 </section>
 <section id="how-indexing-works" class="level2">
 <h2 class="anchored" data-anchor-id="how-indexing-works">How indexing works</h2>
-<p><code>easysearch</code> indexes transcriptions at the <strong>alignment segment</strong> level. Each alignment segment in the JSON output becomes a searchable row in the database. If you used a sentence tokenizer during transcription, each segment corresponds to a single sentence.</p>
+<p><code>easysearch</code> indexes transcriptions at the <strong>chunk</strong> level. Each chunk is a continuous speech region (~20–30 seconds) produced by voice activity detection, and may span multiple sentences. Each chunk becomes a searchable row in the database.</p>
 <p>This means:</p>
 <ul>
-<li>A search query matches when <strong>all terms appear within the same segment</strong>.</li>
-<li>Words that span across adjacent segments won’t match as a combined query.</li>
+<li>A search query matches when <strong>all terms appear within the same chunk</strong>.</li>
+<li>Words that span across adjacent chunks won’t match as a combined query.</li>
+<li>Because chunks are larger than individual sentences, cross-sentence queries within the same chunk will match.</li>
 </ul>
-<p>For example, if one segment contains <em>“It was the best of times.”</em> and the next contains <em>“It was the worst of times.”</em>, the query <code>best worst</code> will <strong>not</strong> match either segment, because no single segment contains both words. Searching for <code>best times</code> will match the first segment.</p>
+<p>The document page still displays the transcript at the <strong>alignment segment</strong> (sentence) level, so you can click any sentence to jump to that point in the audio.</p>
 </section>
 <section id="search-syntax" class="level2">
 <h2 class="anchored" data-anchor-id="search-syntax">Search syntax</h2>
@@ -469,7 +470,7 @@ Note
 <tbody>
 <tr class="odd">
 <td><code>climate change</code></td>
-<td>Segments containing both words (implicit AND)</td>
+<td>Chunks containing both words (implicit AND)</td>
 </tr>
 <tr class="even">
 <td><code>"climate change"</code></td>
