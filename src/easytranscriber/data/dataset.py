@@ -12,9 +12,10 @@ from pathlib import Path
 import torch
 from easyaligner.data.datamodel import AudioMetadata
 from easyaligner.data.dataset import JSONMetadataDataset
-from easytranscriber.audio import read_audio_segment
 from torch.utils.data import Dataset
 from transformers import Wav2Vec2Processor, WhisperProcessor
+
+from easytranscriber.audio import read_audio_segment
 
 logger = logging.getLogger(__name__)
 
@@ -114,6 +115,46 @@ class StreamingAudioFileDataset(Dataset):
         Maximum chunk size in seconds (for speech-based chunking).
     alignment_strategy : str, optional
         'speech' or 'chunk' - determines how chunks are defined.
+
+    Examples
+    --------
+    ```python
+    import torch
+    from pathlib import Path
+    from transformers import WhisperProcessor
+    from easyaligner.data.collators import audiofile_collate_fn
+    from easyaligner.data.dataset import JSONMetadataDataset
+    from easytranscriber.data import StreamingAudioFileDataset
+
+    AUDIO_DIR = "data/en"
+    json_paths = [p.name for p in Path("output/vad").glob("*.json")]
+
+    processor = WhisperProcessor.from_pretrained(
+        "distil-whisper/distil-large-v3.5", cache_dir="models"
+    )
+
+    json_dataset = JSONMetadataDataset(
+        json_paths=[str(Path("output/vad") / p) for p in json_paths]
+    )
+
+    file_dataset = StreamingAudioFileDataset(
+        metadata=json_dataset,
+        processor=processor,
+        audio_dir=AUDIO_DIR,
+        sample_rate=16000,
+        chunk_size=30,
+        alignment_strategy="chunk",
+    )
+
+    file_dataloader = torch.utils.data.DataLoader(
+        file_dataset,
+        batch_size=1,
+        shuffle=False,
+        collate_fn=audiofile_collate_fn,
+        num_workers=2,
+        prefetch_factor=2,
+    )
+    ```
     """
 
     def __init__(

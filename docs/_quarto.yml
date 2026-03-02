@@ -82,7 +82,7 @@ quartodoc:
         - asr.hf.transcribe
     - title: Text Processing
       desc: 
-        Text processing utilities. See also [SpanMapNormalizer](https://kb-labb.github.io/easyaligner/reference/SpanMapNormalizer.html)
+        Text processing utilities. See also [SpanMapNormalizer](https://kb-labb.github.io/easyaligner/reference/normalization.SpanMapNormalizer.html)
         from [easyaligner](https://github.com/kb-labb/easyaligner). 
       package: easytranscriber.text.normalization
       contents:

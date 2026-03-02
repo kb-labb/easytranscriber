@@ -41,7 +41,7 @@ print(normalizer.current_text)
 Let's make it all lowercase as well:
 
 ```{python}
-normalizer.transform(r"\S+", lambda m: m.group().lower())  #
+normalizer.transform(r"\S+", lambda m: m.group().lower())
 print(normalizer.current_text)
 ```
 

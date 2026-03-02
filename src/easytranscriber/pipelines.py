@@ -13,16 +13,17 @@ from easyaligner.data.dataset import (
 from easyaligner.pipelines import alignment_pipeline, emissions_pipeline, vad_pipeline
 from easyaligner.vad.pyannote import load_vad_model as load_pyannote_vad_model
 from easyaligner.vad.silero import load_vad_model as load_silero_vad_model
-from easytranscriber.asr.ct2 import transcribe as ct2_transcribe
-from easytranscriber.asr.hf import transcribe as hf_transcribe
-from easytranscriber.text.normalization import text_normalizer
-from easytranscriber.utils import hf_to_ct2_converter
 from transformers import (
     AutoModelForCTC,
     Wav2Vec2Processor,
     WhisperForConditionalGeneration,
     WhisperProcessor,
 )
+
+from easytranscriber.asr.ct2 import transcribe as ct2_transcribe
+from easytranscriber.asr.hf import transcribe as hf_transcribe
+from easytranscriber.text.normalization import text_normalizer
+from easytranscriber.utils import hf_to_ct2_converter
 
 logger = logging.getLogger(__name__)
 
@@ -175,6 +176,30 @@ def pipeline(
         Hugging Face authentication token for gated models.
     device : str, optional
         Device to run models on. Default is `cuda`.
+
+    Examples
+    --------
+    ```python
+    from pathlib import Path
+    from easyaligner.text import load_tokenizer
+    from easytranscriber.pipelines import pipeline
+    from easytranscriber.text.normalization import text_normalizer
+
+    tokenizer = load_tokenizer("english")
+    audio_files = [file.name for file in Path("data/en").glob("*.wav")]
+    pipeline(
+        vad_model="pyannote",
+        emissions_model="facebook/wav2vec2-base-960h",
+        transcription_model="distil-whisper/distil-large-v3.5",
+        audio_paths=audio_files,
+        audio_dir="data/en",
+        backend="ct2",
+        language="en", # None to perform language detection
+        tokenizer=tokenizer,
+        text_normalizer_fn=text_normalizer,
+        cache_dir="models",
+    )
+    ```
 
     Returns
     -------

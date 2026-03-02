@@ -1,7 +1,7 @@
 <div align="center"><img width="1020" height="340" alt="image" src="https://github.com/user-attachments/assets/7f1bdf33-5161-40c1-b6a7-6f1f586e030b" /></div>
 
 
-`easytranscriber` is an automatic speech recognition (ASR) library for transcription with precise word-level timestamps. While the transcription step itself is well-optimized in most ASR libraries, the surrounding components (data loading, emission extraction, forced alignment) are often bottlenecks. `easytranscriber` optimizes these components and supports both `ctranslate2` and Hugging Face `transformers` as inference backends. Notable features include:
+`easytranscriber` is an automatic speech recognition (ASR) library for transcription with precise word-level timestamps. While the transcription step itself is well-optimized in most ASR libraries, the surrounding components (data loading, emission extraction, forced alignment) often act as bottlenecks. `easytranscriber` optimizes these components and supports both `ctranslate2` and Hugging Face `transformers` as inference backends. Notable features include:
 
 * **GPU accelerated forced alignment**, using [Pytorch's forced alignment API](https://docs.pytorch.org/audio/main/tutorials/ctc_forced_alignment_api_tutorial.html). Forced alignment is based on a GPU implementation of the Viterbi algorithm ([Pratap et al., 2024](https://jmlr.org/papers/volume25/23-1318/23-1318.pdf#page=8)).
 * **Parallel loading and pre-fetching of audio files** for efficient data loading and batch processing.
@@ -67,7 +67,7 @@ pipeline(
 
 ## easysearch
 
-`easysearch` is a built-in lightweight search interface for browsing and querying your transcription outputs. It indexes alignment segments into a SQLite database with full-text search and serves a web UI with audio playback and synchronized transcript highlighting.
+`easysearch` is a built-in lightweight search interface for browsing and querying your transcription outputs. It indexes transcription chunks into a SQLite database with full-text search and serves a web UI with audio playback and synchronized transcript highlighting.
 
 ```bash
 pip install easytranscriber[search]
@@ -91,6 +91,15 @@ All `easytranscriber` benchmarks were run using the `ctranslate2` backend for tr
 * WhisperX version: 3.7.6
 * Model: `KBLab/kb-whisper-large`
 * Language: Swedish (`sv`)
+
+## Documentation
+
+The documentation is available at [kb-labb.github.io/easytranscriber/](https://kb-labb.github.io/easytranscriber/).
+
+* [Getting started guide](https://kb-labb.github.io/easytranscriber/get-started/overview.html).
+* [Pipelines tutorial](https://kb-labb.github.io/easytranscriber/get-started/pipelines.html).
+* [Text normalization tutorial](https://kb-labb.github.io/easytranscriber/get-started/text-processing.html).
+* [API reference](https://kb-labb.github.io/easytranscriber/reference/).
 
 ## Acknowledgements
 
