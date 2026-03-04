@@ -14,10 +14,30 @@
 </div>
 
 <div id="audio-player" class="audio-card">
-    <audio controls preload="metadata"{% if seek_time > 0 %} autoplay{% endif %}>
-        <source src="/audio/{{ document.audio_path }}" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    <div class="audio-controls-wrapper">
+        <audio controls preload="metadata" style="flex: 1;" {% if seek_time > 0 %} autoplay{% endif %}>
+            <source src="/audio/{{ document.audio_path }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        
+        <div class="speed-control">
+            <label for="playback-speed" title="Keyboard shortcuts: Space to Play/Pause, Left/Right Arrows to Skip 5s">Speed:</label>
+            <select id="playback-speed" class="speed-select">
+                <option value="0.5">0.5x</option>
+                <option value="0.75">0.75x</option>
+                <option value="1" selected>1.0x</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2.0x</option>
+            </select>
+        </div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+        <button id="download-vtt-btn" class="download-btn" title="Export transcript as a standard Video Text Track">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Download VTT
+        </button>
+    </div>
 </div>
 
 <div id="transcript-container"

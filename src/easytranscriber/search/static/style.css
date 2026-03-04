@@ -435,6 +435,60 @@ a:hover {
     background: var(--accent-hover);
 }
 
+/* === Custom Audio Controls === */
+
+.audio-controls-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.speed-select {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.speed-select:focus {
+    border-color: var(--accent);
+}
+
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    background: var(--surface-alt);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    margin-left: auto;
+}
+
+.download-btn:hover {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
 /* === Interactive Transcript === */
 
 .transcript-card {
