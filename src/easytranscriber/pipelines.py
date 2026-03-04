@@ -39,6 +39,255 @@ VAD_BACKENDS = {
 }
 
 
+def _run_vad(
+    vad_model: str,
+    audio_paths: list,
+    audio_dir: str,
+    speeches: list[list[SpeechSegment]] | None,
+    chunk_size: int,
+    sample_rate: int,
+    batch_size_files: int,
+    num_workers_files: int,
+    prefetch_factor_files: int,
+    save_json: bool,
+    save_msgpack: bool,
+    output_vad_dir: str,
+    device: str,
+    hf_token: str | None,
+):
+    assert vad_model in VAD_BACKENDS, (
+        f"VAD model {vad_model} not supported. Choose from {list(VAD_BACKENDS.keys())}."
+    )
+
+    vad_model_loader = VAD_BACKENDS.get(vad_model)
+    if vad_model == "pyannote":
+        vad_model_instance = vad_model_loader(device=device, token=hf_token)
+    else:
+        vad_model_instance = vad_model_loader()
+
+    vad_pipeline(
+        model=vad_model_instance,
+        audio_paths=audio_paths,
+        audio_dir=audio_dir,
+        speeches=speeches,
+        chunk_size=chunk_size,
+        sample_rate=sample_rate,
+        batch_size=batch_size_files,
+        num_workers=num_workers_files,
+        prefetch_factor=prefetch_factor_files,
+        save_json=save_json,
+        save_msgpack=save_msgpack,
+        return_vad=False,
+        output_dir=output_vad_dir,
+    )
+
+
+def _run_transcription(
+    transcription_model: str,
+    backend: str,
+    json_paths: list[Path],
+    audio_dir: str,
+    output_vad_dir: str,
+    output_transcriptions_dir: str,
+    DatasetClass,
+    sample_rate: int,
+    chunk_size: int,
+    batch_size_files: int,
+    num_workers_files: int,
+    prefetch_factor_files: int,
+    batch_size_features: int,
+    num_workers_features: int,
+    language: str | None,
+    task: str,
+    beam_size: int,
+    max_length: int,
+    repetition_penalty: float,
+    length_penalty: float,
+    patience: float,
+    no_repeat_ngram_size: int,
+    cache_dir: str,
+    device: str,
+):
+    transcription_args = {
+        "language": language,
+        "task": task,
+        "beam_size": beam_size,
+        "max_length": max_length,
+        "repetition_penalty": repetition_penalty,
+        "length_penalty": length_penalty,
+    }
+
+    if backend == "ct2":
+        model_path = hf_to_ct2_converter(transcription_model, cache_dir=cache_dir)
+        logger.info(f"Loading CTranslate2 model from {model_path}...")
+        model = ctranslate2.models.Whisper(model_path.as_posix(), device=device)
+        transcription_args.update(
+            {
+                "patience": patience,
+                "no_repeat_ngram_size": no_repeat_ngram_size,
+            }
+        )
+    else:
+        logger.info(f"Loading Hugging Face model from {transcription_model}...")
+        model = WhisperForConditionalGeneration.from_pretrained(
+            transcription_model, torch_dtype=torch.float16, cache_dir=cache_dir
+        ).to(device)
+
+    processor = WhisperProcessor.from_pretrained(transcription_model, cache_dir=cache_dir)
+    json_dataset = JSONMetadataDataset(
+        json_paths=[str(Path(output_vad_dir) / p) for p in json_paths]
+    )
+
+    file_dataset = DatasetClass(
+        metadata=json_dataset,
+        processor=processor,
+        audio_dir=audio_dir,
+        sample_rate=sample_rate,
+        chunk_size=chunk_size,
+        alignment_strategy="chunk",
+    )
+
+    file_dataloader = torch.utils.data.DataLoader(
+        file_dataset,
+        batch_size=batch_size_files,
+        shuffle=False,
+        collate_fn=audiofile_collate_fn,
+        num_workers=num_workers_files,
+        prefetch_factor=prefetch_factor_files,
+    )
+
+    transcribe = TRANSCRIBE_BACKENDS[backend]
+    transcribe(
+        model=model,
+        processor=processor,
+        file_dataloader=file_dataloader,
+        batch_size=batch_size_features,
+        num_workers=num_workers_features,
+        prefetch_factor=2,
+        **transcription_args,
+        output_dir=output_transcriptions_dir,
+    )
+
+
+def _run_emissions(
+    emissions_model: str,
+    json_paths: list[Path],
+    audio_dir: str,
+    output_transcriptions_dir: str,
+    output_emissions_dir: str,
+    sample_rate: int,
+    chunk_size: int,
+    alignment_strategy: str,
+    batch_size_files: int,
+    num_workers_files: int,
+    prefetch_factor_files: int,
+    batch_size_features: int,
+    num_workers_features: int,
+    streaming: bool,
+    save_json: bool,
+    save_msgpack: bool,
+    save_emissions: bool,
+    cache_dir: str,
+    blank_id: int | None,
+    word_boundary: str | None,
+):
+    json_dataset = JSONMetadataDataset(
+        json_paths=[str(Path(output_transcriptions_dir) / p) for p in json_paths]
+    )
+
+    model = AutoModelForCTC.from_pretrained(emissions_model, cache_dir=cache_dir).to("cuda").half()
+    processor = Wav2Vec2Processor.from_pretrained(emissions_model, cache_dir=cache_dir)
+
+    if blank_id is None:
+        blank_id = processor.tokenizer.pad_token_id
+    if word_boundary is None:
+        word_boundary = processor.tokenizer.word_delimiter_token
+
+    emissions_pipeline(
+        model=model,
+        processor=processor,
+        metadata=json_dataset,
+        audio_dir=audio_dir,
+        sample_rate=sample_rate,
+        chunk_size=chunk_size,
+        alignment_strategy=alignment_strategy,
+        batch_size_files=batch_size_files,
+        num_workers_files=num_workers_files,
+        prefetch_factor_files=prefetch_factor_files,
+        batch_size_features=batch_size_features,
+        num_workers_features=num_workers_features,
+        streaming=streaming,
+        save_json=save_json,
+        save_msgpack=save_msgpack,
+        save_emissions=save_emissions,
+        return_emissions=False,
+        output_dir=output_emissions_dir,
+    )
+    return processor, blank_id, word_boundary
+
+
+def _run_alignment(
+    json_paths: list[Path],
+    output_emissions_dir: str,
+    output_alignments_dir: str,
+    processor: Wav2Vec2Processor,
+    batch_size_files: int,
+    num_workers_files: int,
+    prefetch_factor_files: int,
+    text_normalizer_fn: callable,
+    tokenizer,
+    alignment_strategy: str,
+    start_wildcard: bool,
+    end_wildcard: bool,
+    blank_id: int | None,
+    word_boundary: str | None,
+    chunk_size: int,
+    ndigits: int,
+    indent: int,
+    save_json: bool,
+    save_msgpack: bool,
+    return_alignments: bool,
+    delete_emissions: bool,
+    device: str,
+):
+    json_dataset = JSONMetadataDataset(
+        json_paths=[str(Path(output_emissions_dir) / p) for p in json_paths]
+    )
+    json_dataloader = torch.utils.data.DataLoader(
+        json_dataset,
+        batch_size=batch_size_files,
+        shuffle=False,
+        collate_fn=metadata_collate_fn,
+        num_workers=num_workers_files,
+        prefetch_factor=prefetch_factor_files,
+    )
+
+    alignments = alignment_pipeline(
+        dataloader=json_dataloader,
+        text_normalizer_fn=text_normalizer_fn,
+        processor=processor,
+        tokenizer=tokenizer,
+        emissions_dir=output_emissions_dir,
+        output_dir=output_alignments_dir,
+        alignment_strategy=alignment_strategy,
+        start_wildcard=start_wildcard,
+        end_wildcard=end_wildcard,
+        blank_id=blank_id,
+        word_boundary=word_boundary,
+        chunk_size=chunk_size,
+        ndigits=ndigits,
+        indent=indent,
+        save_json=save_json,
+        save_msgpack=save_msgpack,
+        return_alignments=return_alignments,
+        delete_emissions=delete_emissions,
+        remove_wildcards=True,
+        device=device,
+    )
+
+    return alignments
+
+
 def pipeline(
     vad_model: str,
     emissions_model: str,
@@ -215,113 +464,56 @@ def pipeline(
     else:
         DatasetClass = AudioFileDataset
 
-    # Load VAD model
-    assert vad_model in VAD_BACKENDS, (
-        f"VAD model {vad_model} not supported. Choose from {list(VAD_BACKENDS.keys())}."
-    )
-
-    vad_model_loader = VAD_BACKENDS.get(vad_model)
-    if vad_model == "pyannote":
-        vad_model = vad_model_loader(device=device, token=hf_token)
-    else:
-        vad_model = vad_model_loader()
-
-    # Step 1: Run VAD
-    vad_pipeline(
-        model=vad_model,
+    _run_vad(
+        vad_model=vad_model,
         audio_paths=audio_paths,
         audio_dir=audio_dir,
         speeches=speeches,
         chunk_size=chunk_size,
         sample_rate=sample_rate,
-        batch_size=batch_size_files,
-        num_workers=num_workers_files,
-        prefetch_factor=prefetch_factor_files,
+        batch_size_files=batch_size_files,
+        num_workers_files=num_workers_files,
+        prefetch_factor_files=prefetch_factor_files,
         save_json=save_json,
         save_msgpack=save_msgpack,
-        return_vad=False,
-        output_dir=output_vad_dir,
+        output_vad_dir=output_vad_dir,
+        device=device,
+        hf_token=hf_token,
     )
 
-    # Step 2: Run Transcription
-    transcription_args = {
-        "language": language,
-        "task": task,
-        "beam_size": beam_size,
-        "max_length": max_length,
-        "repetition_penalty": repetition_penalty,
-        "length_penalty": length_penalty,
-    }
-
-    if backend == "ct2":
-        model_path = hf_to_ct2_converter(transcription_model, cache_dir=cache_dir)
-        logger.info(f"Loading CTranslate2 model from {model_path}...")
-        model = ctranslate2.models.Whisper(model_path.as_posix(), device=device)
-        transcription_args.update(
-            {
-                "patience": patience,
-                "no_repeat_ngram_size": no_repeat_ngram_size,
-            }
-        )
-    else:
-        logger.info(f"Loading Hugging Face model from {transcription_model}...")
-        model = WhisperForConditionalGeneration.from_pretrained(
-            transcription_model, torch_dtype=torch.float16, cache_dir=cache_dir
-        ).to(device)
-
-    processor = WhisperProcessor.from_pretrained(transcription_model, cache_dir=cache_dir)
-    json_dataset = JSONMetadataDataset(
-        json_paths=[str(Path(output_vad_dir) / p) for p in json_paths]
-    )
-
-    file_dataset = DatasetClass(
-        metadata=json_dataset,
-        processor=processor,
+    _run_transcription(
+        transcription_model=transcription_model,
+        backend=backend,
+        json_paths=json_paths,
         audio_dir=audio_dir,
+        output_vad_dir=output_vad_dir,
+        output_transcriptions_dir=output_transcriptions_dir,
+        DatasetClass=DatasetClass,
         sample_rate=sample_rate,
         chunk_size=chunk_size,
-        alignment_strategy="chunk",
+        batch_size_files=batch_size_files,
+        num_workers_files=num_workers_files,
+        prefetch_factor_files=prefetch_factor_files,
+        batch_size_features=batch_size_features,
+        num_workers_features=num_workers_features,
+        language=language,
+        task=task,
+        beam_size=beam_size,
+        max_length=max_length,
+        repetition_penalty=repetition_penalty,
+        length_penalty=length_penalty,
+        patience=patience,
+        no_repeat_ngram_size=no_repeat_ngram_size,
+        cache_dir=cache_dir,
+        device=device,
     )
 
-    file_dataloader = torch.utils.data.DataLoader(
-        file_dataset,
-        batch_size=batch_size_files,
-        shuffle=False,
-        collate_fn=audiofile_collate_fn,
-        num_workers=num_workers_files,
-        prefetch_factor=prefetch_factor_files,
-    )
-
-    transcribe = TRANSCRIBE_BACKENDS[backend]
-    transcribe(
-        model=model,
-        processor=processor,
-        file_dataloader=file_dataloader,
-        batch_size=batch_size_features,
-        num_workers=num_workers_features,
-        prefetch_factor=2,
-        **transcription_args,
-        output_dir=output_transcriptions_dir,
-    )
-
-    # Step 3: Extract Emissions
-    json_dataset = JSONMetadataDataset(
-        json_paths=[str(Path(output_transcriptions_dir) / p) for p in json_paths]
-    )
-
-    model = AutoModelForCTC.from_pretrained(emissions_model, cache_dir=cache_dir).to("cuda").half()
-    processor = Wav2Vec2Processor.from_pretrained(emissions_model, cache_dir=cache_dir)
-
-    if blank_id is None:
-        blank_id = processor.tokenizer.pad_token_id
-    if word_boundary is None:
-        word_boundary = processor.tokenizer.word_delimiter_token
-
-    emissions_pipeline(
-        model=model,
-        processor=processor,
-        metadata=json_dataset,
+    processor, blank_id, word_boundary = _run_emissions(
+        emissions_model=emissions_model,
+        json_paths=json_paths,
         audio_dir=audio_dir,
+        output_transcriptions_dir=output_transcriptions_dir,
+        output_emissions_dir=output_emissions_dir,
         sample_rate=sample_rate,
         chunk_size=chunk_size,
         alignment_strategy=alignment_strategy,
@@ -334,30 +526,21 @@ def pipeline(
         save_json=save_json,
         save_msgpack=save_msgpack,
         save_emissions=save_emissions,
-        return_emissions=False,
-        output_dir=output_emissions_dir,
+        cache_dir=cache_dir,
+        blank_id=blank_id,
+        word_boundary=word_boundary,
     )
 
-    # Step 4: Perform Alignment
-    json_dataset = JSONMetadataDataset(
-        json_paths=[str(Path(output_emissions_dir) / p) for p in json_paths]
-    )
-    json_dataloader = torch.utils.data.DataLoader(
-        json_dataset,
-        batch_size=batch_size_files,
-        shuffle=False,
-        collate_fn=metadata_collate_fn,
-        num_workers=num_workers_files,
-        prefetch_factor=prefetch_factor_files,
-    )
-
-    alignments = alignment_pipeline(
-        dataloader=json_dataloader,
-        text_normalizer_fn=text_normalizer_fn,
+    alignments = _run_alignment(
+        json_paths=json_paths,
+        output_emissions_dir=output_emissions_dir,
+        output_alignments_dir=output_alignments_dir,
         processor=processor,
+        batch_size_files=batch_size_files,
+        num_workers_files=num_workers_files,
+        prefetch_factor_files=prefetch_factor_files,
+        text_normalizer_fn=text_normalizer_fn,
         tokenizer=tokenizer,
-        emissions_dir=output_emissions_dir,
-        output_dir=output_alignments_dir,
         alignment_strategy=alignment_strategy,
         start_wildcard=start_wildcard,
         end_wildcard=end_wildcard,
@@ -370,7 +553,6 @@ def pipeline(
         save_msgpack=save_msgpack,
         return_alignments=return_alignments,
         delete_emissions=delete_emissions,
-        remove_wildcards=True,
         device=device,
     )
 

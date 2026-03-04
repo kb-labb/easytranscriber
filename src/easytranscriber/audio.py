@@ -8,6 +8,18 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 
+def _run_ffmpeg(cmd: list[str], check: bool = True, capture_output: bool = True) -> bytes:
+    """
+    Helper function to execute an ffmpeg subprocess command with robust error handling.
+    """
+    try:
+        proc = subprocess.run(cmd, capture_output=capture_output, check=check)
+        return proc.stdout
+    except subprocess.CalledProcessError as e:
+        logger.error(f"ffmpeg error executing `{' '.join(cmd)}`: {e.stderr.decode()}")
+        raise RuntimeError(f"ffmpeg error: {e.stderr.decode()}") from e
+
+
 def read_audio_segment(
     audio_path: str | Path,
     start_sec: float,
@@ -55,13 +67,9 @@ def read_audio_segment(
         "pipe:1",  # Output to stdout
     ]
 
-    try:
-        proc = subprocess.run(cmd, capture_output=True, check=True)
-        audio = np.frombuffer(proc.stdout, dtype=np.float32)
-        return audio
-    except subprocess.CalledProcessError as e:
-        logger.error(f"ffmpeg error reading {audio_path}: {e.stderr.decode()}")
-        raise
+    stdout = _run_ffmpeg(cmd)
+    audio = np.frombuffer(stdout, dtype=np.float32)
+    return audio
 
 
 def convert_audio_to_array(input_file: str, sample_rate: int = 16000) -> Tuple[np.ndarray, int]:
@@ -86,7 +94,7 @@ def convert_audio_to_array(input_file: str, sample_rate: int = 16000) -> Tuple[n
         If ffmpeg command fails.
     """
     # fmt: off
-    command = [
+    cmd = [
         "ffmpeg",
         "-i", input_file,
         "-f", "s16le",  # raw PCM 16-bit little endian
@@ -96,17 +104,13 @@ def convert_audio_to_array(input_file: str, sample_rate: int = 16000) -> Tuple[n
         "-loglevel", "error",  # suppress output
         "-hide_banner",
         "-nostats",
+        "pipe:1",
     ]
     # fmt: on
 
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out, err = process.communicate()
-
-    if process.returncode != 0:
-        raise RuntimeError(f"ffmpeg error: {err.decode()}")
-
+    stdout = _run_ffmpeg(cmd)
     # Convert byte output to numpy array
-    audio_array = np.frombuffer(out, dtype=np.int16)
+    audio_array = np.frombuffer(stdout, dtype=np.int16)
 
     return audio_array, sample_rate  # (samples, sample_rate)
 
@@ -128,7 +132,7 @@ def convert_audio_to_wav(input_file: str, output_file: str) -> None:
         If ffmpeg command fails.
     """
     # fmt: off
-    command = [
+    cmd = [
         'ffmpeg',
         '-i', input_file,
         '-ar', '16000',  # Set the audio sample rate to 16kHz
@@ -138,11 +142,8 @@ def convert_audio_to_wav(input_file: str, output_file: str) -> None:
         '-hide_banner',
         '-nostats',
         '-nostdin',
+        '-y', # Overwrite output if it exists
         output_file
     ]
     # fmt: on
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    _, err = process.communicate()
-
-    if process.returncode != 0:
-        raise RuntimeError(f"ffmpeg error: {err.decode()}")
+    _run_ffmpeg(cmd)
