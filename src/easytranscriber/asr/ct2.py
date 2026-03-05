@@ -9,9 +9,8 @@ import logging
 from pathlib import Path
 
 import ctranslate2
-import numpy as np
 import torch
-from easyaligner.utils import save_metadata_json, save_metadata_msgpack
+from easyaligner.utils import save_metadata_json
 from easytranscriber.data.collators import transcribe_collate_fn
 from tqdm import tqdm
 from transformers import WhisperProcessor
@@ -148,12 +147,22 @@ def transcribe(
             transcription_texts.extend(transcription)
 
         # Update metadata with transcriptions
+        global_chunk_idx = 0
         for i, speech in enumerate(metadata.speeches):
+            speech_texts = []
             for j, chunk in enumerate(speech.chunks):
-                chunk.text = transcription_texts[j].strip()
+                t = transcription_texts[global_chunk_idx].strip()
+                chunk.text = t
+                if t:
+                    speech_texts.append(t)
+
                 if len(language_detections) > 0:
-                    chunk.language = language_detections[j]["language"]
-                    chunk.language_prob = language_detections[j]["probability"]
+                    chunk.language = language_detections[global_chunk_idx]["language"]
+                    chunk.language_prob = language_detections[global_chunk_idx]["probability"]
+
+                global_chunk_idx += 1
+
+            speech.text = " ".join(speech_texts).strip()
 
         # Save transcription to file
         output_path = Path(output_dir) / Path(metadata.audio_path).with_suffix(".json")
@@ -207,10 +216,12 @@ def lang_detect_only(
             languages = detect_language(model, features_ct2)
             language_detections.append(languages)
 
+        global_chunk_idx = 0
         for i, speech in enumerate(metadata.speeches):
             for j, chunk in enumerate(speech.chunks):
-                chunk.language = language_detections[j]["language"]
-                chunk.language_probability = language_detections[j]["probability"]
+                chunk.language = language_detections[global_chunk_idx]["language"]
+                chunk.language_probability = language_detections[global_chunk_idx]["probability"]
+                global_chunk_idx += 1
 
         # Save transcription to file
         output_path = Path(output_dir) / Path(metadata.audio_path).with_suffix(".json")
