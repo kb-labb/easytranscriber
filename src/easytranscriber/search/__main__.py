@@ -51,6 +51,18 @@ def main():
     parser.add_argument(
         "--reindex", action="store_true", help="Force full re-index of all JSON files."
     )
+    parser.add_argument(
+        "--index-mode",
+        choices=["chunks", "alignments"],
+        default=None,
+        help=(
+            "How to index transcription JSON files. "
+            "'chunks' indexes VAD chunks produced by the ASR pipeline. "
+            "'alignments' indexes AlignmentSegments, for use with "
+            "easyaligner ground-truth alignment outputs where chunks carry no text. "
+            "If omitted, the mode is detected automatically per file."
+        ),
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -75,8 +87,14 @@ def main():
     # Initialize database and index
     conn = init_db(args.db)
 
-    logger.info("Indexing %s ...", args.alignments_dir)
-    indexed, skipped = index_directory(args.alignments_dir, conn, force=args.reindex)
+    logger.info(
+        "Indexing %s (mode: %s) ...",
+        args.alignments_dir,
+        args.index_mode or "auto",
+    )
+    indexed, skipped = index_directory(
+        args.alignments_dir, conn, force=args.reindex, index_mode=args.index_mode
+    )
     logger.info("Indexed %d file(s), skipped %d unchanged.", indexed, skipped)
 
     # Create and run the app

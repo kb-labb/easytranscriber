@@ -46,15 +46,25 @@ Some browsers block autoplay by default. If audio doesn't start automatically wh
 
 ## How indexing works
 
-`easysearch` indexes transcriptions at the **chunk** level. Each chunk is a continuous speech region (~20--30 seconds) produced by voice activity detection, and may span multiple sentences. Each chunk becomes a searchable row in the database.
+`easysearch` automatically detects the index mode from the file contents:
 
-This means:
+- **`chunks` mode** — used when files are produced by the `easytranscriber` ASR pipeline. Indexes at the VAD **chunk** level: each chunk is a continuous speech region (~20--30 seconds) that may span multiple sentences. Each chunk becomes a searchable row in the database.
+- **`alignments` mode** — used when files are produced by [`easyaligner`](https://kb-labb.github.io/easyaligner/get-started/search.html) (ground-truth text alignment), where chunks carry no text. Indexes at the **alignment segment** level (sentence or paragraph), giving finer-grained search results.
+
+The mode is detected by checking whether the first chunk in the file contains text. You can override it with `--index-mode` if needed.
+
+In **`chunks` mode**:
 
 - A search query matches when **all terms appear within the same chunk**.
 - Words that span across adjacent chunks won't match as a combined query.
 - Because chunks are larger than individual sentences, cross-sentence queries within the same chunk will match.
 
-The document page still displays the transcript at the **alignment segment** (sentence) level, so you can click any sentence to jump to that point in the audio.
+In **`alignments` mode**:
+
+- A search query matches when **all terms appear within the same alignment segment**.
+- Finer-grained than chunks — queries must fit within a single sentence or paragraph.
+
+The document page displays the transcript at the **alignment segment** level in both modes, so you can click any sentence to jump to that point in the audio.
 
 ## Search syntax
 
@@ -85,3 +95,4 @@ easysearch --help
 | `--per-page` | `20` | Results per page |
 | `--snippets-per-doc` | `5` | Max matching snippets shown per document in search results |
 | `--reindex` | | Force full re-index of all JSON files |
+| `--index-mode` | auto | Override index mode: `chunks` or `alignments` (auto-detected if omitted) |

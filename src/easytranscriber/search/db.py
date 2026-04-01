@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS documents (
     sample_rate     INTEGER NOT NULL,
     num_speeches    INTEGER NOT NULL,
     num_chunks      INTEGER NOT NULL,
+    index_mode      TEXT NOT NULL DEFAULT 'chunks',
     mtime           REAL NOT NULL,
     indexed_at      TEXT NOT NULL DEFAULT (datetime('now'))
 );

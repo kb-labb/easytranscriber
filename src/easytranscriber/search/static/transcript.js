@@ -10,6 +10,7 @@
   const documentId = container.dataset.documentId;
   const seekTime = parseFloat(container.dataset.seekTime) || 0;
   const searchQuery = container.dataset.query || "";
+  const indexMode = container.dataset.indexMode || "chunks";
 
   const wordMap = [];
   const alignmentMap = [];
@@ -118,8 +119,14 @@
           end: alignment.end,
         });
 
-        // No trailing whitespace signals a paragraph break
-        if (!alignment.text.endsWith(" ")) {
+        // Paragraph break logic differs by index mode:
+        // - chunks: no trailing space in a chunk signals a paragraph break
+        // - alignments: double newline in text signals a paragraph break (easyaligner convention)
+        const isParaBreak =
+          indexMode === "alignments"
+            ? /\r?\n\r?\n/.test(alignment.text)
+            : !alignment.text.endsWith(" ");
+        if (isParaBreak) {
           container.appendChild(para);
           para = document.createElement("p");
           para.className = "chunk";
