@@ -73,9 +73,9 @@ def create_app(
         total_pages = max(1, math.ceil(total / per_page))
 
         return templates.TemplateResponse(
+            request,
             "search.html",
             {
-                "request": request,
                 "query": q,
                 "results": results,
                 "total": total,
@@ -94,9 +94,9 @@ def create_app(
         total_pages = max(1, math.ceil(total / per_page))
 
         return templates.TemplateResponse(
+            request,
             "documents.html",
             {
-                "request": request,
                 "results": results,
                 "total": total,
                 "page": page,
@@ -116,9 +116,9 @@ def create_app(
             raise HTTPException(status_code=404, detail="Document not found")
 
         return templates.TemplateResponse(
+            request,
             "document.html",
             {
-                "request": request,
                 "document": doc,
                 "seek_time": t,
                 "query": q,

@@ -101,6 +101,9 @@ The documentation is available at [kb-labb.github.io/easytranscriber/](https://k
 * [Text normalization tutorial](https://kb-labb.github.io/easytranscriber/get-started/text-processing.html).
 * [API reference](https://kb-labb.github.io/easytranscriber/reference/).
 
+> [!TIP]
+> Check out the [`easyaligner`](https://kb-labb.github.io/easyaligner/) library for a user friendly pipeline for forced alignment of text and audio. 
+
 ## Acknowledgements
 
 `easytranscriber` draws heavy inspiration from [`WhisperX`](https://github.com/m-bain/whisperX) [(Bain et al., 2023)](https://www.isca-archive.org/interspeech_2023/bain23_interspeech.pdf).
@@ -108,3 +111,16 @@ The documentation is available at [kb-labb.github.io/easytranscriber/](https://k
 The forced alignment component of `easytranscriber` is based on Pytorch's forced alignment API, which implements a GPU-accelerated version of the Viterbi algorithm as described in [Pratap et al., 2024](https://jmlr.org/papers/volume25/23-1318/23-1318.pdf#page=8). 
 
 LibriVox for public domain audiobooks used as tutorial examples. 
+
+## Citation
+
+```
+@online{rekathati2026,
+  author = {Rekathati, Faton},
+  title = {Easytranscriber: {Speech} Recognition with Precise
+    Timestamps},
+  date = {2026-02-26},
+  url = {https://kb-labb.github.io/posts/2026-02-26-easytranscriber/},
+  langid = {en}
+}
+```
