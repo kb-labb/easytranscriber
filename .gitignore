@@ -7,3 +7,5 @@ reference/
 .jupyter_cache/
 
 *.egg-info/
+*.db
+*.lock

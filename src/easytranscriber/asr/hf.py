@@ -96,9 +96,17 @@ def transcribe(
 
                 transcription_texts.extend(transcription)
 
+        global_chunk_idx = 0
         for i, speech in enumerate(metadata.speeches):
+            speech_texts = []
             for j, chunk in enumerate(speech.chunks):
-                chunk.text = transcription_texts[j].strip()
+                t = transcription_texts[global_chunk_idx].strip()
+                chunk.text = t
+                if t:
+                    speech_texts.append(t)
+                global_chunk_idx += 1
+
+            speech.text = " ".join(speech_texts).strip()
 
         # Write final transcription to file with msgspec serialization
         output_path = Path(output_dir) / Path(metadata.audio_path).with_suffix(".json")
