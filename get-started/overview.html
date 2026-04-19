@@ -470,7 +470,7 @@ Tip
 <section id="usage" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="usage">Usage</h2>
 <p>For our quickstart guide, we will be transcribing a short clip of the first book and chapter of “A Tale of Two Cities” from LibriVox <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
-<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;The original recording can be found <a href="https://librivox.org/a-tale-of-two-cities-by-charles-dickens-2/">here</a></p></div></div><div id="ecd9e300" class="cell" data-execution_count="2">
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;The original recording can be found <a href="https://librivox.org/a-tale-of-two-cities-by-charles-dickens-2/">here</a></p></div></div><div id="e575acaf" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.text <span class="im">import</span> load_tokenizer</span>
@@ -516,6 +516,7 @@ Tip
 <div class="callout-body-container callout-body">
 <p>A list of suitable emission models for different languages can be found in the <a href="https://github.com/m-bain/whisperX/blob/d8a078eed46b139f90d7f33b472119e9be9ff969/whisperx/alignment.py#L41-L77">WhisperX library</a>.</p>
 <p>Hugging Face <code>transformers</code> is also supported as a backend for transcription with <code>backend="hf"</code>.</p>
+<p><a href="https://huggingface.co/CohereLabs/cohere-transcribe-03-2026">Cohere Transcribe</a> is also supported as a backend with <code>backend="cohere"</code> (requires <code>transformers&gt;=5.4.0</code> and the arg <code>language</code> to be explicitly specified).</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -588,7 +589,7 @@ Tip
 <section id="reading-the-output" class="level4">
 <h4 class="anchored" data-anchor-id="reading-the-output">Reading the output</h4>
 <p>Let’s read the final aligned output and print out one of the aligned segments. We can either read it using Python’s build-in <code>json</code> library, or use a convenience function provided in <code>easyaligner</code> that reads in the file as an <a href="../reference/AudioMetadata.html#easytranscriber.data.datamodel.AudioMetadata"><code>AudioMetadata</code></a> object.</p>
-<div id="4360a450" class="cell" data-execution_count="3">
+<div id="720964e5" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> easyaligner.data.utils <span class="im">import</span> read_json</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -598,6 +599,7 @@ Tip
 <div class="cell-output cell-output-stdout">
 <pre><code>{'duration': 2.02164,
  'end': 8.57463,
+ 'id': '0-0-2',
  'score': 0.99115,
  'start': 6.55299,
  'text': 'It was the best of times. ',
