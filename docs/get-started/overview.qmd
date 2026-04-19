@@ -101,7 +101,9 @@ You can specify any repo with a Whisper model on Hugging Face. `easytranscriber`
 ::: {.callout-tip}
 A list of suitable emission models for different languages can be found in the [WhisperX library](https://github.com/m-bain/whisperX/blob/d8a078eed46b139f90d7f33b472119e9be9ff969/whisperx/alignment.py#L41-L77).
 
-Hugging Face `transformers` is also supported as a backend for transcription with `backend="hf"`. 
+Hugging Face `transformers` is also supported as a backend for transcription with `backend="hf"`.
+
+[Cohere Transcribe](https://huggingface.co/CohereLabs/cohere-transcribe-03-2026) is also supported as a backend with `backend="cohere"` (requires `transformers>=5.4.0` and the arg `language` to be explicitly specified).
 :::
 
 ::: {.callout-note}

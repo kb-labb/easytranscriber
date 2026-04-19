@@ -48,12 +48,14 @@ class StreamingAudioSliceDataset(Dataset):
         processor: Wav2Vec2Processor | WhisperProcessor,
         sample_rate: int = 16000,
         metadata: AudioMetadata | None = None,
+        return_raw_audio: bool = False,
     ):
         self.audio_path = str(audio_path)
         self.chunk_specs = chunk_specs
         self.processor = processor
         self.sample_rate = sample_rate
         self.metadata = metadata
+        self.return_raw_audio = return_raw_audio
         self.processor_attribute = (
             "input_values" if isinstance(processor, Wav2Vec2Processor) else "input_features"
         )
@@ -74,6 +76,14 @@ class StreamingAudioSliceDataset(Dataset):
             duration_sec=duration_sec,
             sample_rate=self.sample_rate,
         )
+
+        if self.return_raw_audio:
+            # Caller (e.g. cohere backend) preprocesses with the batch to handle padding.
+            return {
+                "audio": audio,
+                "start_time_global": start_sec,
+                "speech_id": spec["speech_id"],
+            }
 
         # Convert to tensor and add batch dimension for processor
         if isinstance(self.processor, Wav2Vec2Processor):
@@ -165,6 +175,7 @@ class StreamingAudioFileDataset(Dataset):
         sample_rate: int = 16000,
         chunk_size: int = 30,
         alignment_strategy: str = "chunk",
+        return_raw_audio: bool = False,
     ):
         if isinstance(metadata, AudioMetadata):
             self.metadata = [metadata]
@@ -176,6 +187,7 @@ class StreamingAudioFileDataset(Dataset):
         self.chunk_size = chunk_size
         self.processor = processor
         self.alignment_strategy = alignment_strategy
+        self.return_raw_audio = return_raw_audio
 
     def _get_speech_chunk_specs(self, metadata: AudioMetadata) -> list[dict]:
         """
@@ -281,6 +293,7 @@ class StreamingAudioFileDataset(Dataset):
             processor=self.processor,
             sample_rate=self.sr,
             metadata=metadata,
+            return_raw_audio=self.return_raw_audio,
         )
 
         return {

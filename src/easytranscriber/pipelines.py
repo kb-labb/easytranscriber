@@ -5,11 +5,7 @@ import ctranslate2
 import torch
 from easyaligner.data.collators import audiofile_collate_fn, metadata_collate_fn
 from easyaligner.data.datamodel import SpeechSegment
-from easyaligner.data.dataset import (
-    AudioFileDataset,
-    JSONMetadataDataset,
-    StreamingAudioFileDataset,
-)
+from easyaligner.data.dataset import AudioFileDataset, JSONMetadataDataset
 from easyaligner.pipelines import alignment_pipeline, emissions_pipeline, vad_pipeline
 from easyaligner.vad.pyannote import load_vad_model as load_pyannote_vad_model
 from easyaligner.vad.silero import load_vad_model as load_silero_vad_model
@@ -22,15 +18,30 @@ from transformers import (
 
 from easytranscriber.asr.ct2 import transcribe as ct2_transcribe
 from easytranscriber.asr.hf import transcribe as hf_transcribe
+from easytranscriber.data.dataset import StreamingAudioFileDataset
 from easytranscriber.text.normalization import text_normalizer
 from easytranscriber.utils import hf_to_ct2_converter
 
 logger = logging.getLogger(__name__)
 
+
+def _load_cohere_transcribe():
+    """Lazy loader for the cohere backend.
+
+    Defers the ``CohereAsrForConditionalGeneration`` import (which requires
+    transformers>=5.4.0) so that users on older transformers who only use
+    the ct2/hf backends can still import this module.
+    """
+    from easytranscriber.asr.cohere import transcribe as cohere_transcribe
+
+    return cohere_transcribe
+
+
 # dispatch mapping
 TRANSCRIBE_BACKENDS = {
     "ct2": ct2_transcribe,
     "hf": hf_transcribe,
+    "cohere": _load_cohere_transcribe,
 }
 
 VAD_BACKENDS = {
@@ -56,10 +67,13 @@ def pipeline(
     task: str = "transcribe",
     beam_size: int = 5,
     max_length: int = 250,
+    max_new_tokens: int = 256,
     repetition_penalty: float = 1.0,
     length_penalty: float = 1.0,
     patience: float = 1.0,
     no_repeat_ngram_size: int = 0,
+    punctuation: bool = True,
+    generate_kwargs: dict | None = None,
     start_wildcard: bool = False,
     end_wildcard: bool = False,
     blank_id: int | None = None,
@@ -103,7 +117,9 @@ def pipeline(
     speeches : list[list[SpeechSegment]], optional
         Existing speech segments for alignment.
     backend : str, optional
-        Backend to use for the transcription model: "ct2" or "hf". Default is "ct2".
+        Backend to use for the transcription model: "ct2", "hf", or "cohere". Default is "ct2".
+        The "cohere" backend requires `transformers>=5.4.0`, `streaming=True`, and an explicit
+        `language` (Cohere has no language detection).
     sample_rate : int, optional
         Sample rate.
     chunk_size : int, optional
@@ -127,7 +143,14 @@ def pipeline(
     repetition_penalty : float, optional
         See HF [source code](https://github.com/huggingface/transformers/blob/v4.57.5/src/transformers/generation/configuration_utils.py#L188-L190) for details.
     max_length : int, optional
-        Maximum length of generated text.
+        Maximum length of generated text. Applies to Whisper backends (ct2, hf).
+    max_new_tokens : int, optional
+        Maximum number of new tokens to generate per chunk. Applies to the cohere backend.
+    punctuation : bool, optional
+        Emit punctuation in Cohere transcriptions. Applies to the cohere backend only.
+    generate_kwargs : dict, optional
+        Extra kwargs forwarded to ``model.generate()`` for the cohere backend
+        (e.g. ``num_beams``, ``length_penalty``).
     start_wildcard : bool, optional
         Add start wildcard to forced alignment.
     end_wildcard : bool, optional
@@ -244,32 +267,68 @@ def pipeline(
     )
 
     # Step 2: Run Transcription
-    transcription_args = {
-        "language": language,
-        "task": task,
-        "beam_size": beam_size,
-        "max_length": max_length,
-        "repetition_penalty": repetition_penalty,
-        "length_penalty": length_penalty,
-    }
+    dataset_kwargs: dict = {}
 
-    if backend == "ct2":
-        model_path = hf_to_ct2_converter(transcription_model, cache_dir=cache_dir)
-        logger.info(f"Loading CTranslate2 model from {model_path}...")
-        model = ctranslate2.models.Whisper(model_path.as_posix(), device=device)
-        transcription_args.update(
-            {
-                "patience": patience,
-                "no_repeat_ngram_size": no_repeat_ngram_size,
-            }
+    if backend == "cohere":
+        if language is None:
+            raise ValueError(
+                "The 'cohere' backend requires an explicit `language` — "
+                "CohereAsrForConditionalGeneration does not perform language detection."
+            )
+        if not streaming:
+            raise ValueError(
+                "The 'cohere' backend requires `streaming=True` "
+                "(the non-streaming AudioFileDataset does not support return_raw_audio)."
+            )
+
+        transcription_args = {
+            "language": language,
+            "max_new_tokens": max_new_tokens,
+            "punctuation": punctuation,
+            "sample_rate": sample_rate,
+            "generate_kwargs": generate_kwargs,
+        }
+
+        from transformers import AutoProcessor, CohereAsrForConditionalGeneration
+
+        logger.info(f"Loading Cohere ASR model from {transcription_model}...")
+        model = (
+            CohereAsrForConditionalGeneration.from_pretrained(
+                transcription_model, torch_dtype=torch.float16, cache_dir=cache_dir
+            )
+            .to(device)
+            .eval()
         )
+        processor = AutoProcessor.from_pretrained(transcription_model, cache_dir=cache_dir)
+        dataset_kwargs = {"return_raw_audio": True}
     else:
-        logger.info(f"Loading Hugging Face model from {transcription_model}...")
-        model = WhisperForConditionalGeneration.from_pretrained(
-            transcription_model, torch_dtype=torch.float16, cache_dir=cache_dir
-        ).to(device)
+        transcription_args = {
+            "language": language,
+            "task": task,
+            "beam_size": beam_size,
+            "max_length": max_length,
+            "repetition_penalty": repetition_penalty,
+            "length_penalty": length_penalty,
+        }
 
-    processor = WhisperProcessor.from_pretrained(transcription_model, cache_dir=cache_dir)
+        if backend == "ct2":
+            model_path = hf_to_ct2_converter(transcription_model, cache_dir=cache_dir)
+            logger.info(f"Loading CTranslate2 model from {model_path}...")
+            model = ctranslate2.models.Whisper(model_path.as_posix(), device=device)
+            transcription_args.update(
+                {
+                    "patience": patience,
+                    "no_repeat_ngram_size": no_repeat_ngram_size,
+                }
+            )
+        else:
+            logger.info(f"Loading Hugging Face model from {transcription_model}...")
+            model = WhisperForConditionalGeneration.from_pretrained(
+                transcription_model, torch_dtype=torch.float16, cache_dir=cache_dir
+            ).to(device)
+
+        processor = WhisperProcessor.from_pretrained(transcription_model, cache_dir=cache_dir)
+
     json_dataset = JSONMetadataDataset(
         json_paths=[str(Path(output_vad_dir) / p) for p in json_paths]
     )
@@ -281,6 +340,7 @@ def pipeline(
         sample_rate=sample_rate,
         chunk_size=chunk_size,
         alignment_strategy="chunk",
+        **dataset_kwargs,
     )
 
     file_dataloader = torch.utils.data.DataLoader(
@@ -293,6 +353,9 @@ def pipeline(
     )
 
     transcribe = TRANSCRIBE_BACKENDS[backend]
+    if backend == "cohere":
+        transcribe = transcribe()  # lazy-load to avoid importing on older transformers
+
     transcribe(
         model=model,
         processor=processor,
