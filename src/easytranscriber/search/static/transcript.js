@@ -39,12 +39,15 @@
     }
   }
 
+  let currentTranscriptData = null;
+
   fetch(`/api/document/${documentId}`)
     .then((r) => {
       if (!r.ok) throw new Error("Failed to load transcript");
       return r.json();
     })
     .then((data) => {
+      currentTranscriptData = data;
       container.innerHTML = "";
       buildTranscript(data);
 
@@ -187,4 +190,73 @@
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+
+  /* --- Playback Speed Control --- */
+  const speedSelect = document.getElementById("playback-speed");
+  if (speedSelect) {
+    speedSelect.addEventListener("change", function () {
+      audioPlayer.playbackRate = parseFloat(this.value);
+    });
+  }
+
+  /* --- Keyboard Shortcuts --- */
+  document.addEventListener("keydown", function (e) {
+    // Ignore input if user is typing in the search bar
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") {
+      return;
+    }
+
+    switch (e.code) {
+      case "Space":
+        e.preventDefault();
+        if (audioPlayer.paused) audioPlayer.play();
+        else audioPlayer.pause();
+        break;
+      case "ArrowLeft":
+        e.preventDefault();
+        audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5);
+        break;
+      case "ArrowRight":
+        e.preventDefault();
+        audioPlayer.currentTime = Math.min(audioPlayer.duration || Infinity, audioPlayer.currentTime + 5);
+        break;
+    }
+  });
+
+  /* --- VTT Export --- */
+  const downloadBtn = document.getElementById("download-vtt-btn");
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", function () {
+      if (!currentTranscriptData || !currentTranscriptData.speeches) return;
+      
+      let vttContent = "WEBVTT\n\n";
+
+      function formatVttTime(seconds) {
+        const d = new Date(Math.max(0, seconds) * 1000);
+        const hh = String(d.getUTCHours()).padStart(2, "0");
+        const mm = String(d.getUTCMinutes()).padStart(2, "0");
+        const ss = String(d.getUTCSeconds()).padStart(2, "0");
+        const ms = String(d.getUTCMilliseconds()).padStart(3, "0");
+        return `${hh}:${mm}:${ss}.${ms}`;
+      }
+
+      currentTranscriptData.speeches.forEach((speech) => {
+        speech.alignments.forEach((alignment) => {
+          vttContent += `${formatVttTime(alignment.start)} --> ${formatVttTime(alignment.end)}\n`;
+          let lineText = alignment.words.map(w => w.text).join(" ").replace(/\s+/g, " ");
+          vttContent += `${lineText.trim()}\n\n`;
+        });
+      });
+
+      const blob = new Blob([vttContent], { type: "text/vtt;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `transcript-${documentId}.vtt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
 })();

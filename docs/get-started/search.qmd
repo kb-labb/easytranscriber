@@ -44,6 +44,15 @@ Clicking a search result takes you to the document page at the matching timestam
 Some browsers block autoplay by default. If audio doesn't start automatically when navigating from a search result, a play button overlay will appear -- click it to begin playback.
 :::
 
+### Advanced Player Controls
+The interactive transcript player includes several quality-of-life features for power users:
+
+- **Playback Speed**: A dropdown to precisely control audio speed (from 0.5x up to 2.0x) without losing transcript synchronization.
+- **Keyboard Shortcuts**: 
+  - `Space`: Toggle Play/Pause.
+  - `Left Arrow` / `Right Arrow`: Skip backward or forward by 5-second intervals.
+- **VTT Export**: Click the "Download VTT" button to instantly format and export the current transcript timings as a `.vtt` (Video Text Track) subtitle file directly from your browser.
+
 ## How indexing works
 
 `easysearch` automatically detects the index mode from the file contents:
