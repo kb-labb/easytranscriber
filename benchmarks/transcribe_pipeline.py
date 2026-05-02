@@ -14,22 +14,25 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-tokenizer = load_tokenizer("swedish")
-
+tokenizer = load_tokenizer("english")
 if __name__ == "__main__":
-    AUDIO_DIR = "data/sv"
-    audio_files = [file.name for file in Path(AUDIO_DIR).glob("*")]
+    AUDIO_DIR = "data/en"
+    audio_files = [file.name for file in Path(AUDIO_DIR).glob("*.wav")]
     start = time.time()
     pipeline(
         vad_model="pyannote",
-        emissions_model="KBLab/wav2vec2-large-voxrex-swedish",
-        transcription_model="KBLab/kb-whisper-large",
+        emissions_model="facebook/wav2vec2-base-960h",
+        transcription_model="distil-whisper/distil-large-v3.5",
         audio_paths=audio_files,
         audio_dir=AUDIO_DIR,
-        language="sv",
+        backend="ct2",
+        language="en",
         tokenizer=tokenizer,
         batch_size_features=16,
         text_normalizer_fn=text_normalizer,
+        save_emissions=True,
+        delete_emissions=True,
+        device="cpu",
     )
     end = time.time()
     logger.info(f"Total time: {end - start}")

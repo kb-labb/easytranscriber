@@ -201,7 +201,6 @@ emissions_pipeline(
     sample_rate=16000,
     chunk_size=30,
     alignment_strategy="chunk",
-    batch_size_files=1,
     num_workers_files=2,
     prefetch_factor_files=2,
     batch_size_features=4,

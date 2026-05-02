@@ -80,7 +80,6 @@ def pipeline(
     word_boundary: str | None = None,
     indent: int = 2,
     ndigits: int = 5,
-    batch_size_files: int = 1,
     num_workers_files: int = 2,
     prefetch_factor_files: int = 2,
     batch_size_features: int = 8,
@@ -163,8 +162,6 @@ def pipeline(
         JSON indentation.
     ndigits : int, optional
         Number of digits for rounding.
-    batch_size_files : int, optional
-        Batch size for files. Recommended to set to 1.
     num_workers_files : int, optional
         Number of workers for file loading.
     prefetch_factor_files : int, optional
@@ -257,7 +254,6 @@ def pipeline(
         speeches=speeches,
         chunk_size=chunk_size,
         sample_rate=sample_rate,
-        batch_size=batch_size_files,
         num_workers=num_workers_files,
         prefetch_factor=prefetch_factor_files,
         save_json=save_json,
@@ -345,7 +341,7 @@ def pipeline(
 
     file_dataloader = torch.utils.data.DataLoader(
         file_dataset,
-        batch_size=batch_size_files,
+        batch_size=1,
         shuffle=False,
         collate_fn=audiofile_collate_fn,
         num_workers=num_workers_files,
@@ -388,7 +384,6 @@ def pipeline(
         sample_rate=sample_rate,
         chunk_size=chunk_size,
         alignment_strategy=alignment_strategy,
-        batch_size_files=batch_size_files,
         num_workers_files=num_workers_files,
         prefetch_factor_files=prefetch_factor_files,
         batch_size_features=batch_size_features,
@@ -407,7 +402,7 @@ def pipeline(
     )
     json_dataloader = torch.utils.data.DataLoader(
         json_dataset,
-        batch_size=batch_size_files,
+        batch_size=1,
         shuffle=False,
         collate_fn=metadata_collate_fn,
         num_workers=num_workers_files,
