@@ -148,21 +148,13 @@ def transcribe(
 
         # Update metadata with transcriptions
         global_chunk_idx = 0
-        for i, speech in enumerate(metadata.speeches):
-            speech_texts = []
-            for j, chunk in enumerate(speech.chunks):
-                t = transcription_texts[global_chunk_idx].strip()
-                chunk.text = t
-                if t:
-                    speech_texts.append(t)
-
+        for speech in metadata.speeches:
+            for chunk in speech.chunks:
+                chunk.text = transcription_texts[global_chunk_idx].strip()
                 if len(language_detections) > 0:
                     chunk.language = language_detections[global_chunk_idx]["language"]
                     chunk.language_prob = language_detections[global_chunk_idx]["probability"]
-
                 global_chunk_idx += 1
-
-            speech.text = " ".join(speech_texts).strip()
 
         # Save transcription to file
         output_path = Path(output_dir) / Path(metadata.audio_path).with_suffix(".json")
@@ -214,11 +206,11 @@ def lang_detect_only(
             features_ct2 = batch["features"].numpy()
             features_ct2 = ctranslate2.StorageView.from_array(features_ct2)
             languages = detect_language(model, features_ct2)
-            language_detections.append(languages)
+            language_detections.extend(languages)
 
         global_chunk_idx = 0
-        for i, speech in enumerate(metadata.speeches):
-            for j, chunk in enumerate(speech.chunks):
+        for speech in metadata.speeches:
+            for chunk in speech.chunks:
                 chunk.language = language_detections[global_chunk_idx]["language"]
                 chunk.language_probability = language_detections[global_chunk_idx]["probability"]
                 global_chunk_idx += 1
