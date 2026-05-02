@@ -519,25 +519,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    word_boundary<span class="op">=</span><span class="va">None</span>,</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    indent<span class="op">=</span><span class="dv">2</span>,</span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    ndigits<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    batch_size_files<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    num_workers_files<span class="op">=</span><span class="dv">2</span>,</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    prefetch_factor_files<span class="op">=</span><span class="dv">2</span>,</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    batch_size_features<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    num_workers_features<span class="op">=</span><span class="dv">4</span>,</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    streaming<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    save_json<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    save_msgpack<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    save_emissions<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    return_alignments<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    delete_emissions<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    output_vad_dir<span class="op">=</span><span class="st">'output/vad'</span>,</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    output_transcriptions_dir<span class="op">=</span><span class="st">'output/transcriptions'</span>,</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    output_emissions_dir<span class="op">=</span><span class="st">'output/emissions'</span>,</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    output_alignments_dir<span class="op">=</span><span class="st">'output/alignments'</span>,</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    cache_dir<span class="op">=</span><span class="st">'models'</span>,</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    hf_token<span class="op">=</span><span class="va">None</span>,</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    device<span class="op">=</span><span class="st">'cuda'</span>,</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    num_workers_files<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    prefetch_factor_files<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    batch_size_features<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    num_workers_features<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    streaming<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    save_json<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    save_msgpack<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    save_emissions<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    return_alignments<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    delete_emissions<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    output_vad_dir<span class="op">=</span><span class="st">'output/vad'</span>,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    output_transcriptions_dir<span class="op">=</span><span class="st">'output/transcriptions'</span>,</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    output_emissions_dir<span class="op">=</span><span class="st">'output/emissions'</span>,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    output_alignments_dir<span class="op">=</span><span class="st">'output/alignments'</span>,</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    cache_dir<span class="op">=</span><span class="st">'models'</span>,</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    hf_token<span class="op">=</span><span class="va">None</span>,</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    device<span class="op">=</span><span class="st">'cuda'</span>,</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Run the full transcription pipeline (VAD -&gt; Transcribe -&gt; Emissions -&gt; Align).</p>
 <section id="parameters" class="level2 doc-section doc-section-parameters">
 <h2 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h2>
@@ -708,108 +707,102 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><code>5</code></td>
 </tr>
 <tr class="odd">
-<td>batch_size_files</td>
-<td>int</td>
-<td>Batch size for files. Recommended to set to 1.</td>
-<td><code>1</code></td>
-</tr>
-<tr class="even">
 <td>num_workers_files</td>
 <td>int</td>
 <td>Number of workers for file loading.</td>
 <td><code>2</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>prefetch_factor_files</td>
 <td>int</td>
 <td>Prefetch factor for files.</td>
 <td><code>2</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>batch_size_features</td>
 <td>int</td>
 <td>Batch size for feature extraction.</td>
 <td><code>8</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>num_workers_features</td>
 <td>int</td>
 <td>Number of workers for feature extraction.</td>
 <td><code>4</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>streaming</td>
 <td>bool</td>
 <td>Use streaming mode.</td>
 <td><code>True</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>save_json</td>
 <td>bool</td>
 <td>Save results to JSON.</td>
 <td><code>True</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>save_msgpack</td>
 <td>bool</td>
 <td>Save results to MessagePack.</td>
 <td><code>False</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>save_emissions</td>
 <td>bool</td>
 <td>Save emissions.</td>
 <td><code>True</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>return_alignments</td>
 <td>bool</td>
 <td>Return alignment results.</td>
 <td><code>False</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>delete_emissions</td>
 <td>bool</td>
 <td>Whether to delete emissions numpy files after processing.</td>
 <td><code>False</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>output_vad_dir</td>
 <td>str</td>
 <td>Output directory for VAD.</td>
 <td><code>'output/vad'</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>output_transcriptions_dir</td>
 <td>str</td>
 <td>Output directory for transcriptions.</td>
 <td><code>'output/transcriptions'</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>output_emissions_dir</td>
 <td>str</td>
 <td>Output directory for emissions.</td>
 <td><code>'output/emissions'</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>output_alignments_dir</td>
 <td>str</td>
 <td>Output directory for alignments.</td>
 <td><code>'output/alignments'</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>cache_dir</td>
 <td>str</td>
 <td>Cache directory for transcription and emissions models.</td>
 <td><code>'models'</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>hf_token</td>
 <td>str or None</td>
 <td>Hugging Face authentication token for gated models.</td>
 <td><code>None</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>device</td>
 <td>str</td>
 <td>Device to run models on. Default is <code>cuda</code>.</td>
