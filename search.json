@@ -7,154 +7,6 @@
     "text": "Get Started\n    Install easytranscriber and transcribe your first audio file in minutes.\n  \n  \n    \n    Benchmarks\n    Speed comparisons between easytranscriber and WhisperX.\n  \n  \n    \n    Interactive Demo\n    Listen along as the transcript highlights each word in real time."
   },
   {
-    "objectID": "get-started/text-processing.html",
-    "href": "get-started/text-processing.html",
-    "title": "Text processing",
-    "section": "",
-    "text": "easytranscriber supports custom regex-based text normalization functions to preprocess ASR outputs before alignment. By reconciling the outputs of the ASR model and the emissions model, the forced alignment algorithm has an opportunity to perform better.\nWav2vec2 models tend to produce all lowercase or all uppercase outputs without punctuation, whereas Whisper models output mixed case text with punctuation. Whisper furthermore outputs non-verbal tokens (often within parentheses or brackets), symbols and abbreviations.\nNormalizing these outputs can substantially improve the quality of forced alignment.",
-    "crumbs": [
-      "Get Started",
-      "Text processing"
-    ]
-  },
-  {
-    "objectID": "get-started/text-processing.html#normalization",
-    "href": "get-started/text-processing.html#normalization",
-    "title": "Text processing",
-    "section": "Normalization",
-    "text": "Normalization\nLet’s apply some basic normalization to our example from A Tale of Two Cities. To explore the effect of our normalizations, we will import the SpanMapNormalizer class from the easyaligner library, and remove punctuation.\n\nfrom easyaligner.text.normalization import SpanMapNormalizer\n\ntext = \"\"\"Book 1. Chapter 1, The Period. It was the best of times. It was the worst of times. \nIt was the age of wisdom. It was the age of foolishness. It was the epoch of belief. \nIt was the epoch of incredulity. It was the season of light. \nIt was the season of darkness. It was the spring of hope.\"\"\"\n\nnormalizer = SpanMapNormalizer(text)\nnormalizer.transform(r\"[^\\w\\s]\", \"\")  # Remove punctuation and special characters\nprint(normalizer.current_text)\n\nBook 1 Chapter 1 The Period It was the best of times It was the worst of times \nIt was the age of wisdom It was the age of foolishness It was the epoch of belief \nIt was the epoch of incredulity It was the season of light \nIt was the season of darkness It was the spring of hope\n\n\nLet’s make it all lowercase as well:\n\nnormalizer.transform(r\"\\S+\", lambda m: m.group().lower())  #\nprint(normalizer.current_text)\n\nbook 1 chapter 1 the period it was the best of times it was the worst of times \nit was the age of wisdom it was the age of foolishness it was the epoch of belief \nit was the epoch of incredulity it was the season of light \nit was the season of darkness it was the spring of hope\n\n\nWe may also want to convert the numbers to their word forms. The library num2words2 can help with this:\n2 pip install num2words\nfrom num2words import num2words\nnormalizer.transform(r\"\\d+\", lambda m: num2words(int(m.group())))  # Convert numbers to words\nprint(normalizer.current_text)\n\nbook one chapter one the period it was the best of times it was the worst of times \nit was the age of wisdom it was the age of foolishness it was the epoch of belief \nit was the epoch of incredulity it was the season of light \nit was the season of darkness it was the spring of hope\n\n\nWhen you’re feeling done, it’s a good idea to always apply whitespace normalization as the final transformation step:\n\nnormalizer.transform(r\"\\s+\", \" \")  # Normalize whitespace to a single space\nnormalizer.transform(r\"^\\s+|\\s+$\", \"\")  # Strip leading and trailing whitespace\nprint(normalizer.current_text)\n\nbook one chapter one the period it was the best of times it was the worst of times it was the age of wisdom it was the age of foolishness it was the epoch of belief it was the epoch of incredulity it was the season of light it was the season of darkness it was the spring of hope\n\n\nOur text is now ready for forced alignment. However, if we want to recover the original text, it does not suffice to pass only the normalized text to the forced alignment algorithm. We also need to pass a mapping between the original text and the normalized text. Any user supplied text normalization function in easytranscriber needs to return the following two objects:\n\nmapping = normalizer.get_token_map()\nnormalized_tokens = [item[\"normalized_token\"] for item in mapping]\n\nLet’s inspect what’s in the first five items of the mapping:\n\nfor item in mapping[:5]:\n    print(item)\n\n{'normalized_token': 'book', 'text': 'Book', 'start_char': 0, 'end_char': 4}\n{'normalized_token': 'one', 'text': '1', 'start_char': 5, 'end_char': 6}\n{'normalized_token': 'chapter', 'text': 'Chapter', 'start_char': 8, 'end_char': 15}\n{'normalized_token': 'one', 'text': '1', 'start_char': 16, 'end_char': 17}\n{'normalized_token': 'the', 'text': 'The', 'start_char': 19, 'end_char': 22}\n\n\nWe can see that normalized_token and text contain the token in the normalized and original text, respectively, while start_char and end_char indicate the character indices of the token in the original text.\n\n\n\n\n\n\nTip\n\n\n\nWhen you are done testing your transformations, combine them into a function that takes in a string and outputs the normalized tokens and the mapping. See below for an example of how the default normalization function in easytranscriber is implemented.\n\n\n\nDefault text_normalizer\neasytranscriber provides a conservative default text normalization function. This default function is applied3 unless the user specificies their own function.\n3 See pipeline and the arg text_normalizer_fnHere is the default normalization function, for reference:\n\ndef text_normalizer(text: str) -&gt; str:\n    \"\"\"\n    Default text normalization function.\n\n    Applies\n        - Unicode normalization (NFKC)\n        - Lowercasing\n        - Normalization of whitespace\n        - Remove parentheses and special characters\n\n    Parameters\n    ----------\n    text : str\n        Input text to normalize.\n\n    Returns\n    -------\n    tuple\n        Tuple containing (normalized_tokens, mapping).\n    \"\"\"\n    # Unicode normalization\n    normalizer = SpanMapNormalizer(text)\n    # # Remove parentheses, brackets, stars, and their content\n    # normalizer.transform(r\"\\(.*?\\)\", \"\")\n    # normalizer.transform(r\"\\[.*?\\]\", \"\")\n    # normalizer.transform(r\"\\*.*?\\*\", \"\")\n\n    # Unicode normalization on tokens and lowercasing\n    normalizer.transform(r\"\\S+\", lambda m: unicodedata.normalize(\"NFKC\", m.group()))\n    normalizer.transform(r\"\\S+\", lambda m: m.group().lower())\n    normalizer.transform(r\"[^\\w\\s]\", \"\")  # Remove punctuation and special characters\n    normalizer.transform(r\"\\s+\", \" \")  # Normalize whitespace to a single space\n    normalizer.transform(r\"^\\s+|\\s+$\", \"\")  # Strip leading and trailing whitespace\n\n    mapping = normalizer.get_token_map()\n    normalized_tokens = [item[\"normalized_token\"] for item in mapping]\n    return normalized_tokens, mapping\n\nIn many cases you may want, or need, to be more careful with how removal of punctuation and special characters is applied. Words with hyphens, em dashes, or scores in sports games (e.g. 3-2) are examples where you may want to insert a whitespace instead of removing the characters entirely. Beware, also, that the ordering of the transformations can sometimes matter.\n\n\n\n\n\n\n\n\nWarning\n\n\n\nAvoid overly broad regex patterns. A pattern that matches everything will produce a useless mapping.\n\n\nIt is highly recommended to inspect the intermediate outputs of the applied transformations as described in the previous section.",
-    "crumbs": [
-      "Get Started",
-      "Text processing"
-    ]
-  },
-  {
-    "objectID": "get-started/text-processing.html#sentence-tokenization",
-    "href": "get-started/text-processing.html#sentence-tokenization",
-    "title": "Text processing",
-    "section": "Sentence tokenization",
-    "text": "Sentence tokenization\neasytranscriber supports passing a tokenizer to the pipeline function that segments the input text according to the user’s preferences. The best matching start and end timestamps will be assigned to each tokenized segment based on the outputs from forced alignment.\nFor sentence tokenization, we recommend using nltk.tokenize.punkt.PunktTokenizer. The load_tokenizer function from the easyaligner library provides a convenient way to load an appropriate tokenizer for your language:\n\nfrom easyaligner.text import load_tokenizer\ntokenizer = load_tokenizer(language=\"swedish\")\n\nPunktTokenizer maintains lists of abbreviations to avoid incorrectly splitting sentences. We can inspect the loaded tokenizer’s list of abbreviations as follows:\n\nprint(\"Current abbreviations:\", tokenizer._params.abbrev_types)\nprint(f\"Length of abbreviations: {len(tokenizer._params.abbrev_types)}\")\n\nCurrent abbreviations: {'rif', 'kap', 'ital', 'dna', 'p.g.a', 'o.d', 'm.m', 'e.m', 'ppm', 'osv', 's.k', 'bf', 'jaha', 'f.m', 'hushålln.-sällsk', 'resp', 'z.b', 'föreläsn.-fören', 'ordf', 'landtm.-förb', 'o.s.v', 'åk', 'hrm', 'bl.a', 'p', 'f.d', 'ex', 'rskr', 't.o.m', 'fig', 'f.n', 'mom', 'prop', 'postst', 't.ex', 'mm', 'aig', 'm.fl', 'dir'}\nLength of abbreviations: 39\n\n\nOne may however want to add custom abbreviations to the tokenizer depending on the domain of one’s data:\n\nnew_abbreviations = {\n    \"d.v.s\",\n    \"dvs\",\n    \"fr.o.m\",\n    \"kungl\",\n    \"m.m\",\n    \"milj\",\n    \"o.s.v\",\n    \"t.o.m\",\n    \"milj.kr\",\n}\ntokenizer._params.abbrev_types.update(new_abbreviations)\nprint(\"Updated abbreviations:\", tokenizer._params.abbrev_types)\nprint(f\"Length of abbreviations: {len(tokenizer._params.abbrev_types)}\")\n\nUpdated abbreviations: {'rif', 'kap', 'ital', 'dna', 'p.g.a', 'o.d', 'm.m', 'e.m', 'ppm', 'osv', 's.k', 'bf', 'jaha', 'dvs', 'f.m', 'hushålln.-sällsk', 'fr.o.m', 'resp', 'z.b', 'milj', 'föreläsn.-fören', 'ordf', 'landtm.-förb', 'o.s.v', 'åk', 'hrm', 'bl.a', 'p', 'f.d', 'ex', 'rskr', 't.o.m', 'fig', 'f.n', 'mom', 'milj.kr', 'prop', 'd.v.s', 'postst', 't.ex', 'mm', 'aig', 'm.fl', 'kungl', 'dir'}\nLength of abbreviations: 45\n\n\nWhen you are done: pass the tokenizer to the pipeline function in easytranscriber.",
-    "crumbs": [
-      "Get Started",
-      "Text processing"
-    ]
-  },
-  {
-    "objectID": "get-started/text-processing.html#arbitrary-tokenization",
-    "href": "get-started/text-processing.html#arbitrary-tokenization",
-    "title": "Text processing",
-    "section": "Arbitrary tokenization",
-    "text": "Arbitrary tokenization\nThe tokenizer argument of the pipeline function accepts any function that takes in a string and outputs a list of (start_char, end_char) tuples. Custom tokenization functions can therefore be defined based on any arbitrary segmentation of the source text.\nIn our case, however, the source text is Whisper’s ASR output. Since Whisper inference is restricted to 30-second audio chunks, a coarser level of tokenization (e.g. paragraph-level) is generally infeasible.\nArbitrary tokenization is more relevant when aligning existing ground truth texts with longer audio segments. easytranscriber is built on top of easyaligner, which is designed for this purpose. A more in-depth guide on custom tokenization will be available in the easyaligner documentation.",
-    "crumbs": [
-      "Get Started",
-      "Text processing"
-    ]
-  },
-  {
-    "objectID": "get-started/overview.html",
-    "href": "get-started/overview.html",
-    "title": "Overview",
-    "section": "",
-    "text": "easytranscriber is an automatic speech recognition (ASR) library that offers similar functionality to WhisperX – transcription with precise word-level timestamps. While the transcription step itself is well-optimized in most ASR libraries, the surrounding pipeline components (data loading, emission extraction, forced alignment) are often bottlenecks. easytranscriber addresses these inefficiencies by implementing:\nAdditionally, easytranscriber supports flexible regex-based normalization of transcribed text as a means of improving forced alignment quality. The normalizations are reversible, meaning that the original text can be recovered after forced alignment. easytranscriber also supports using Hugging Face transformers as the backend for inference.\nTogether, these optimizations result in speedups of 35% to 102% compared to WhisperX2, depending on the hardware configuration used.",
-    "crumbs": [
-      "Get Started",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "get-started/overview.html#installation",
-    "href": "get-started/overview.html#installation",
-    "title": "Overview",
-    "section": "Installation",
-    "text": "Installation\n\nWith GPU support\npip install easytranscriber --extra-index-url https://download.pytorch.org/whl/cu128\n\n\n\n\n\n\n\n\nTip\n\n\n\nRemove --extra-index-url if you want a CPU-only installation.\n\n\n\n\nUsing uv\nWhen installing with uv, it will select the appropriate PyTorch version automatically (CPU for macOS, CUDA for Linux/Windows/ARM):\nuv pip install easytranscriber",
-    "crumbs": [
-      "Get Started",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "get-started/overview.html#usage",
-    "href": "get-started/overview.html#usage",
-    "title": "Overview",
-    "section": "Usage",
-    "text": "Usage\nFor our quickstart guide, we will be transcribing a short clip of the first book and chapter of “A Tale of Two Cities” from LibriVox 3.\n3 The original recording can be found here\nfrom pathlib import Path\n\nfrom easyaligner.text import load_tokenizer\nfrom huggingface_hub import snapshot_download\n\nfrom easytranscriber.pipelines import pipeline\nfrom easytranscriber.text.normalization import text_normalizer\n\nsnapshot_download(\n    \"Lauler/easytranscriber_tutorials\",\n    repo_type=\"dataset\",\n    local_dir=\"data/tutorials\",\n    allow_patterns=\"tale-of-two-cities_short-en/*\",  # Wildcard pattern\n    # max_workers=4,\n)\n\n\ntokenizer = load_tokenizer(\"english\") # For sentence tokenization in forced alignment\naudio_files = [file.name for file in Path(\"data/tutorials/tale-of-two-cities_short-en\").glob(\"*\")]\npipeline(\n    vad_model=\"pyannote\",\n    emissions_model=\"facebook/wav2vec2-base-960h\",\n    transcription_model=\"distil-whisper/distil-large-v3.5\",\n    audio_paths=audio_files,\n    audio_dir=\"data/tutorials/tale-of-two-cities_short-en\",\n    backend=\"ct2\", # easytranscriber handles conversion between ct2 and hf formats. \n    language=\"en\",\n    tokenizer=tokenizer,\n    text_normalizer_fn=text_normalizer,\n    cache_dir=\"models\",\n)\n\nYou can specify any repo with a Whisper model on Hugging Face. easytranscriber will handle the download and conversion to ct24.\n4 Ctranslate2 provides C++ optimized inference for Whisper\n\n\n\n\n\nTip\n\n\n\nA list of suitable emission models for different languages can be found in the WhisperX library.\nHugging Face transformers is also supported as a backend for transcription with backend=\"hf\".\nCohere Transcribe is also supported as a backend with backend=\"cohere\" (requires transformers&gt;=5.4.0 and the arg language to be explicitly specified).\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe default VAD model is from pyannote. Their models are gated. To use them, you need to create a Hugging Face access token and accept terms and conditions. Then, either i) save the access token at ~/.cache/huggingface/token or ii) install and use the Hugging Face CLI and run hf auth login. See the Hugging Face Hub quick start guide for more details.\nAlternatively, you can switch to silero VAD (CPU-only, slightly slower). Silero can be used without authentication, and performs well. See the vad_model parameter in the docs.\n\n\n\nOutput\nBy default, easytranscriber outputs a JSON file for each stage of the pipeline (VAD, emissions, transcription, forced alignment). The final aligned output can be found in output/alignments. The directory structure will look as follows:\noutput\n├── vad                  ← SpeechSegments with AudioChunks\n├── transcriptions       ← + transcribed text per chunk\n├── emissions            ← + emission file paths (.npy)\n└── alignments           ← + AlignmentSegments with word timestamps\n\nDemo\nLet’s preview the results as an interactive demo. The text transcript below the audio player will automatically be highlighted in sync with the words spoken in the audio.\n\n\nSample audio\n\n\nA Tale of Two Cities — Chapter 1 (LibriVox)\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nYou can click anywhere in the text to jump to that point (sentence) in the audio. The text is also highlighted when you drag the audio slider!\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nTo browse and search your own transcriptions with the same synchronized playback, see easysearch.\n\n\n\n\nReading the output\nLet’s read the final aligned output and print out one of the aligned segments. We can either read it using Python’s build-in json library, or use a convenience function provided in easyaligner that reads in the file as an AudioMetadata object.\n\nfrom easyaligner.data.utils import read_json\nfrom pprint import pprint\n\nresults = read_json(\"output/alignments/taleoftwocities_01_dickens_64kb_trimmed.json\")\n# Print the 3rd aligned segment of the first speech\npprint(results.speeches[0].alignments[2].to_dict())\n\n{'duration': 2.02164,\n 'end': 8.57463,\n 'id': '0-0-2',\n 'score': 0.99115,\n 'start': 6.55299,\n 'text': 'It was the best of times. ',\n 'words': [WordSegment(text='It ', start=6.55299, end=6.59302, score=0.99927),\n           WordSegment(text='was ', start=6.67308, end=6.77316, score=0.99967),\n           WordSegment(text='the ', start=6.85323, end=6.95331, score=0.9834),\n           WordSegment(text='best ', start=7.27357, end=7.59383, score=0.9998),\n           WordSegment(text='of ', start=7.73395, end=7.77398, score=0.99927),\n           WordSegment(text='times. ', start=7.89408, end=8.57463, score=0.96552)]}",
-    "crumbs": [
-      "Get Started",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "get-started/overview.html#schema",
-    "href": "get-started/overview.html#schema",
-    "title": "Overview",
-    "section": "Schema",
-    "text": "Schema\nSee the reference page of the documentation for a detailed overview of the data models used in easytranscriber. Below is a simplified schema of the final output after forced alignment of our example audio file.\n\nAudioMetadata\n├── audio_path       \"taleoftwocities_01_dickens_64kb_trimmed.mp3\"\n├── sample_rate      16000\n├── duration         428.93\n├── metadata         null\n└── speeches[]\n    └── SpeechSegment\n        ├── speech_id       0\n        ├── start           1.769\n        ├── end             423.948\n        ├── text            null\n        ├── text_spans      null\n        ├── duration        422.179\n        ├── audio_frames    null\n        ├── probs_path      \"taleoftwocities_01_dickens_64kb_trimmed/0.npy\"\n        ├── metadata        null\n        │\n        ├── chunks[]                          ← VAD segments, transcribed by ASR\n        │   ├── [0] AudioChunk\n        │   │   ├── start         1.769\n        │   │   ├── end           28.162\n        │   │   ├── text          \"Book 1. Chapter 1, The Period. It was the\n        │   │   │                  best of times. It was the worst of times...\"\n        │   │   ├── duration      26.393\n        │   │   ├── audio_frames  422280\n        │   │   └── num_logits    1319\n        │   ├── [1] AudioChunk\n        │   │   ├── start         29.039\n        │   │   ├── end           57.085\n        │   │   └── text          \"It was the winter of despair...\"\n        │   └── ... (19 chunks total)\n        │\n        └── alignments[]                      ← sentence-level, with word timestamps\n            ├── [0] AlignmentSegment\n            │   ├── start         1.769\n            │   ├── end           2.169\n            │   ├── text          \"Book 1. \"\n            │   ├── duration      0.400\n            │   ├── score         0.482\n            │   └── words[]\n            │       ├── { text: \"Book \",  start: 1.769, end: 1.909, score: 0.964 }\n            │       └── { text: \"1. \",    start: 2.149, end: 2.169, score: 0.0   }\n            ├── [1] AlignmentSegment\n            │   ├── start         3.671\n            │   ├── end           5.112\n            │   ├── text          \"Chapter 1, The Period. \"\n            │   ├── duration      1.441\n            │   ├── score         0.737\n            │   └── words[]\n            │       ├── { text: \"Chapter \", start: 3.671, end: 3.991, score: 0.982 }\n            │       ├── { text: \"1, \",      start: 4.111, end: 4.131, score: 0.0   }\n            │       ├── { text: \"The \",     start: 4.471, end: 4.551, score: 0.972 }\n            │       └── { text: \"Period. \", start: 4.651, end: 5.112, score: 0.992 }\n            ├── [2] AlignmentSegment\n            │   ├── text          \"It was the best of times. \"\n            │   └── words[]\n            │       ├── { text: \"It \",     start: 6.553, end: 6.593, score: 0.999 }\n            │       ├── { text: \"was \",    start: 6.673, end: 6.773, score: 1.000 }\n            │       ├── { text: \"the \",    start: 6.853, end: ...                 }\n            │       └── ...\n            └── ...",
-    "crumbs": [
-      "Get Started",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "reference/asr.ct2.transcribe.html",
-    "href": "reference/asr.ct2.transcribe.html",
-    "title": "asr.ct2.transcribe",
-    "section": "",
-    "text": "asr.ct2.transcribe(\n    model,\n    processor,\n    file_dataloader,\n    language=None,\n    task='transcribe',\n    batch_size=8,\n    beam_size=5,\n    patience=1.0,\n    length_penalty=1.0,\n    repetition_penalty=1.0,\n    no_repeat_ngram_size=0,\n    max_length=448,\n    suppress_blank=True,\n    num_workers=2,\n    prefetch_factor=2,\n    output_dir='output/transcriptions',\n)\nTranscribe audio files using CTranslate2 Whisper model.\nThis function processes audio files through a dataloader structure similar to the HuggingFace implementation, but uses ctranslate2 for inference.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nmodel\nctranslate2.models.Whisper\nCTranslate2 Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nWhisperProcessor for tokenization and decoding.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). If None, auto-detect.\nNone\n\n\nbatch_size\nint\nBatch size for feature processing.\n8\n\n\ntask\nstr\nTask type - ‘transcribe’ or ‘translate’.\n'transcribe'\n\n\nbeam_size\nint\nBeam size for search. Default is 5.\n5\n\n\npatience\nfloat\nBeam search patience factor. Default is 1.0.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nno_repeat_ngram_size\nint\nN-gram size for no repeat. Default is 0.\n0\n\n\nmax_length\nint\nMaximum output length. Default is 448.\n448\n\n\nsuppress_blank\nbool\nWhether to suppress blank tokens. Default is True.\nTrue\n\n\nnum_workers\nint\nNumber of workers for feature dataloader (file dataloader is created outside of this function).\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader (file dataloader is created outside of this function).\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'",
-    "crumbs": [
-      "Reference",
-      "Transcription",
-      "asr.ct2.transcribe"
-    ]
-  },
-  {
-    "objectID": "reference/asr.ct2.transcribe.html#parameters",
-    "href": "reference/asr.ct2.transcribe.html#parameters",
-    "title": "asr.ct2.transcribe",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nmodel\nctranslate2.models.Whisper\nCTranslate2 Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nWhisperProcessor for tokenization and decoding.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). If None, auto-detect.\nNone\n\n\nbatch_size\nint\nBatch size for feature processing.\n8\n\n\ntask\nstr\nTask type - ‘transcribe’ or ‘translate’.\n'transcribe'\n\n\nbeam_size\nint\nBeam size for search. Default is 5.\n5\n\n\npatience\nfloat\nBeam search patience factor. Default is 1.0.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nno_repeat_ngram_size\nint\nN-gram size for no repeat. Default is 0.\n0\n\n\nmax_length\nint\nMaximum output length. Default is 448.\n448\n\n\nsuppress_blank\nbool\nWhether to suppress blank tokens. Default is True.\nTrue\n\n\nnum_workers\nint\nNumber of workers for feature dataloader (file dataloader is created outside of this function).\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader (file dataloader is created outside of this function).\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'",
-    "crumbs": [
-      "Reference",
-      "Transcription",
-      "asr.ct2.transcribe"
-    ]
-  },
-  {
-    "objectID": "reference/text_normalizer.html",
-    "href": "reference/text_normalizer.html",
-    "title": "text_normalizer",
-    "section": "",
-    "text": "text.normalization.text_normalizer(text)\nDefault text normalization function.\nApplies - Unicode normalization (NFKC) - Lowercasing - Normalization of whitespace - Remove parentheses and special characters\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntext\nstr\nInput text to normalize.\nrequired\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ntuple\nTuple containing (normalized_tokens, mapping).",
-    "crumbs": [
-      "Reference",
-      "Text Processing",
-      "text_normalizer"
-    ]
-  },
-  {
-    "objectID": "reference/text_normalizer.html#parameters",
-    "href": "reference/text_normalizer.html#parameters",
-    "title": "text_normalizer",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ntext\nstr\nInput text to normalize.\nrequired",
-    "crumbs": [
-      "Reference",
-      "Text Processing",
-      "text_normalizer"
-    ]
-  },
-  {
-    "objectID": "reference/text_normalizer.html#returns",
-    "href": "reference/text_normalizer.html#returns",
-    "title": "text_normalizer",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n\ntuple\nTuple containing (normalized_tokens, mapping).",
-    "crumbs": [
-      "Reference",
-      "Text Processing",
-      "text_normalizer"
-    ]
-  },
-  {
     "objectID": "reference/index.html",
     "href": "reference/index.html",
     "title": "Function reference",
@@ -245,6 +97,30 @@
     ]
   },
   {
+    "objectID": "reference/asr.hf.transcribe.html",
+    "href": "reference/asr.hf.transcribe.html",
+    "title": "asr.hf.transcribe",
+    "section": "",
+    "text": "asr.hf.transcribe(\n    model,\n    processor,\n    file_dataloader,\n    language=None,\n    task='transcribe',\n    batch_size=4,\n    beam_size=3,\n    length_penalty=1.0,\n    repetition_penalty=1.0,\n    max_length=250,\n    num_workers=2,\n    prefetch_factor=2,\n    output_dir='output/transcriptions',\n    device='cuda',\n)\nTranscribe audio files using HuggingFace Whisper model.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nmodel\ntransformers.WhisperForConditionalGeneration\nHuggingFace Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nHuggingFace Whisper processor.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). Default is None (auto-detect).\nNone\n\n\nbatch_size\nint\nBatch size for inference.\n4\n\n\nbeam_size\nint\nNumber of beams for beam search. Default is 3.\n3\n\n\nlength_penalty\nfloat\nLength penalty. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text. Default is 250.\n250\n\n\nnum_workers\nint\nNumber of workers for feature dataloader.\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader.\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'\n\n\ndevice\nstr\nDevice to run inference on. Default is cuda.\n'cuda'",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "asr.hf.transcribe"
+    ]
+  },
+  {
+    "objectID": "reference/asr.hf.transcribe.html#parameters",
+    "href": "reference/asr.hf.transcribe.html#parameters",
+    "title": "asr.hf.transcribe",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nmodel\ntransformers.WhisperForConditionalGeneration\nHuggingFace Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nHuggingFace Whisper processor.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). Default is None (auto-detect).\nNone\n\n\nbatch_size\nint\nBatch size for inference.\n4\n\n\nbeam_size\nint\nNumber of beams for beam search. Default is 3.\n3\n\n\nlength_penalty\nfloat\nLength penalty. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text. Default is 250.\n250\n\n\nnum_workers\nint\nNumber of workers for feature dataloader.\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader.\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'\n\n\ndevice\nstr\nDevice to run inference on. Default is cuda.\n'cuda'",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "asr.hf.transcribe"
+    ]
+  },
+  {
     "objectID": "reference/utils.hf_to_ct2_converter.html",
     "href": "reference/utils.hf_to_ct2_converter.html",
     "title": "utils.hf_to_ct2_converter",
@@ -293,146 +169,27 @@
     ]
   },
   {
-    "objectID": "reference/AlignmentSegment.html",
-    "href": "reference/AlignmentSegment.html",
-    "title": "AlignmentSegment",
+    "objectID": "reference/asr.ct2.transcribe.html",
+    "href": "reference/asr.ct2.transcribe.html",
+    "title": "asr.ct2.transcribe",
     "section": "",
-    "text": "data.datamodel.AlignmentSegment()\nA segment of aligned audio and text.\nThis can be sentence, paragraph, or any other unit of text.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the aligned segment in seconds.\n\n\nend\nfloat\nEnd time of the aligned segment in seconds.\n\n\ntext\nstr\nThe aligned text segment.\n\n\nwords\nlist[WordSegment]\nList of word-level alignment data within this segment.\n\n\nid\n(str or int, optional)\nOptional unique identifier for the alignment segment.\n\n\nduration\n(float, optional)\nDuration of the aligned segment in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the alignment.",
-    "crumbs": [
-      "Reference",
-      "Data Models",
-      "AlignmentSegment"
-    ]
-  },
-  {
-    "objectID": "reference/AlignmentSegment.html#attributes",
-    "href": "reference/AlignmentSegment.html#attributes",
-    "title": "AlignmentSegment",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the aligned segment in seconds.\n\n\nend\nfloat\nEnd time of the aligned segment in seconds.\n\n\ntext\nstr\nThe aligned text segment.\n\n\nwords\nlist[WordSegment]\nList of word-level alignment data within this segment.\n\n\nid\n(str or int, optional)\nOptional unique identifier for the alignment segment.\n\n\nduration\n(float, optional)\nDuration of the aligned segment in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the alignment.",
-    "crumbs": [
-      "Reference",
-      "Data Models",
-      "AlignmentSegment"
-    ]
-  },
-  {
-    "objectID": "reference/pipelines.pipeline.html",
-    "href": "reference/pipelines.pipeline.html",
-    "title": "pipelines.pipeline",
-    "section": "",
-    "text": "pipelines.pipeline(\n    vad_model,\n    emissions_model,\n    transcription_model,\n    audio_paths,\n    audio_dir,\n    backend='ct2',\n    speeches=None,\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy='chunk',\n    text_normalizer_fn=text_normalizer,\n    tokenizer=None,\n    language=None,\n    task='transcribe',\n    beam_size=5,\n    max_length=250,\n    max_new_tokens=256,\n    repetition_penalty=1.0,\n    length_penalty=1.0,\n    patience=1.0,\n    no_repeat_ngram_size=0,\n    punctuation=True,\n    generate_kwargs=None,\n    start_wildcard=False,\n    end_wildcard=False,\n    blank_id=None,\n    word_boundary=None,\n    indent=2,\n    ndigits=5,\n    num_workers_files=2,\n    prefetch_factor_files=2,\n    batch_size_features=8,\n    num_workers_features=4,\n    streaming=True,\n    save_json=True,\n    save_msgpack=False,\n    save_emissions=True,\n    return_alignments=False,\n    delete_emissions=False,\n    output_vad_dir='output/vad',\n    output_transcriptions_dir='output/transcriptions',\n    output_emissions_dir='output/emissions',\n    output_alignments_dir='output/alignments',\n    cache_dir='models',\n    hf_token=None,\n    device='cuda',\n)\nRun the full transcription pipeline (VAD -&gt; Transcribe -&gt; Emissions -&gt; Align).\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nvad_model\nstr\nVoice Activity Detection model: “pyannote” or “silero”.\nrequired\n\n\nemissions_model\nstr\nHugging Face model ID for the emissions model (“org_name/model_name”).\nrequired\n\n\ntranscription_model\nstr\nPath to Hugging Face model ID for the transcription model (“org_name/model_name”).\nrequired\n\n\naudio_paths\nlist\nList of audio file paths.\nrequired\n\n\naudio_dir\nstr\nDirectory containing audio files.\nrequired\n\n\nspeeches\nlist[list[SpeechSegment]]\nExisting speech segments for alignment.\nNone\n\n\nbackend\nstr\nBackend to use for the transcription model: “ct2”, “hf”, or “cohere”. Default is “ct2”. The “cohere” backend requires transformers&gt;=5.4.0, streaming=True, and an explicit language (Cohere has no language detection).\n'ct2'\n\n\nsample_rate\nint\nSample rate.\n16000\n\n\nchunk_size\nint\nChunk size in seconds.\n30\n\n\nalignment_strategy\nstr\nAlignment strategy (‘speech’ or ‘chunk’).\n'chunk'\n\n\ntext_normalizer_fn\ncallable\nFunction to normalize text before forced alignment.\ntext_normalizer\n\n\ntokenizer\nobject\nAn nltk tokenizer or a custom callable tokenizer that takes a string as input and returns a list of tuples (start_char, end_char), marking the spans/boundaries of sentences, paragraphs, or any other text unit of interest.\nNone\n\n\nbeam_size\nint\nNumber of beams for beam search. Recommended: 5 for ct2 and 1 for hf (beam search is slow in Hugging Face transformers).\n5\n\n\npatience\nfloat\nPatience. Only implemented in ct2.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. See HF source code for details\n1.0\n\n\nrepetition_penalty\nfloat\nSee HF source code for details.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text. Applies to Whisper backends (ct2, hf).\n250\n\n\nmax_new_tokens\nint\nMaximum number of new tokens to generate per chunk. Applies to the cohere backend.\n256\n\n\npunctuation\nbool\nEmit punctuation in Cohere transcriptions. Applies to the cohere backend only.\nTrue\n\n\ngenerate_kwargs\ndict\nExtra kwargs forwarded to model.generate() for the cohere backend (e.g. num_beams, length_penalty).\nNone\n\n\nstart_wildcard\nbool\nAdd start wildcard to forced alignment.\nFalse\n\n\nend_wildcard\nbool\nAdd end wildcard to forced alignment.\nFalse\n\n\nblank_id\nint | None\nBlank token ID of the emissions model (generally the pad token ID).\nNone\n\n\nword_boundary\nstr | None\nWord boundary character of the emissions model (usually “|”).\nNone\n\n\nindent\nint\nJSON indentation.\n2\n\n\nndigits\nint\nNumber of digits for rounding.\n5\n\n\nnum_workers_files\nint\nNumber of workers for file loading.\n2\n\n\nprefetch_factor_files\nint\nPrefetch factor for files.\n2\n\n\nbatch_size_features\nint\nBatch size for feature extraction.\n8\n\n\nnum_workers_features\nint\nNumber of workers for feature extraction.\n4\n\n\nstreaming\nbool\nUse streaming mode.\nTrue\n\n\nsave_json\nbool\nSave results to JSON.\nTrue\n\n\nsave_msgpack\nbool\nSave results to MessagePack.\nFalse\n\n\nsave_emissions\nbool\nSave emissions.\nTrue\n\n\nreturn_alignments\nbool\nReturn alignment results.\nFalse\n\n\ndelete_emissions\nbool\nWhether to delete emissions numpy files after processing.\nFalse\n\n\noutput_vad_dir\nstr\nOutput directory for VAD.\n'output/vad'\n\n\noutput_transcriptions_dir\nstr\nOutput directory for transcriptions.\n'output/transcriptions'\n\n\noutput_emissions_dir\nstr\nOutput directory for emissions.\n'output/emissions'\n\n\noutput_alignments_dir\nstr\nOutput directory for alignments.\n'output/alignments'\n\n\ncache_dir\nstr\nCache directory for transcription and emissions models.\n'models'\n\n\nhf_token\nstr or None\nHugging Face authentication token for gated models.\nNone\n\n\ndevice\nstr\nDevice to run models on. Default is cuda.\n'cuda'\n\n\n\n\n\n\nfrom pathlib import Path\nfrom easyaligner.text import load_tokenizer\nfrom easytranscriber.pipelines import pipeline\nfrom easytranscriber.text.normalization import text_normalizer\n\ntokenizer = load_tokenizer(\"english\")\naudio_files = [file.name for file in Path(\"data/en\").glob(\"*.wav\")]\npipeline(\n    vad_model=\"pyannote\",\n    emissions_model=\"facebook/wav2vec2-base-960h\",\n    transcription_model=\"distil-whisper/distil-large-v3.5\",\n    audio_paths=audio_files,\n    audio_dir=\"data/en\",\n    backend=\"ct2\",\n    language=\"en\", # None to perform language detection\n    tokenizer=tokenizer,\n    text_normalizer_fn=text_normalizer,\n    cache_dir=\"models\",\n)\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nlist[list[SpeechSegment]] or None\nIf return_alignments is True, returns a list of alignment mappings for each audio file. Otherwise, returns None (the alignments are saved to disk only).",
+    "text": "asr.ct2.transcribe(\n    model,\n    processor,\n    file_dataloader,\n    language=None,\n    task='transcribe',\n    batch_size=8,\n    beam_size=5,\n    patience=1.0,\n    length_penalty=1.0,\n    repetition_penalty=1.0,\n    no_repeat_ngram_size=0,\n    max_length=448,\n    suppress_blank=True,\n    num_workers=2,\n    prefetch_factor=2,\n    output_dir='output/transcriptions',\n)\nTranscribe audio files using CTranslate2 Whisper model.\nThis function processes audio files through a dataloader structure similar to the HuggingFace implementation, but uses ctranslate2 for inference.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nmodel\nctranslate2.models.Whisper\nCTranslate2 Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nWhisperProcessor for tokenization and decoding.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). If None, auto-detect.\nNone\n\n\nbatch_size\nint\nBatch size for feature processing.\n8\n\n\ntask\nstr\nTask type - ‘transcribe’ or ‘translate’.\n'transcribe'\n\n\nbeam_size\nint\nBeam size for search. Default is 5.\n5\n\n\npatience\nfloat\nBeam search patience factor. Default is 1.0.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nno_repeat_ngram_size\nint\nN-gram size for no repeat. Default is 0.\n0\n\n\nmax_length\nint\nMaximum output length. Default is 448.\n448\n\n\nsuppress_blank\nbool\nWhether to suppress blank tokens. Default is True.\nTrue\n\n\nnum_workers\nint\nNumber of workers for feature dataloader (file dataloader is created outside of this function).\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader (file dataloader is created outside of this function).\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'",
     "crumbs": [
       "Reference",
       "Transcription",
-      "pipelines.pipeline"
+      "asr.ct2.transcribe"
     ]
   },
   {
-    "objectID": "reference/pipelines.pipeline.html#parameters",
-    "href": "reference/pipelines.pipeline.html#parameters",
-    "title": "pipelines.pipeline",
+    "objectID": "reference/asr.ct2.transcribe.html#parameters",
+    "href": "reference/asr.ct2.transcribe.html#parameters",
+    "title": "asr.ct2.transcribe",
     "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nvad_model\nstr\nVoice Activity Detection model: “pyannote” or “silero”.\nrequired\n\n\nemissions_model\nstr\nHugging Face model ID for the emissions model (“org_name/model_name”).\nrequired\n\n\ntranscription_model\nstr\nPath to Hugging Face model ID for the transcription model (“org_name/model_name”).\nrequired\n\n\naudio_paths\nlist\nList of audio file paths.\nrequired\n\n\naudio_dir\nstr\nDirectory containing audio files.\nrequired\n\n\nspeeches\nlist[list[SpeechSegment]]\nExisting speech segments for alignment.\nNone\n\n\nbackend\nstr\nBackend to use for the transcription model: “ct2”, “hf”, or “cohere”. Default is “ct2”. The “cohere” backend requires transformers&gt;=5.4.0, streaming=True, and an explicit language (Cohere has no language detection).\n'ct2'\n\n\nsample_rate\nint\nSample rate.\n16000\n\n\nchunk_size\nint\nChunk size in seconds.\n30\n\n\nalignment_strategy\nstr\nAlignment strategy (‘speech’ or ‘chunk’).\n'chunk'\n\n\ntext_normalizer_fn\ncallable\nFunction to normalize text before forced alignment.\ntext_normalizer\n\n\ntokenizer\nobject\nAn nltk tokenizer or a custom callable tokenizer that takes a string as input and returns a list of tuples (start_char, end_char), marking the spans/boundaries of sentences, paragraphs, or any other text unit of interest.\nNone\n\n\nbeam_size\nint\nNumber of beams for beam search. Recommended: 5 for ct2 and 1 for hf (beam search is slow in Hugging Face transformers).\n5\n\n\npatience\nfloat\nPatience. Only implemented in ct2.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. See HF source code for details\n1.0\n\n\nrepetition_penalty\nfloat\nSee HF source code for details.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text. Applies to Whisper backends (ct2, hf).\n250\n\n\nmax_new_tokens\nint\nMaximum number of new tokens to generate per chunk. Applies to the cohere backend.\n256\n\n\npunctuation\nbool\nEmit punctuation in Cohere transcriptions. Applies to the cohere backend only.\nTrue\n\n\ngenerate_kwargs\ndict\nExtra kwargs forwarded to model.generate() for the cohere backend (e.g. num_beams, length_penalty).\nNone\n\n\nstart_wildcard\nbool\nAdd start wildcard to forced alignment.\nFalse\n\n\nend_wildcard\nbool\nAdd end wildcard to forced alignment.\nFalse\n\n\nblank_id\nint | None\nBlank token ID of the emissions model (generally the pad token ID).\nNone\n\n\nword_boundary\nstr | None\nWord boundary character of the emissions model (usually “|”).\nNone\n\n\nindent\nint\nJSON indentation.\n2\n\n\nndigits\nint\nNumber of digits for rounding.\n5\n\n\nnum_workers_files\nint\nNumber of workers for file loading.\n2\n\n\nprefetch_factor_files\nint\nPrefetch factor for files.\n2\n\n\nbatch_size_features\nint\nBatch size for feature extraction.\n8\n\n\nnum_workers_features\nint\nNumber of workers for feature extraction.\n4\n\n\nstreaming\nbool\nUse streaming mode.\nTrue\n\n\nsave_json\nbool\nSave results to JSON.\nTrue\n\n\nsave_msgpack\nbool\nSave results to MessagePack.\nFalse\n\n\nsave_emissions\nbool\nSave emissions.\nTrue\n\n\nreturn_alignments\nbool\nReturn alignment results.\nFalse\n\n\ndelete_emissions\nbool\nWhether to delete emissions numpy files after processing.\nFalse\n\n\noutput_vad_dir\nstr\nOutput directory for VAD.\n'output/vad'\n\n\noutput_transcriptions_dir\nstr\nOutput directory for transcriptions.\n'output/transcriptions'\n\n\noutput_emissions_dir\nstr\nOutput directory for emissions.\n'output/emissions'\n\n\noutput_alignments_dir\nstr\nOutput directory for alignments.\n'output/alignments'\n\n\ncache_dir\nstr\nCache directory for transcription and emissions models.\n'models'\n\n\nhf_token\nstr or None\nHugging Face authentication token for gated models.\nNone\n\n\ndevice\nstr\nDevice to run models on. Default is cuda.\n'cuda'",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nmodel\nctranslate2.models.Whisper\nCTranslate2 Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nWhisperProcessor for tokenization and decoding.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). If None, auto-detect.\nNone\n\n\nbatch_size\nint\nBatch size for feature processing.\n8\n\n\ntask\nstr\nTask type - ‘transcribe’ or ‘translate’.\n'transcribe'\n\n\nbeam_size\nint\nBeam size for search. Default is 5.\n5\n\n\npatience\nfloat\nBeam search patience factor. Default is 1.0.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nno_repeat_ngram_size\nint\nN-gram size for no repeat. Default is 0.\n0\n\n\nmax_length\nint\nMaximum output length. Default is 448.\n448\n\n\nsuppress_blank\nbool\nWhether to suppress blank tokens. Default is True.\nTrue\n\n\nnum_workers\nint\nNumber of workers for feature dataloader (file dataloader is created outside of this function).\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader (file dataloader is created outside of this function).\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'",
     "crumbs": [
       "Reference",
       "Transcription",
-      "pipelines.pipeline"
-    ]
-  },
-  {
-    "objectID": "reference/pipelines.pipeline.html#examples",
-    "href": "reference/pipelines.pipeline.html#examples",
-    "title": "pipelines.pipeline",
-    "section": "",
-    "text": "from pathlib import Path\nfrom easyaligner.text import load_tokenizer\nfrom easytranscriber.pipelines import pipeline\nfrom easytranscriber.text.normalization import text_normalizer\n\ntokenizer = load_tokenizer(\"english\")\naudio_files = [file.name for file in Path(\"data/en\").glob(\"*.wav\")]\npipeline(\n    vad_model=\"pyannote\",\n    emissions_model=\"facebook/wav2vec2-base-960h\",\n    transcription_model=\"distil-whisper/distil-large-v3.5\",\n    audio_paths=audio_files,\n    audio_dir=\"data/en\",\n    backend=\"ct2\",\n    language=\"en\", # None to perform language detection\n    tokenizer=tokenizer,\n    text_normalizer_fn=text_normalizer,\n    cache_dir=\"models\",\n)",
-    "crumbs": [
-      "Reference",
-      "Transcription",
-      "pipelines.pipeline"
-    ]
-  },
-  {
-    "objectID": "reference/pipelines.pipeline.html#returns",
-    "href": "reference/pipelines.pipeline.html#returns",
-    "title": "pipelines.pipeline",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\n\nlist[list[SpeechSegment]] or None\nIf return_alignments is True, returns a list of alignment mappings for each audio file. Otherwise, returns None (the alignments are saved to disk only).",
-    "crumbs": [
-      "Reference",
-      "Transcription",
-      "pipelines.pipeline"
-    ]
-  },
-  {
-    "objectID": "benchmarks.html",
-    "href": "benchmarks.html",
-    "title": "Benchmarks",
-    "section": "",
-    "text": "We present throughput comparisons between easytranscriber and WhisperX. See the github repository for details, and inference code.\nIn general, easytranscriber achieves a greater speedup on hardware with slower single-core CPU performance. The CPU bottlenecks performance in WhisperX due to the library’s use of sequential data loading, along with its CPU-based single-threaded forced alignment implementation.\n\n\n\n\neasytranscriber vs WhisperX\n\n\n\nAll easytranscriber benchmarks were run using the ctranslate2 backend for transcription.\n\nPyTorch version: 2.8.0\nCUDA: 12.8\nWhisperX version: 3.7.6\nModel: KBLab/kb-whisper-large\nLanguage: Swedish (sv)",
-    "crumbs": [
-      "Get Started",
-      "Benchmarks"
-    ]
-  },
-  {
-    "objectID": "reference/StreamingAudioFileDataset.html",
-    "href": "reference/StreamingAudioFileDataset.html",
-    "title": "StreamingAudioFileDataset",
-    "section": "",
-    "text": "data.dataset.StreamingAudioFileDataset(\n    metadata,\n    processor,\n    audio_dir='data',\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy='chunk',\n    return_raw_audio=False,\n)\nStreaming version of AudioFileDataset that reads audio chunks on-demand.\nInstead of loading entire audio files and chunking in memory, this dataset returns a StreamingAudioSliceDataset that lazily loads each chunk via ffmpeg.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nmetadata\nJSONMetadataDataset or list[AudioMetadata] or AudioMetadata\nMetadata source.\nrequired\n\n\nprocessor\ntransformers.Wav2Vec2Processor or transformers.WhisperProcessor\nProcessor for feature extraction.\nrequired\n\n\naudio_dir\nstr\nBase directory for audio files.\n'data'\n\n\nsample_rate\nint\nTarget sample rate for resampling.\n16000\n\n\nchunk_size\nint\nMaximum chunk size in seconds (for speech-based chunking).\n30\n\n\nalignment_strategy\nstr\n‘speech’ or ‘chunk’ - determines how chunks are defined.\n'chunk'\n\n\n\n\n\n\nimport torch\nfrom pathlib import Path\nfrom transformers import WhisperProcessor\nfrom easyaligner.data.collators import audiofile_collate_fn\nfrom easyaligner.data.dataset import JSONMetadataDataset\nfrom easytranscriber.data import StreamingAudioFileDataset\n\nAUDIO_DIR = \"data/en\"\njson_paths = [p.name for p in Path(\"output/vad\").glob(\"*.json\")]\n\nprocessor = WhisperProcessor.from_pretrained(\n    \"distil-whisper/distil-large-v3.5\", cache_dir=\"models\"\n)\n\njson_dataset = JSONMetadataDataset(\n    json_paths=[str(Path(\"output/vad\") / p) for p in json_paths]\n)\n\nfile_dataset = StreamingAudioFileDataset(\n    metadata=json_dataset,\n    processor=processor,\n    audio_dir=AUDIO_DIR,\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy=\"chunk\",\n)\n\nfile_dataloader = torch.utils.data.DataLoader(\n    file_dataset,\n    batch_size=1,\n    shuffle=False,\n    collate_fn=audiofile_collate_fn,\n    num_workers=2,\n    prefetch_factor=2,\n)",
-    "crumbs": [
-      "Reference",
-      "Datasets",
-      "StreamingAudioFileDataset"
-    ]
-  },
-  {
-    "objectID": "reference/StreamingAudioFileDataset.html#parameters",
-    "href": "reference/StreamingAudioFileDataset.html#parameters",
-    "title": "StreamingAudioFileDataset",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nmetadata\nJSONMetadataDataset or list[AudioMetadata] or AudioMetadata\nMetadata source.\nrequired\n\n\nprocessor\ntransformers.Wav2Vec2Processor or transformers.WhisperProcessor\nProcessor for feature extraction.\nrequired\n\n\naudio_dir\nstr\nBase directory for audio files.\n'data'\n\n\nsample_rate\nint\nTarget sample rate for resampling.\n16000\n\n\nchunk_size\nint\nMaximum chunk size in seconds (for speech-based chunking).\n30\n\n\nalignment_strategy\nstr\n‘speech’ or ‘chunk’ - determines how chunks are defined.\n'chunk'",
-    "crumbs": [
-      "Reference",
-      "Datasets",
-      "StreamingAudioFileDataset"
-    ]
-  },
-  {
-    "objectID": "reference/StreamingAudioFileDataset.html#examples",
-    "href": "reference/StreamingAudioFileDataset.html#examples",
-    "title": "StreamingAudioFileDataset",
-    "section": "",
-    "text": "import torch\nfrom pathlib import Path\nfrom transformers import WhisperProcessor\nfrom easyaligner.data.collators import audiofile_collate_fn\nfrom easyaligner.data.dataset import JSONMetadataDataset\nfrom easytranscriber.data import StreamingAudioFileDataset\n\nAUDIO_DIR = \"data/en\"\njson_paths = [p.name for p in Path(\"output/vad\").glob(\"*.json\")]\n\nprocessor = WhisperProcessor.from_pretrained(\n    \"distil-whisper/distil-large-v3.5\", cache_dir=\"models\"\n)\n\njson_dataset = JSONMetadataDataset(\n    json_paths=[str(Path(\"output/vad\") / p) for p in json_paths]\n)\n\nfile_dataset = StreamingAudioFileDataset(\n    metadata=json_dataset,\n    processor=processor,\n    audio_dir=AUDIO_DIR,\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy=\"chunk\",\n)\n\nfile_dataloader = torch.utils.data.DataLoader(\n    file_dataset,\n    batch_size=1,\n    shuffle=False,\n    collate_fn=audiofile_collate_fn,\n    num_workers=2,\n    prefetch_factor=2,\n)",
-    "crumbs": [
-      "Reference",
-      "Datasets",
-      "StreamingAudioFileDataset"
-    ]
-  },
-  {
-    "objectID": "reference/AudioChunk.html",
-    "href": "reference/AudioChunk.html",
-    "title": "AudioChunk",
-    "section": "",
-    "text": "data.datamodel.AudioChunk()\nSegment of audio, usually created by Voice Activity Detection (VAD).\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the chunk in seconds.\n\n\nend\nfloat\nEnd time of the chunk in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription for the chunk.\n\n\nduration\n(float, optional)\nDuration of the chunk in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames a chunk spans.\n\n\nnum_logits\n(int, optional)\nNumber of model output logits for the chunk.\n\n\nlanguage\n(str, optional)\nLanguage code for the chunk.\n\n\nlanguage_prob\n(float, optional)\nProbability/confidence of the detected language.\n\n\nid\n(str or int, optional)\nOptional unique identifier for the chunk.",
-    "crumbs": [
-      "Reference",
-      "Data Models",
-      "AudioChunk"
-    ]
-  },
-  {
-    "objectID": "reference/AudioChunk.html#attributes",
-    "href": "reference/AudioChunk.html#attributes",
-    "title": "AudioChunk",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the chunk in seconds.\n\n\nend\nfloat\nEnd time of the chunk in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription for the chunk.\n\n\nduration\n(float, optional)\nDuration of the chunk in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames a chunk spans.\n\n\nnum_logits\n(int, optional)\nNumber of model output logits for the chunk.\n\n\nlanguage\n(str, optional)\nLanguage code for the chunk.\n\n\nlanguage_prob\n(float, optional)\nProbability/confidence of the detected language.\n\n\nid\n(str or int, optional)\nOptional unique identifier for the chunk.",
-    "crumbs": [
-      "Reference",
-      "Data Models",
-      "AudioChunk"
+      "asr.ct2.transcribe"
     ]
   },
   {
@@ -460,152 +217,123 @@
     ]
   },
   {
-    "objectID": "reference/WordSegment.html",
-    "href": "reference/WordSegment.html",
-    "title": "WordSegment",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About easytranscriber",
     "section": "",
-    "text": "data.datamodel.WordSegment()\nWord-level alignment data.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\ntext\nstr\nThe aligned word’s text.\n\n\nstart\nfloat\nStart time of the word in seconds.\n\n\nend\nfloat\nEnd time of the word in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the word alignment.",
-    "crumbs": [
-      "Reference",
-      "Data Models",
-      "WordSegment"
-    ]
+    "text": "easytranscriber was developed by Faton Rekathati at KBLab. KBLab is a national research infrastructure for digital research and development of artificial intelligence at the National Library of Sweden."
   },
   {
-    "objectID": "reference/WordSegment.html#attributes",
-    "href": "reference/WordSegment.html#attributes",
-    "title": "WordSegment",
-    "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\ntext\nstr\nThe aligned word’s text.\n\n\nstart\nfloat\nStart time of the word in seconds.\n\n\nend\nfloat\nEnd time of the word in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the word alignment.",
-    "crumbs": [
-      "Reference",
-      "Data Models",
-      "WordSegment"
-    ]
+    "objectID": "about.html#license",
+    "href": "about.html#license",
+    "title": "About easytranscriber",
+    "section": "License",
+    "text": "License\neasytranscriber is licensed under the MIT License."
   },
   {
-    "objectID": "reference/SpeechSegment.html",
-    "href": "reference/SpeechSegment.html",
-    "title": "SpeechSegment",
-    "section": "",
-    "text": "data.datamodel.SpeechSegment()\nA slice of the audio file that contains speech of interest to be aligned.\nA SpeechSegment may be a speech given by a single speaker, a dialogue between multiple speakers, a book chapter, or whatever unit of organisational abstraction the user prefers.\nIf no SpeechSegment is defined, one will automatically be added, treating the entire audio as a single speech.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nstart\n(float, optional)\nStart time of the speech segment in seconds.\n\n\nend\n(float, optional)\nEnd time of the speech segment in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription (manual, or created by ASR).\n\n\ntext_spans\n(list[tuple[int, int]], optional)\nOptional (start_char, end_char) indices in the text that allows for a custom segmentation of the text to be aligned to audio. Can for example be used to perform alignment on paragraph, sentence, or other optional levels of granularity.\n\n\nchunks\nlist[AudioChunk]\nAudio chunks from which we create w2v2 logits (if alignment_strategy is ‘chunk’). When ASR is used, these chunks will additionally contain the transcribed text of the chunk. The ASR output will be used for forced alignment within the chunk.\n\n\nalignments\nlist[AlignmentSegment]\nAligned text segments.\n\n\nduration\n(float, optional)\nDuration of the speech segment in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames speech segment spans.\n\n\nspeech_id\n(str or int, optional)\nOptional unique identifier for the speech segment.\n\n\nprobs_path\n(str, optional)\nPath to saved wav2vec2 emissions/probs.\n\n\nmetadata\n(dict, optional)\nOptional extra metadata such as speaker name, etc.",
-    "crumbs": [
-      "Reference",
-      "Data Models",
-      "SpeechSegment"
-    ]
+    "objectID": "about.html#acknowledgements",
+    "href": "about.html#acknowledgements",
+    "title": "About easytranscriber",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\neasytranscriber draws heavy inspiration from WhisperX (Bain et al., 2023).\nThe forced alignment component is based on Pytorch’s forced alignment API, which implements a GPU-accelerated version of the Viterbi algorithm as described in Pratap et al., 2024.\nLibriVox audiobooks in the public domain are used as examples in the easytranscriber tutorials."
   },
   {
-    "objectID": "reference/SpeechSegment.html#attributes",
-    "href": "reference/SpeechSegment.html#attributes",
-    "title": "SpeechSegment",
+    "objectID": "get-started/overview.html",
+    "href": "get-started/overview.html",
+    "title": "Overview",
     "section": "",
-    "text": "Name\nType\nDescription\n\n\n\n\nstart\n(float, optional)\nStart time of the speech segment in seconds.\n\n\nend\n(float, optional)\nEnd time of the speech segment in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription (manual, or created by ASR).\n\n\ntext_spans\n(list[tuple[int, int]], optional)\nOptional (start_char, end_char) indices in the text that allows for a custom segmentation of the text to be aligned to audio. Can for example be used to perform alignment on paragraph, sentence, or other optional levels of granularity.\n\n\nchunks\nlist[AudioChunk]\nAudio chunks from which we create w2v2 logits (if alignment_strategy is ‘chunk’). When ASR is used, these chunks will additionally contain the transcribed text of the chunk. The ASR output will be used for forced alignment within the chunk.\n\n\nalignments\nlist[AlignmentSegment]\nAligned text segments.\n\n\nduration\n(float, optional)\nDuration of the speech segment in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames speech segment spans.\n\n\nspeech_id\n(str or int, optional)\nOptional unique identifier for the speech segment.\n\n\nprobs_path\n(str, optional)\nPath to saved wav2vec2 emissions/probs.\n\n\nmetadata\n(dict, optional)\nOptional extra metadata such as speaker name, etc.",
-    "crumbs": [
-      "Reference",
-      "Data Models",
-      "SpeechSegment"
-    ]
-  },
-  {
-    "objectID": "reference/asr.hf.transcribe.html",
-    "href": "reference/asr.hf.transcribe.html",
-    "title": "asr.hf.transcribe",
-    "section": "",
-    "text": "asr.hf.transcribe(\n    model,\n    processor,\n    file_dataloader,\n    language=None,\n    task='transcribe',\n    batch_size=4,\n    beam_size=3,\n    length_penalty=1.0,\n    repetition_penalty=1.0,\n    max_length=250,\n    num_workers=2,\n    prefetch_factor=2,\n    output_dir='output/transcriptions',\n    device='cuda',\n)\nTranscribe audio files using HuggingFace Whisper model.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nmodel\ntransformers.WhisperForConditionalGeneration\nHuggingFace Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nHuggingFace Whisper processor.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). Default is None (auto-detect).\nNone\n\n\nbatch_size\nint\nBatch size for inference.\n4\n\n\nbeam_size\nint\nNumber of beams for beam search. Default is 3.\n3\n\n\nlength_penalty\nfloat\nLength penalty. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text. Default is 250.\n250\n\n\nnum_workers\nint\nNumber of workers for feature dataloader.\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader.\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'\n\n\ndevice\nstr\nDevice to run inference on. Default is cuda.\n'cuda'",
-    "crumbs": [
-      "Reference",
-      "Transcription",
-      "asr.hf.transcribe"
-    ]
-  },
-  {
-    "objectID": "reference/asr.hf.transcribe.html#parameters",
-    "href": "reference/asr.hf.transcribe.html#parameters",
-    "title": "asr.hf.transcribe",
-    "section": "",
-    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nmodel\ntransformers.WhisperForConditionalGeneration\nHuggingFace Whisper model.\nrequired\n\n\nprocessor\ntransformers.WhisperProcessor\nHuggingFace Whisper processor.\nrequired\n\n\nfile_dataloader\ntorch.utils.data.DataLoader\nDataLoader yielding audio file datasets.\nrequired\n\n\nlanguage\nstr\nLanguage code (e.g., ‘sv’, ‘en’). Default is None (auto-detect).\nNone\n\n\nbatch_size\nint\nBatch size for inference.\n4\n\n\nbeam_size\nint\nNumber of beams for beam search. Default is 3.\n3\n\n\nlength_penalty\nfloat\nLength penalty. Default is 1.0.\n1.0\n\n\nrepetition_penalty\nfloat\nRepetition penalty. Default is 1.0.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text. Default is 250.\n250\n\n\nnum_workers\nint\nNumber of workers for feature dataloader.\n2\n\n\nprefetch_factor\nint\nPrefetch factor for feature dataloader.\n2\n\n\noutput_dir\nstr\nDirectory to save transcription JSON files. Default is output/transcriptions.\n'output/transcriptions'\n\n\ndevice\nstr\nDevice to run inference on. Default is cuda.\n'cuda'",
-    "crumbs": [
-      "Reference",
-      "Transcription",
-      "asr.hf.transcribe"
-    ]
-  },
-  {
-    "objectID": "get-started/pipelines.html",
-    "href": "get-started/pipelines.html",
-    "title": "Pipelines",
-    "section": "",
-    "text": "The overview guide shows how to run the full transcription pipeline with a single pipeline() call. Under the hood, this runs four stages in sequence: VAD, transcription, emission extraction, and forced alignment.\nFor more control – e.g. tuning parameters per stage, parallelizing on different hardware, or resuming from intermediate outputs – you can run each stage independently. This page walks through each step.",
+    "text": "easytranscriber is an automatic speech recognition (ASR) library that offers similar functionality to WhisperX – transcription with precise word-level timestamps. While the transcription step itself is well-optimized in most ASR libraries, the surrounding pipeline components (data loading, emission extraction, forced alignment) are often bottlenecks. easytranscriber addresses these inefficiencies by implementing:\nAdditionally, easytranscriber supports flexible regex-based normalization of transcribed text as a means of improving forced alignment quality. The normalizations are reversible, meaning that the original text can be recovered after forced alignment. easytranscriber also supports using Hugging Face transformers as the backend for inference.\nTogether, these optimizations result in speedups of 35% to 102% compared to WhisperX2, depending on the hardware configuration used.",
     "crumbs": [
       "Get Started",
-      "Pipelines"
+      "Overview"
     ]
   },
   {
-    "objectID": "get-started/pipelines.html#setup",
-    "href": "get-started/pipelines.html#setup",
-    "title": "Pipelines",
-    "section": "Setup",
-    "text": "Setup\nWe’ll use a longer version of the A Tale of Two Cities dataset (8 chapters) from the same tutorial repository used in the overview.\nimport torch\nfrom pathlib import Path\nfrom huggingface_hub import snapshot_download\n\nsnapshot_download(\n    \"Lauler/easytranscriber_tutorials\",\n    repo_type=\"dataset\",\n    local_dir=\"data/tutorials\",\n    allow_patterns=\"tale-of-two-cities_long-en/*\",\n    max_workers=4,\n)\n\nAUDIO_DIR = \"data/tutorials/tale-of-two-cities_long-en\"\naudio_files = [file.name for file in Path(AUDIO_DIR).glob(\"*\")]\njson_paths = [Path(p).with_suffix(\".json\") for p in audio_files]",
+    "objectID": "get-started/overview.html#installation",
+    "href": "get-started/overview.html#installation",
+    "title": "Overview",
+    "section": "Installation",
+    "text": "Installation\n\nWith GPU support\npip install easytranscriber --extra-index-url https://download.pytorch.org/whl/cu128\n\n\n\n\n\n\n\n\nTip\n\n\n\nRemove --extra-index-url if you want a CPU-only installation.\n\n\n\n\nUsing uv\nWhen installing with uv, it will select the appropriate PyTorch version automatically (CPU for macOS, CUDA for Linux/Windows/ARM):\nuv pip install easytranscriber",
     "crumbs": [
       "Get Started",
-      "Pipelines"
+      "Overview"
     ]
   },
   {
-    "objectID": "get-started/pipelines.html#vad",
-    "href": "get-started/pipelines.html#vad",
-    "title": "Pipelines",
-    "section": "Step 1: Voice Activity Detection (VAD)",
-    "text": "Step 1: Voice Activity Detection (VAD)\nVAD segments each audio file into regions containing speech. The output is a set of JSON files containing AudioMetadata with SpeechSegment objects, each of which holds a list of AudioChunk objects1.\n1 See the output schema for details on the data structure.from easyaligner.pipelines import vad_pipeline\nfrom easyaligner.vad.pyannote import load_vad_model\n\nmodel_vad = load_vad_model()\n\nvad_pipeline(\n    model=model_vad,\n    audio_paths=audio_files,\n    audio_dir=AUDIO_DIR,\n    chunk_size=30,\n    sample_rate=16000,\n    batch_size=1,\n    num_workers=1, # No need for too many workers\n    prefetch_factor=2,\n    save_json=True,\n    output_dir=\"output/vad\",\n)\nThe chunk_size parameter controls the maximum duration (in seconds) of each VAD chunk, when smaller chunks are merged2.\n2 See merge_chunks in silero and pyannote VAD implementations\n\n\n\n\n\nNote\n\n\n\nThe default VAD model is from pyannote and is gated. You need to accept terms and conditions and authenticate with Hugging Face. Alternatively, use silero VAD (CPU-only, no authentication required):\nfrom easyaligner.vad.silero import load_vad_model\nmodel_vad = load_vad_model()\n\n\nSee the vad_pipeline reference for all parameters.",
+    "objectID": "get-started/overview.html#usage",
+    "href": "get-started/overview.html#usage",
+    "title": "Overview",
+    "section": "Usage",
+    "text": "Usage\nFor our quickstart guide, we will be transcribing a short clip of the first book and chapter of “A Tale of Two Cities” from LibriVox 3.\n3 The original recording can be found here\nfrom pathlib import Path\n\nfrom easyaligner.text import load_tokenizer\nfrom huggingface_hub import snapshot_download\n\nfrom easytranscriber.pipelines import pipeline\nfrom easytranscriber.text.normalization import text_normalizer\n\nsnapshot_download(\n    \"Lauler/easytranscriber_tutorials\",\n    repo_type=\"dataset\",\n    local_dir=\"data/tutorials\",\n    allow_patterns=\"tale-of-two-cities_short-en/*\",  # Wildcard pattern\n    # max_workers=4,\n)\n\n\ntokenizer = load_tokenizer(\"english\") # For sentence tokenization in forced alignment\naudio_files = [file.name for file in Path(\"data/tutorials/tale-of-two-cities_short-en\").glob(\"*\")]\npipeline(\n    vad_model=\"pyannote\",\n    emissions_model=\"facebook/wav2vec2-base-960h\",\n    transcription_model=\"distil-whisper/distil-large-v3.5\",\n    audio_paths=audio_files,\n    audio_dir=\"data/tutorials/tale-of-two-cities_short-en\",\n    backend=\"ct2\", # easytranscriber handles conversion between ct2 and hf formats. \n    language=\"en\",\n    tokenizer=tokenizer,\n    text_normalizer_fn=text_normalizer,\n    cache_dir=\"models\",\n)\n\nYou can specify any repo with a Whisper model on Hugging Face. easytranscriber will handle the download and conversion to ct24.\n4 Ctranslate2 provides C++ optimized inference for Whisper\n\n\n\n\n\nTip\n\n\n\nA list of suitable emission models for different languages can be found in the WhisperX library.\nHugging Face transformers is also supported as a backend for transcription with backend=\"hf\".\nCohere Transcribe is also supported as a backend with backend=\"cohere\" (requires transformers&gt;=5.4.0 and the arg language to be explicitly specified).\n\n\n\n\n\n\n\n\nNote\n\n\n\nThe default VAD model is from pyannote. Their models are gated. To use them, you need to create a Hugging Face access token and accept terms and conditions. Then, either i) save the access token at ~/.cache/huggingface/token or ii) install and use the Hugging Face CLI and run hf auth login. See the Hugging Face Hub quick start guide for more details.\nAlternatively, you can switch to silero VAD (CPU-only, slightly slower). Silero can be used without authentication, and performs well. See the vad_model parameter in the docs.\n\n\n\nOutput\nBy default, easytranscriber outputs a JSON file for each stage of the pipeline (VAD, emissions, transcription, forced alignment). The final aligned output can be found in output/alignments. The directory structure will look as follows:\noutput\n├── vad                  ← SpeechSegments with AudioChunks\n├── transcriptions       ← + transcribed text per chunk\n├── emissions            ← + emission file paths (.npy)\n└── alignments           ← + AlignmentSegments with word timestamps\n\nDemo\nLet’s preview the results as an interactive demo. The text transcript below the audio player will automatically be highlighted in sync with the words spoken in the audio.\n\n\nSample audio\n\n\nA Tale of Two Cities — Chapter 1 (LibriVox)\n\n  \n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nYou can click anywhere in the text to jump to that point (sentence) in the audio. The text is also highlighted when you drag the audio slider!\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nTo browse and search your own transcriptions with the same synchronized playback, see easysearch.\n\n\n\n\nReading the output\nLet’s read the final aligned output and print out one of the aligned segments. We can either read it using Python’s build-in json library, or use a convenience function provided in easyaligner that reads in the file as an AudioMetadata object.\n\nfrom easyaligner.data.utils import read_json\nfrom pprint import pprint\n\nresults = read_json(\"output/alignments/taleoftwocities_01_dickens_64kb_trimmed.json\")\n# Print the 3rd aligned segment of the first speech\npprint(results.speeches[0].alignments[2].to_dict())\n\n{'duration': 2.02164,\n 'end': 8.57463,\n 'id': '0-0-2',\n 'score': 0.99115,\n 'start': 6.55299,\n 'text': 'It was the best of times. ',\n 'words': [WordSegment(text='It ', start=6.55299, end=6.59302, score=0.99927),\n           WordSegment(text='was ', start=6.67308, end=6.77316, score=0.99967),\n           WordSegment(text='the ', start=6.85323, end=6.95331, score=0.9834),\n           WordSegment(text='best ', start=7.27357, end=7.59383, score=0.9998),\n           WordSegment(text='of ', start=7.73395, end=7.77398, score=0.99927),\n           WordSegment(text='times. ', start=7.89408, end=8.57463, score=0.96552)]}",
     "crumbs": [
       "Get Started",
-      "Pipelines"
+      "Overview"
     ]
   },
   {
-    "objectID": "get-started/pipelines.html#transcription",
-    "href": "get-started/pipelines.html#transcription",
-    "title": "Pipelines",
-    "section": "Step 2: Transcription",
-    "text": "Step 2: Transcription\nTranscription runs a Whisper model over each VAD chunk to produce text. easytranscriber supports two backends:\n\nctranslate2 — C++ optimized inference for Whisper. Recommended for production use.\ntransformers — Hugging Face’s native implementation.\n\n\nCTranslate2 backend\nimport ctranslate2\nfrom transformers import WhisperProcessor\nfrom easyaligner.data.collators import audiofile_collate_fn\nfrom easyaligner.data.dataset import JSONMetadataDataset\nfrom easytranscriber.asr.ct2 import transcribe\nfrom easytranscriber.data import StreamingAudioFileDataset\n\nprocessor = WhisperProcessor.from_pretrained(\n    \"distil-whisper/distil-large-v3.5\", cache_dir=\"models\"\n)\nmodel = ctranslate2.models.Whisper(\"models/ct2/distil-large-v3.5\", device=\"cuda\")\n\njson_dataset = JSONMetadataDataset(\n    json_paths=[str(Path(\"output/vad\") / p) for p in json_paths]\n)\n\nfile_dataset = StreamingAudioFileDataset(\n    metadata=json_dataset,\n    processor=processor,\n    audio_dir=AUDIO_DIR,\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy=\"chunk\",\n)\n\nfile_dataloader = torch.utils.data.DataLoader(\n    file_dataset,\n    batch_size=1,\n    shuffle=False,\n    collate_fn=audiofile_collate_fn,\n    num_workers=2,\n    prefetch_factor=2,\n)\n\ntranscribe(\n    model=model,\n    processor=processor,\n    file_dataloader=file_dataloader,\n    batch_size=16,\n    output_dir=\"output/transcriptions\",\n    language=\"en\",\n    task=\"transcribe\",\n    beam_size=5,\n)\n\n\n\n\n\n\n\n\nNote\n\n\n\neasytranscriber handles automatic conversion from Hugging Face format to CTranslate2 format when using the unified pipeline() function. When running the decomposed pipeline, you however need to either, i) convert the model yourself with hf_to_ct2_converter, or ii) download a pre-converted model, or iii) run pipeline() once so it handles the conversion for you.\n\n\n\n\nHugging Face backend\nfrom transformers import WhisperForConditionalGeneration, WhisperProcessor\nfrom easytranscriber.asr.hf import transcribe\n\nprocessor = WhisperProcessor.from_pretrained(\n    \"distil-whisper/distil-large-v3.5\", cache_dir=\"models\"\n)\nmodel = WhisperForConditionalGeneration.from_pretrained(\n    \"distil-whisper/distil-large-v3.5\", cache_dir=\"models\"\n).to(\"cuda\")\n\n# ... create file_dataloader as above ...\n\ntranscribe(\n    model=model,\n    processor=processor,\n    file_dataloader=file_dataloader,\n    batch_size=8,\n    num_workers=2,\n    prefetch_factor=2,\n    output_dir=\"output/transcriptions\",\n    language=\"en\",\n    beam_size=1,  # beam search is slow in HF transformers\n    device=\"cuda\",\n)\nSee the transcribe (ct2) and transcribe (hf) reference for all parameters.\n\n\nData loading\nBoth backends require a DataLoader that yields batches of audio chunks. easytranscriber provides StreamingAudioFileDataset, which reads audio chunks on demand via ffmpeg rather than loading entire files into memory. This is the recommended approach for trancribing with predictable memory usage3.\n3 Under the hood, each chunk is decoded by an ffmpeg subprocess. The overhead is negligible or non-existent in most use cases, since GPU inference, not data loading, acts as the primary bottleneckAlternatively, easyaligner provides AudioFileDataset, which loads the full audio file into memory before chunking. This can potentially be slightly faster for some datasets, but uses more memory.",
+    "objectID": "get-started/overview.html#schema",
+    "href": "get-started/overview.html#schema",
+    "title": "Overview",
+    "section": "Schema",
+    "text": "Schema\nSee the reference page of the documentation for a detailed overview of the data models used in easytranscriber. Below is a simplified schema of the final output after forced alignment of our example audio file.\n\nAudioMetadata\n├── audio_path       \"taleoftwocities_01_dickens_64kb_trimmed.mp3\"\n├── sample_rate      16000\n├── duration         428.93\n├── metadata         null\n└── speeches[]\n    └── SpeechSegment\n        ├── speech_id       0\n        ├── start           1.769\n        ├── end             423.948\n        ├── text            null\n        ├── text_spans      null\n        ├── duration        422.179\n        ├── audio_frames    null\n        ├── probs_path      \"taleoftwocities_01_dickens_64kb_trimmed/0.npy\"\n        ├── metadata        null\n        │\n        ├── chunks[]                          ← VAD segments, transcribed by ASR\n        │   ├── [0] AudioChunk\n        │   │   ├── start         1.769\n        │   │   ├── end           28.162\n        │   │   ├── text          \"Book 1. Chapter 1, The Period. It was the\n        │   │   │                  best of times. It was the worst of times...\"\n        │   │   ├── duration      26.393\n        │   │   ├── audio_frames  422280\n        │   │   └── num_logits    1319\n        │   ├── [1] AudioChunk\n        │   │   ├── start         29.039\n        │   │   ├── end           57.085\n        │   │   └── text          \"It was the winter of despair...\"\n        │   └── ... (19 chunks total)\n        │\n        └── alignments[]                      ← sentence-level, with word timestamps\n            ├── [0] AlignmentSegment\n            │   ├── start         1.769\n            │   ├── end           2.169\n            │   ├── text          \"Book 1. \"\n            │   ├── duration      0.400\n            │   ├── score         0.482\n            │   └── words[]\n            │       ├── { text: \"Book \",  start: 1.769, end: 1.909, score: 0.964 }\n            │       └── { text: \"1. \",    start: 2.149, end: 2.169, score: 0.0   }\n            ├── [1] AlignmentSegment\n            │   ├── start         3.671\n            │   ├── end           5.112\n            │   ├── text          \"Chapter 1, The Period. \"\n            │   ├── duration      1.441\n            │   ├── score         0.737\n            │   └── words[]\n            │       ├── { text: \"Chapter \", start: 3.671, end: 3.991, score: 0.982 }\n            │       ├── { text: \"1, \",      start: 4.111, end: 4.131, score: 0.0   }\n            │       ├── { text: \"The \",     start: 4.471, end: 4.551, score: 0.972 }\n            │       └── { text: \"Period. \", start: 4.651, end: 5.112, score: 0.992 }\n            ├── [2] AlignmentSegment\n            │   ├── text          \"It was the best of times. \"\n            │   └── words[]\n            │       ├── { text: \"It \",     start: 6.553, end: 6.593, score: 0.999 }\n            │       ├── { text: \"was \",    start: 6.673, end: 6.773, score: 1.000 }\n            │       ├── { text: \"the \",    start: 6.853, end: ...                 }\n            │       └── ...\n            └── ...",
     "crumbs": [
       "Get Started",
-      "Pipelines"
+      "Overview"
     ]
   },
   {
-    "objectID": "get-started/pipelines.html#emissions",
-    "href": "get-started/pipelines.html#emissions",
-    "title": "Pipelines",
-    "section": "Step 3: Emission extraction",
-    "text": "Step 3: Emission extraction\nEmission extraction runs a wav2vec2 model over the audio to produce frame-level CTC logits. These emissions are then used for forced alignment in the next step.\nfrom transformers import AutoModelForCTC, Wav2Vec2Processor\nfrom easyaligner.data.dataset import JSONMetadataDataset\nfrom easyaligner.pipelines import emissions_pipeline\n\nmodel_w2v = AutoModelForCTC.from_pretrained(\n    \"facebook/wav2vec2-base-960h\", cache_dir=\"models\"\n).to(\"cuda\").half()\nprocessor_w2v = Wav2Vec2Processor.from_pretrained(\n    \"facebook/wav2vec2-base-960h\", cache_dir=\"models\"\n)\n\njson_dataset = JSONMetadataDataset(\n    json_paths=[str(Path(\"output/transcriptions\") / p) for p in json_paths]\n)\n\nemissions_pipeline(\n    model=model_w2v,\n    processor=processor_w2v,\n    metadata=json_dataset,\n    audio_dir=AUDIO_DIR,\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy=\"chunk\",\n    num_workers_files=2,\n    prefetch_factor_files=2,\n    batch_size_features=4,\n    num_workers_features=4,\n    save_json=True,\n    save_emissions=True,\n    output_dir=\"output/emissions\",\n)\n\n\n\n\n\n\nTip\n\n\n\nA list of suitable wav2vec2 emission models for different languages can be found in the WhisperX library.\n\n\nSee the emissions_pipeline reference for all parameters.",
+    "objectID": "get-started/text-processing.html",
+    "href": "get-started/text-processing.html",
+    "title": "Text processing",
+    "section": "",
+    "text": "easytranscriber supports custom regex-based text normalization functions to preprocess ASR outputs before alignment. By reconciling the outputs of the ASR model and the emissions model, the forced alignment algorithm has an opportunity to perform better.\nWav2vec2 models tend to produce all lowercase or all uppercase outputs without punctuation, whereas Whisper models output mixed case text with punctuation. Whisper furthermore outputs non-verbal tokens (often within parentheses or brackets), symbols and abbreviations.\nNormalizing these outputs can substantially improve the quality of forced alignment.",
     "crumbs": [
       "Get Started",
-      "Pipelines"
+      "Text processing"
     ]
   },
   {
-    "objectID": "get-started/pipelines.html#alignment",
-    "href": "get-started/pipelines.html#alignment",
-    "title": "Pipelines",
-    "section": "Step 4: Forced alignment",
-    "text": "Step 4: Forced alignment\nForced alignment matches the transcribed text to the audio at word level using the CTC emissions from the previous step. This is where word-level and sentence-level timestamps are produced.\nfrom easyaligner.data.collators import metadata_collate_fn\nfrom easyaligner.data.dataset import JSONMetadataDataset\nfrom easyaligner.pipelines import alignment_pipeline\nfrom easytranscriber.text.normalization import text_normalizer\n\njson_dataset = JSONMetadataDataset(\n    json_paths=[str(Path(\"output/emissions\") / p) for p in json_paths]\n)\naudiometa_loader = torch.utils.data.DataLoader(\n    json_dataset,\n    batch_size=1,\n    num_workers=4,\n    prefetch_factor=2,\n    collate_fn=metadata_collate_fn,\n)\n\nalignment_pipeline(\n    dataloader=audiometa_loader,\n    text_normalizer_fn=text_normalizer,\n    processor=processor_w2v,\n    tokenizer=None,  # or pass an nltk PunktTokenizer for sentence segmentation\n    emissions_dir=\"output/emissions\",\n    output_dir=\"output/alignments\",\n    alignment_strategy=\"chunk\",\n    start_wildcard=True,\n    end_wildcard=True,\n    blank_id=0,\n    word_boundary=\"|\",\n    chunk_size=30,\n    ndigits=5,\n    save_json=True,\n    device=\"cuda\",\n)\nThe text_normalizer_fn preprocesses ASR output before alignment (lowercasing, removing punctuation, etc.). See text processing for details on writing custom normalization functions.\nThe tokenizer parameter controls how the aligned text is segmented. Passing an nltk PunktTokenizer produces sentence-level alignment segments. See sentence tokenization for details.\nSee the alignment_pipeline reference for all parameters.",
+    "objectID": "get-started/text-processing.html#normalization",
+    "href": "get-started/text-processing.html#normalization",
+    "title": "Text processing",
+    "section": "Normalization",
+    "text": "Normalization\nLet’s apply some basic normalization to our example from A Tale of Two Cities. To explore the effect of our normalizations, we will import the SpanMapNormalizer class from the easyaligner library, and remove punctuation.\n\nfrom easyaligner.text.normalization import SpanMapNormalizer\n\ntext = \"\"\"Book 1. Chapter 1, The Period. It was the best of times. It was the worst of times. \nIt was the age of wisdom. It was the age of foolishness. It was the epoch of belief. \nIt was the epoch of incredulity. It was the season of light. \nIt was the season of darkness. It was the spring of hope.\"\"\"\n\nnormalizer = SpanMapNormalizer(text)\nnormalizer.transform(r\"[^\\w\\s]\", \"\")  # Remove punctuation and special characters\nprint(normalizer.current_text)\n\nBook 1 Chapter 1 The Period It was the best of times It was the worst of times \nIt was the age of wisdom It was the age of foolishness It was the epoch of belief \nIt was the epoch of incredulity It was the season of light \nIt was the season of darkness It was the spring of hope\n\n\nLet’s make it all lowercase as well:\n\nnormalizer.transform(r\"\\S+\", lambda m: m.group().lower())  #\nprint(normalizer.current_text)\n\nbook 1 chapter 1 the period it was the best of times it was the worst of times \nit was the age of wisdom it was the age of foolishness it was the epoch of belief \nit was the epoch of incredulity it was the season of light \nit was the season of darkness it was the spring of hope\n\n\nWe may also want to convert the numbers to their word forms. The library num2words2 can help with this:\n2 pip install num2words\nfrom num2words import num2words\nnormalizer.transform(r\"\\d+\", lambda m: num2words(int(m.group())))  # Convert numbers to words\nprint(normalizer.current_text)\n\nbook one chapter one the period it was the best of times it was the worst of times \nit was the age of wisdom it was the age of foolishness it was the epoch of belief \nit was the epoch of incredulity it was the season of light \nit was the season of darkness it was the spring of hope\n\n\nWhen you’re feeling done, it’s a good idea to always apply whitespace normalization as the final transformation step:\n\nnormalizer.transform(r\"\\s+\", \" \")  # Normalize whitespace to a single space\nnormalizer.transform(r\"^\\s+|\\s+$\", \"\")  # Strip leading and trailing whitespace\nprint(normalizer.current_text)\n\nbook one chapter one the period it was the best of times it was the worst of times it was the age of wisdom it was the age of foolishness it was the epoch of belief it was the epoch of incredulity it was the season of light it was the season of darkness it was the spring of hope\n\n\nOur text is now ready for forced alignment. However, if we want to recover the original text, it does not suffice to pass only the normalized text to the forced alignment algorithm. We also need to pass a mapping between the original text and the normalized text. Any user supplied text normalization function in easytranscriber needs to return the following two objects:\n\nmapping = normalizer.get_token_map()\nnormalized_tokens = [item[\"normalized_token\"] for item in mapping]\n\nLet’s inspect what’s in the first five items of the mapping:\n\nfor item in mapping[:5]:\n    print(item)\n\n{'normalized_token': 'book', 'text': 'Book', 'start_char': 0, 'end_char': 4}\n{'normalized_token': 'one', 'text': '1', 'start_char': 5, 'end_char': 6}\n{'normalized_token': 'chapter', 'text': 'Chapter', 'start_char': 8, 'end_char': 15}\n{'normalized_token': 'one', 'text': '1', 'start_char': 16, 'end_char': 17}\n{'normalized_token': 'the', 'text': 'The', 'start_char': 19, 'end_char': 22}\n\n\nWe can see that normalized_token and text contain the token in the normalized and original text, respectively, while start_char and end_char indicate the character indices of the token in the original text.\n\n\n\n\n\n\nTip\n\n\n\nWhen you are done testing your transformations, combine them into a function that takes in a string and outputs the normalized tokens and the mapping. See below for an example of how the default normalization function in easytranscriber is implemented.\n\n\n\nDefault text_normalizer\neasytranscriber provides a conservative default text normalization function. This default function is applied3 unless the user specificies their own function.\n3 See pipeline and the arg text_normalizer_fnHere is the default normalization function, for reference:\n\ndef text_normalizer(text: str) -&gt; str:\n    \"\"\"\n    Default text normalization function.\n\n    Applies\n        - Unicode normalization (NFKC)\n        - Lowercasing\n        - Normalization of whitespace\n        - Remove parentheses and special characters\n\n    Parameters\n    ----------\n    text : str\n        Input text to normalize.\n\n    Returns\n    -------\n    tuple\n        Tuple containing (normalized_tokens, mapping).\n    \"\"\"\n    # Unicode normalization\n    normalizer = SpanMapNormalizer(text)\n    # # Remove parentheses, brackets, stars, and their content\n    # normalizer.transform(r\"\\(.*?\\)\", \"\")\n    # normalizer.transform(r\"\\[.*?\\]\", \"\")\n    # normalizer.transform(r\"\\*.*?\\*\", \"\")\n\n    # Unicode normalization on tokens and lowercasing\n    normalizer.transform(r\"\\S+\", lambda m: unicodedata.normalize(\"NFKC\", m.group()))\n    normalizer.transform(r\"\\S+\", lambda m: m.group().lower())\n    normalizer.transform(r\"[^\\w\\s]\", \"\")  # Remove punctuation and special characters\n    normalizer.transform(r\"\\s+\", \" \")  # Normalize whitespace to a single space\n    normalizer.transform(r\"^\\s+|\\s+$\", \"\")  # Strip leading and trailing whitespace\n\n    mapping = normalizer.get_token_map()\n    normalized_tokens = [item[\"normalized_token\"] for item in mapping]\n    return normalized_tokens, mapping\n\nIn many cases you may want, or need, to be more careful with how removal of punctuation and special characters is applied. Words with hyphens, em dashes, or scores in sports games (e.g. 3-2) are examples where you may want to insert a whitespace instead of removing the characters entirely. Beware, also, that the ordering of the transformations can sometimes matter.\n\n\n\n\n\n\n\n\nWarning\n\n\n\nAvoid overly broad regex patterns. A pattern that matches everything will produce a useless mapping.\n\n\nIt is highly recommended to inspect the intermediate outputs of the applied transformations as described in the previous section.",
     "crumbs": [
       "Get Started",
-      "Pipelines"
+      "Text processing"
     ]
   },
   {
-    "objectID": "get-started/pipelines.html#output",
-    "href": "get-started/pipelines.html#output",
-    "title": "Pipelines",
-    "section": "Output",
-    "text": "Output\nEach step writes JSON files to its output directory. The final aligned output in output/alignments contains the complete data structure with word-level timestamps. See the output schema in the overview for the full structure.\noutput\n├── vad                  ← SpeechSegments with AudioChunks\n├── transcriptions       ← + transcribed text per chunk\n├── emissions            ← + emission file paths (.npy)\n└── alignments           ← + AlignmentSegments with word timestamps\nSince each step reads JSON from the previous step’s output directory, you can resume the pipeline from any intermediate stage. For example, if you want to re-run alignment with different parameters, you can skip VAD, transcription, and emission extraction entirely.",
+    "objectID": "get-started/text-processing.html#sentence-tokenization",
+    "href": "get-started/text-processing.html#sentence-tokenization",
+    "title": "Text processing",
+    "section": "Sentence tokenization",
+    "text": "Sentence tokenization\neasytranscriber supports passing a tokenizer to the pipeline function that segments the input text according to the user’s preferences. The best matching start and end timestamps will be assigned to each tokenized segment based on the outputs from forced alignment.\nFor sentence tokenization, we recommend using nltk.tokenize.punkt.PunktTokenizer. The load_tokenizer function from the easyaligner library provides a convenient way to load an appropriate tokenizer for your language:\n\nfrom easyaligner.text import load_tokenizer\ntokenizer = load_tokenizer(language=\"swedish\")\n\nPunktTokenizer maintains lists of abbreviations to avoid incorrectly splitting sentences. We can inspect the loaded tokenizer’s list of abbreviations as follows:\n\nprint(\"Current abbreviations:\", tokenizer._params.abbrev_types)\nprint(f\"Length of abbreviations: {len(tokenizer._params.abbrev_types)}\")\n\nCurrent abbreviations: {'rif', 'kap', 'ital', 'dna', 'p.g.a', 'o.d', 'm.m', 'e.m', 'ppm', 'osv', 's.k', 'bf', 'jaha', 'f.m', 'hushålln.-sällsk', 'resp', 'z.b', 'föreläsn.-fören', 'ordf', 'landtm.-förb', 'o.s.v', 'åk', 'hrm', 'bl.a', 'p', 'f.d', 'ex', 'rskr', 't.o.m', 'fig', 'f.n', 'mom', 'prop', 'postst', 't.ex', 'mm', 'aig', 'm.fl', 'dir'}\nLength of abbreviations: 39\n\n\nOne may however want to add custom abbreviations to the tokenizer depending on the domain of one’s data:\n\nnew_abbreviations = {\n    \"d.v.s\",\n    \"dvs\",\n    \"fr.o.m\",\n    \"kungl\",\n    \"m.m\",\n    \"milj\",\n    \"o.s.v\",\n    \"t.o.m\",\n    \"milj.kr\",\n}\ntokenizer._params.abbrev_types.update(new_abbreviations)\nprint(\"Updated abbreviations:\", tokenizer._params.abbrev_types)\nprint(f\"Length of abbreviations: {len(tokenizer._params.abbrev_types)}\")\n\nUpdated abbreviations: {'rif', 'kap', 'ital', 'dna', 'p.g.a', 'o.d', 'm.m', 'e.m', 'ppm', 'osv', 's.k', 'bf', 'jaha', 'dvs', 'f.m', 'hushålln.-sällsk', 'fr.o.m', 'resp', 'z.b', 'milj', 'föreläsn.-fören', 'ordf', 'landtm.-förb', 'o.s.v', 'åk', 'hrm', 'bl.a', 'p', 'f.d', 'ex', 'rskr', 't.o.m', 'fig', 'f.n', 'mom', 'milj.kr', 'prop', 'd.v.s', 'postst', 't.ex', 'mm', 'aig', 'm.fl', 'kungl', 'dir'}\nLength of abbreviations: 45\n\n\nWhen you are done: pass the tokenizer to the pipeline function in easytranscriber.",
     "crumbs": [
       "Get Started",
-      "Pipelines"
+      "Text processing"
+    ]
+  },
+  {
+    "objectID": "get-started/text-processing.html#arbitrary-tokenization",
+    "href": "get-started/text-processing.html#arbitrary-tokenization",
+    "title": "Text processing",
+    "section": "Arbitrary tokenization",
+    "text": "Arbitrary tokenization\nThe tokenizer argument of the pipeline function accepts any function that takes in a string and outputs a list of (start_char, end_char) tuples. Custom tokenization functions can therefore be defined based on any arbitrary segmentation of the source text.\nIn our case, however, the source text is Whisper’s ASR output. Since Whisper inference is restricted to 30-second audio chunks, a coarser level of tokenization (e.g. paragraph-level) is generally infeasible.\nArbitrary tokenization is more relevant when aligning existing ground truth texts with longer audio segments. easytranscriber is built on top of easyaligner, which is designed for this purpose. A more in-depth guide on custom tokenization will be available in the easyaligner documentation.",
+    "crumbs": [
+      "Get Started",
+      "Text processing"
+    ]
+  },
+  {
+    "objectID": "benchmarks.html",
+    "href": "benchmarks.html",
+    "title": "Benchmarks",
+    "section": "",
+    "text": "We present throughput comparisons between easytranscriber and WhisperX. See the github repository for details, and inference code.\nIn general, easytranscriber achieves a greater speedup on hardware with slower single-core CPU performance. The CPU bottlenecks performance in WhisperX due to the library’s use of sequential data loading, along with its CPU-based single-threaded forced alignment implementation.\n\n\n\n\neasytranscriber vs WhisperX\n\n\n\nAll easytranscriber benchmarks were run using the ctranslate2 backend for transcription.\n\nPyTorch version: 2.8.0\nCUDA: 12.8\nWhisperX version: 3.7.6\nModel: KBLab/kb-whisper-large\nLanguage: Swedish (sv)",
+    "crumbs": [
+      "Get Started",
+      "Benchmarks"
     ]
   },
   {
@@ -686,24 +414,296 @@
     ]
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About easytranscriber",
+    "objectID": "get-started/pipelines.html",
+    "href": "get-started/pipelines.html",
+    "title": "Pipelines",
     "section": "",
-    "text": "easytranscriber was developed by Faton Rekathati at KBLab. KBLab is a national research infrastructure for digital research and development of artificial intelligence at the National Library of Sweden."
+    "text": "The overview guide shows how to run the full transcription pipeline with a single pipeline() call. Under the hood, this runs four stages in sequence: VAD, transcription, emission extraction, and forced alignment.\nFor more control – e.g. tuning parameters per stage, parallelizing on different hardware, or resuming from intermediate outputs – you can run each stage independently. This page walks through each step.",
+    "crumbs": [
+      "Get Started",
+      "Pipelines"
+    ]
   },
   {
-    "objectID": "about.html#license",
-    "href": "about.html#license",
-    "title": "About easytranscriber",
-    "section": "License",
-    "text": "License\neasytranscriber is licensed under the MIT License."
+    "objectID": "get-started/pipelines.html#setup",
+    "href": "get-started/pipelines.html#setup",
+    "title": "Pipelines",
+    "section": "Setup",
+    "text": "Setup\nWe’ll use a longer version of the A Tale of Two Cities dataset (8 chapters) from the same tutorial repository used in the overview.\nimport torch\nfrom pathlib import Path\nfrom huggingface_hub import snapshot_download\n\nsnapshot_download(\n    \"Lauler/easytranscriber_tutorials\",\n    repo_type=\"dataset\",\n    local_dir=\"data/tutorials\",\n    allow_patterns=\"tale-of-two-cities_long-en/*\",\n    max_workers=4,\n)\n\nAUDIO_DIR = \"data/tutorials/tale-of-two-cities_long-en\"\naudio_files = [file.name for file in Path(AUDIO_DIR).glob(\"*\")]\njson_paths = [Path(p).with_suffix(\".json\") for p in audio_files]",
+    "crumbs": [
+      "Get Started",
+      "Pipelines"
+    ]
   },
   {
-    "objectID": "about.html#acknowledgements",
-    "href": "about.html#acknowledgements",
-    "title": "About easytranscriber",
-    "section": "Acknowledgements",
-    "text": "Acknowledgements\neasytranscriber draws heavy inspiration from WhisperX (Bain et al., 2023).\nThe forced alignment component is based on Pytorch’s forced alignment API, which implements a GPU-accelerated version of the Viterbi algorithm as described in Pratap et al., 2024.\nLibriVox audiobooks in the public domain are used as examples in the easytranscriber tutorials."
+    "objectID": "get-started/pipelines.html#vad",
+    "href": "get-started/pipelines.html#vad",
+    "title": "Pipelines",
+    "section": "Step 1: Voice Activity Detection (VAD)",
+    "text": "Step 1: Voice Activity Detection (VAD)\nVAD segments each audio file into regions containing speech. The output is a set of JSON files containing AudioMetadata with SpeechSegment objects, each of which holds a list of AudioChunk objects1.\n1 See the output schema for details on the data structure.from easyaligner.pipelines import vad_pipeline\nfrom easyaligner.vad.pyannote import load_vad_model\n\nmodel_vad = load_vad_model()\n\nvad_pipeline(\n    model=model_vad,\n    audio_paths=audio_files,\n    audio_dir=AUDIO_DIR,\n    chunk_size=30,\n    sample_rate=16000,\n    batch_size=1,\n    num_workers=1, # No need for too many workers\n    prefetch_factor=2,\n    save_json=True,\n    output_dir=\"output/vad\",\n)\nThe chunk_size parameter controls the maximum duration (in seconds) of each VAD chunk, when smaller chunks are merged2.\n2 See merge_chunks in silero and pyannote VAD implementations\n\n\n\n\n\nNote\n\n\n\nThe default VAD model is from pyannote and is gated. You need to accept terms and conditions and authenticate with Hugging Face. Alternatively, use silero VAD (CPU-only, no authentication required):\nfrom easyaligner.vad.silero import load_vad_model\nmodel_vad = load_vad_model()\n\n\nSee the vad_pipeline reference for all parameters.",
+    "crumbs": [
+      "Get Started",
+      "Pipelines"
+    ]
+  },
+  {
+    "objectID": "get-started/pipelines.html#transcription",
+    "href": "get-started/pipelines.html#transcription",
+    "title": "Pipelines",
+    "section": "Step 2: Transcription",
+    "text": "Step 2: Transcription\nTranscription runs a Whisper model over each VAD chunk to produce text. easytranscriber supports two backends:\n\nctranslate2 — C++ optimized inference for Whisper. Recommended for production use.\ntransformers — Hugging Face’s native implementation.\n\n\nCTranslate2 backend\nimport ctranslate2\nfrom transformers import WhisperProcessor\nfrom easyaligner.data.collators import audiofile_collate_fn\nfrom easyaligner.data.dataset import JSONMetadataDataset\nfrom easytranscriber.asr.ct2 import transcribe\nfrom easytranscriber.data import StreamingAudioFileDataset\n\nprocessor = WhisperProcessor.from_pretrained(\n    \"distil-whisper/distil-large-v3.5\", cache_dir=\"models\"\n)\nmodel = ctranslate2.models.Whisper(\"models/ct2/distil-large-v3.5\", device=\"cuda\")\n\njson_dataset = JSONMetadataDataset(\n    json_paths=[str(Path(\"output/vad\") / p) for p in json_paths]\n)\n\nfile_dataset = StreamingAudioFileDataset(\n    metadata=json_dataset,\n    processor=processor,\n    audio_dir=AUDIO_DIR,\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy=\"chunk\",\n)\n\nfile_dataloader = torch.utils.data.DataLoader(\n    file_dataset,\n    batch_size=1,\n    shuffle=False,\n    collate_fn=audiofile_collate_fn,\n    num_workers=2,\n    prefetch_factor=2,\n)\n\ntranscribe(\n    model=model,\n    processor=processor,\n    file_dataloader=file_dataloader,\n    batch_size=16,\n    output_dir=\"output/transcriptions\",\n    language=\"en\",\n    task=\"transcribe\",\n    beam_size=5,\n)\n\n\n\n\n\n\n\n\nNote\n\n\n\neasytranscriber handles automatic conversion from Hugging Face format to CTranslate2 format when using the unified pipeline() function. When running the decomposed pipeline, you however need to either, i) convert the model yourself with hf_to_ct2_converter, or ii) download a pre-converted model, or iii) run pipeline() once so it handles the conversion for you.\n\n\n\n\nHugging Face backend\nfrom transformers import WhisperForConditionalGeneration, WhisperProcessor\nfrom easytranscriber.asr.hf import transcribe\n\nprocessor = WhisperProcessor.from_pretrained(\n    \"distil-whisper/distil-large-v3.5\", cache_dir=\"models\"\n)\nmodel = WhisperForConditionalGeneration.from_pretrained(\n    \"distil-whisper/distil-large-v3.5\", cache_dir=\"models\"\n).to(\"cuda\")\n\n# ... create file_dataloader as above ...\n\ntranscribe(\n    model=model,\n    processor=processor,\n    file_dataloader=file_dataloader,\n    batch_size=8,\n    num_workers=2,\n    prefetch_factor=2,\n    output_dir=\"output/transcriptions\",\n    language=\"en\",\n    beam_size=1,  # beam search is slow in HF transformers\n    device=\"cuda\",\n)\nSee the transcribe (ct2) and transcribe (hf) reference for all parameters.\n\n\nData loading\nBoth backends require a DataLoader that yields batches of audio chunks. easytranscriber provides StreamingAudioFileDataset, which reads audio chunks on demand via ffmpeg rather than loading entire files into memory. This is the recommended approach for trancribing with predictable memory usage3.\n3 Under the hood, each chunk is decoded by an ffmpeg subprocess. The overhead is negligible or non-existent in most use cases, since GPU inference, not data loading, acts as the primary bottleneckAlternatively, easyaligner provides AudioFileDataset, which loads the full audio file into memory before chunking. This can potentially be slightly faster for some datasets, but uses more memory.",
+    "crumbs": [
+      "Get Started",
+      "Pipelines"
+    ]
+  },
+  {
+    "objectID": "get-started/pipelines.html#emissions",
+    "href": "get-started/pipelines.html#emissions",
+    "title": "Pipelines",
+    "section": "Step 3: Emission extraction",
+    "text": "Step 3: Emission extraction\nEmission extraction runs a wav2vec2 model over the audio to produce frame-level CTC logits. These emissions are then used for forced alignment in the next step.\nfrom transformers import AutoModelForCTC, Wav2Vec2Processor\nfrom easyaligner.data.dataset import JSONMetadataDataset\nfrom easyaligner.pipelines import emissions_pipeline\n\nmodel_w2v = AutoModelForCTC.from_pretrained(\n    \"facebook/wav2vec2-base-960h\", cache_dir=\"models\"\n).to(\"cuda\").half()\nprocessor_w2v = Wav2Vec2Processor.from_pretrained(\n    \"facebook/wav2vec2-base-960h\", cache_dir=\"models\"\n)\n\njson_dataset = JSONMetadataDataset(\n    json_paths=[str(Path(\"output/transcriptions\") / p) for p in json_paths]\n)\n\nemissions_pipeline(\n    model=model_w2v,\n    processor=processor_w2v,\n    metadata=json_dataset,\n    audio_dir=AUDIO_DIR,\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy=\"chunk\",\n    num_workers_files=2,\n    prefetch_factor_files=2,\n    batch_size_features=4,\n    num_workers_features=4,\n    save_json=True,\n    save_emissions=True,\n    output_dir=\"output/emissions\",\n)\n\n\n\n\n\n\nTip\n\n\n\nA list of suitable wav2vec2 emission models for different languages can be found in the WhisperX library.\n\n\nSee the emissions_pipeline reference for all parameters.",
+    "crumbs": [
+      "Get Started",
+      "Pipelines"
+    ]
+  },
+  {
+    "objectID": "get-started/pipelines.html#alignment",
+    "href": "get-started/pipelines.html#alignment",
+    "title": "Pipelines",
+    "section": "Step 4: Forced alignment",
+    "text": "Step 4: Forced alignment\nForced alignment matches the transcribed text to the audio at word level using the CTC emissions from the previous step. This is where word-level and sentence-level timestamps are produced.\nfrom easyaligner.data.collators import metadata_collate_fn\nfrom easyaligner.data.dataset import JSONMetadataDataset\nfrom easyaligner.pipelines import alignment_pipeline\nfrom easytranscriber.text.normalization import text_normalizer\n\njson_dataset = JSONMetadataDataset(\n    json_paths=[str(Path(\"output/emissions\") / p) for p in json_paths]\n)\naudiometa_loader = torch.utils.data.DataLoader(\n    json_dataset,\n    batch_size=1,\n    num_workers=4,\n    prefetch_factor=2,\n    collate_fn=metadata_collate_fn,\n)\n\nalignment_pipeline(\n    dataloader=audiometa_loader,\n    text_normalizer_fn=text_normalizer,\n    processor=processor_w2v,\n    tokenizer=None,  # or pass an nltk PunktTokenizer for sentence segmentation\n    emissions_dir=\"output/emissions\",\n    output_dir=\"output/alignments\",\n    alignment_strategy=\"chunk\",\n    start_wildcard=True,\n    end_wildcard=True,\n    blank_id=0,\n    word_boundary=\"|\",\n    chunk_size=30,\n    ndigits=5,\n    save_json=True,\n    device=\"cuda\",\n)\nThe text_normalizer_fn preprocesses ASR output before alignment (lowercasing, removing punctuation, etc.). See text processing for details on writing custom normalization functions.\nThe tokenizer parameter controls how the aligned text is segmented. Passing an nltk PunktTokenizer produces sentence-level alignment segments. See sentence tokenization for details.\nSee the alignment_pipeline reference for all parameters.",
+    "crumbs": [
+      "Get Started",
+      "Pipelines"
+    ]
+  },
+  {
+    "objectID": "get-started/pipelines.html#output",
+    "href": "get-started/pipelines.html#output",
+    "title": "Pipelines",
+    "section": "Output",
+    "text": "Output\nEach step writes JSON files to its output directory. The final aligned output in output/alignments contains the complete data structure with word-level timestamps. See the output schema in the overview for the full structure.\noutput\n├── vad                  ← SpeechSegments with AudioChunks\n├── transcriptions       ← + transcribed text per chunk\n├── emissions            ← + emission file paths (.npy)\n└── alignments           ← + AlignmentSegments with word timestamps\nSince each step reads JSON from the previous step’s output directory, you can resume the pipeline from any intermediate stage. For example, if you want to re-run alignment with different parameters, you can skip VAD, transcription, and emission extraction entirely.",
+    "crumbs": [
+      "Get Started",
+      "Pipelines"
+    ]
+  },
+  {
+    "objectID": "reference/WordSegment.html",
+    "href": "reference/WordSegment.html",
+    "title": "WordSegment",
+    "section": "",
+    "text": "data.datamodel.WordSegment()\nWord-level alignment data.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\ntext\nstr\nThe aligned word’s text.\n\n\nstart\nfloat\nStart time of the word in seconds.\n\n\nend\nfloat\nEnd time of the word in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the word alignment.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "WordSegment"
+    ]
+  },
+  {
+    "objectID": "reference/WordSegment.html#attributes",
+    "href": "reference/WordSegment.html#attributes",
+    "title": "WordSegment",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\ntext\nstr\nThe aligned word’s text.\n\n\nstart\nfloat\nStart time of the word in seconds.\n\n\nend\nfloat\nEnd time of the word in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the word alignment.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "WordSegment"
+    ]
+  },
+  {
+    "objectID": "reference/pipelines.pipeline.html",
+    "href": "reference/pipelines.pipeline.html",
+    "title": "pipelines.pipeline",
+    "section": "",
+    "text": "pipelines.pipeline(\n    vad_model,\n    emissions_model,\n    transcription_model,\n    audio_paths,\n    audio_dir,\n    backend='ct2',\n    speeches=None,\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy='chunk',\n    text_normalizer_fn=text_normalizer,\n    tokenizer=None,\n    language=None,\n    task='transcribe',\n    beam_size=5,\n    max_length=250,\n    max_new_tokens=256,\n    repetition_penalty=1.0,\n    length_penalty=1.0,\n    patience=1.0,\n    no_repeat_ngram_size=0,\n    punctuation=True,\n    generate_kwargs=None,\n    start_wildcard=False,\n    end_wildcard=False,\n    blank_id=None,\n    word_boundary=None,\n    indent=2,\n    ndigits=5,\n    num_workers_files=2,\n    prefetch_factor_files=2,\n    batch_size_features=8,\n    num_workers_features=4,\n    streaming=True,\n    save_json=True,\n    save_msgpack=False,\n    save_emissions=True,\n    return_alignments=False,\n    delete_emissions=False,\n    output_vad_dir='output/vad',\n    output_transcriptions_dir='output/transcriptions',\n    output_emissions_dir='output/emissions',\n    output_alignments_dir='output/alignments',\n    cache_dir='models',\n    hf_token=None,\n    device='cuda',\n)\nRun the full transcription pipeline (VAD -&gt; Transcribe -&gt; Emissions -&gt; Align).\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nvad_model\nstr\nVoice Activity Detection model: “pyannote” or “silero”.\nrequired\n\n\nemissions_model\nstr\nHugging Face model ID for the emissions model (“org_name/model_name”).\nrequired\n\n\ntranscription_model\nstr\nPath to Hugging Face model ID for the transcription model (“org_name/model_name”).\nrequired\n\n\naudio_paths\nlist\nList of audio file paths.\nrequired\n\n\naudio_dir\nstr\nDirectory containing audio files.\nrequired\n\n\nspeeches\nlist[list[SpeechSegment]]\nExisting speech segments for alignment.\nNone\n\n\nbackend\nstr\nBackend to use for the transcription model: “ct2”, “hf”, or “cohere”. Default is “ct2”. The “cohere” backend requires transformers&gt;=5.4.0, streaming=True, and an explicit language (Cohere has no language detection).\n'ct2'\n\n\nsample_rate\nint\nSample rate.\n16000\n\n\nchunk_size\nint\nChunk size in seconds.\n30\n\n\nalignment_strategy\nstr\nAlignment strategy (‘speech’ or ‘chunk’).\n'chunk'\n\n\ntext_normalizer_fn\ncallable\nFunction to normalize text before forced alignment.\ntext_normalizer\n\n\ntokenizer\nobject\nAn nltk tokenizer or a custom callable tokenizer that takes a string as input and returns a list of tuples (start_char, end_char), marking the spans/boundaries of sentences, paragraphs, or any other text unit of interest.\nNone\n\n\nbeam_size\nint\nNumber of beams for beam search. Recommended: 5 for ct2 and 1 for hf (beam search is slow in Hugging Face transformers).\n5\n\n\npatience\nfloat\nPatience. Only implemented in ct2.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. See HF source code for details\n1.0\n\n\nrepetition_penalty\nfloat\nSee HF source code for details.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text. Applies to Whisper backends (ct2, hf).\n250\n\n\nmax_new_tokens\nint\nMaximum number of new tokens to generate per chunk. Applies to the cohere backend.\n256\n\n\npunctuation\nbool\nEmit punctuation in Cohere transcriptions. Applies to the cohere backend only.\nTrue\n\n\ngenerate_kwargs\ndict\nExtra kwargs forwarded to model.generate() for the cohere backend (e.g. num_beams, length_penalty).\nNone\n\n\nstart_wildcard\nbool\nAdd start wildcard to forced alignment.\nFalse\n\n\nend_wildcard\nbool\nAdd end wildcard to forced alignment.\nFalse\n\n\nblank_id\nint | None\nBlank token ID of the emissions model (generally the pad token ID).\nNone\n\n\nword_boundary\nstr | None\nWord boundary character of the emissions model (usually “|”).\nNone\n\n\nindent\nint\nJSON indentation.\n2\n\n\nndigits\nint\nNumber of digits for rounding.\n5\n\n\nnum_workers_files\nint\nNumber of workers for file loading.\n2\n\n\nprefetch_factor_files\nint\nPrefetch factor for files.\n2\n\n\nbatch_size_features\nint\nBatch size for feature extraction.\n8\n\n\nnum_workers_features\nint\nNumber of workers for feature extraction.\n4\n\n\nstreaming\nbool\nUse streaming mode.\nTrue\n\n\nsave_json\nbool\nSave results to JSON.\nTrue\n\n\nsave_msgpack\nbool\nSave results to MessagePack.\nFalse\n\n\nsave_emissions\nbool\nSave emissions.\nTrue\n\n\nreturn_alignments\nbool\nReturn alignment results.\nFalse\n\n\ndelete_emissions\nbool\nWhether to delete emissions numpy files after processing.\nFalse\n\n\noutput_vad_dir\nstr\nOutput directory for VAD.\n'output/vad'\n\n\noutput_transcriptions_dir\nstr\nOutput directory for transcriptions.\n'output/transcriptions'\n\n\noutput_emissions_dir\nstr\nOutput directory for emissions.\n'output/emissions'\n\n\noutput_alignments_dir\nstr\nOutput directory for alignments.\n'output/alignments'\n\n\ncache_dir\nstr\nCache directory for transcription and emissions models.\n'models'\n\n\nhf_token\nstr or None\nHugging Face authentication token for gated models.\nNone\n\n\ndevice\nstr\nDevice to run models on. Default is cuda.\n'cuda'\n\n\n\n\n\n\nfrom pathlib import Path\nfrom easyaligner.text import load_tokenizer\nfrom easytranscriber.pipelines import pipeline\nfrom easytranscriber.text.normalization import text_normalizer\n\ntokenizer = load_tokenizer(\"english\")\naudio_files = [file.name for file in Path(\"data/en\").glob(\"*.wav\")]\npipeline(\n    vad_model=\"pyannote\",\n    emissions_model=\"facebook/wav2vec2-base-960h\",\n    transcription_model=\"distil-whisper/distil-large-v3.5\",\n    audio_paths=audio_files,\n    audio_dir=\"data/en\",\n    backend=\"ct2\",\n    language=\"en\", # None to perform language detection\n    tokenizer=tokenizer,\n    text_normalizer_fn=text_normalizer,\n    cache_dir=\"models\",\n)\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nlist[list[SpeechSegment]] or None\nIf return_alignments is True, returns a list of alignment mappings for each audio file. Otherwise, returns None (the alignments are saved to disk only).",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "pipelines.pipeline"
+    ]
+  },
+  {
+    "objectID": "reference/pipelines.pipeline.html#parameters",
+    "href": "reference/pipelines.pipeline.html#parameters",
+    "title": "pipelines.pipeline",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nvad_model\nstr\nVoice Activity Detection model: “pyannote” or “silero”.\nrequired\n\n\nemissions_model\nstr\nHugging Face model ID for the emissions model (“org_name/model_name”).\nrequired\n\n\ntranscription_model\nstr\nPath to Hugging Face model ID for the transcription model (“org_name/model_name”).\nrequired\n\n\naudio_paths\nlist\nList of audio file paths.\nrequired\n\n\naudio_dir\nstr\nDirectory containing audio files.\nrequired\n\n\nspeeches\nlist[list[SpeechSegment]]\nExisting speech segments for alignment.\nNone\n\n\nbackend\nstr\nBackend to use for the transcription model: “ct2”, “hf”, or “cohere”. Default is “ct2”. The “cohere” backend requires transformers&gt;=5.4.0, streaming=True, and an explicit language (Cohere has no language detection).\n'ct2'\n\n\nsample_rate\nint\nSample rate.\n16000\n\n\nchunk_size\nint\nChunk size in seconds.\n30\n\n\nalignment_strategy\nstr\nAlignment strategy (‘speech’ or ‘chunk’).\n'chunk'\n\n\ntext_normalizer_fn\ncallable\nFunction to normalize text before forced alignment.\ntext_normalizer\n\n\ntokenizer\nobject\nAn nltk tokenizer or a custom callable tokenizer that takes a string as input and returns a list of tuples (start_char, end_char), marking the spans/boundaries of sentences, paragraphs, or any other text unit of interest.\nNone\n\n\nbeam_size\nint\nNumber of beams for beam search. Recommended: 5 for ct2 and 1 for hf (beam search is slow in Hugging Face transformers).\n5\n\n\npatience\nfloat\nPatience. Only implemented in ct2.\n1.0\n\n\nlength_penalty\nfloat\nLength penalty for beam search. See HF source code for details\n1.0\n\n\nrepetition_penalty\nfloat\nSee HF source code for details.\n1.0\n\n\nmax_length\nint\nMaximum length of generated text. Applies to Whisper backends (ct2, hf).\n250\n\n\nmax_new_tokens\nint\nMaximum number of new tokens to generate per chunk. Applies to the cohere backend.\n256\n\n\npunctuation\nbool\nEmit punctuation in Cohere transcriptions. Applies to the cohere backend only.\nTrue\n\n\ngenerate_kwargs\ndict\nExtra kwargs forwarded to model.generate() for the cohere backend (e.g. num_beams, length_penalty).\nNone\n\n\nstart_wildcard\nbool\nAdd start wildcard to forced alignment.\nFalse\n\n\nend_wildcard\nbool\nAdd end wildcard to forced alignment.\nFalse\n\n\nblank_id\nint | None\nBlank token ID of the emissions model (generally the pad token ID).\nNone\n\n\nword_boundary\nstr | None\nWord boundary character of the emissions model (usually “|”).\nNone\n\n\nindent\nint\nJSON indentation.\n2\n\n\nndigits\nint\nNumber of digits for rounding.\n5\n\n\nnum_workers_files\nint\nNumber of workers for file loading.\n2\n\n\nprefetch_factor_files\nint\nPrefetch factor for files.\n2\n\n\nbatch_size_features\nint\nBatch size for feature extraction.\n8\n\n\nnum_workers_features\nint\nNumber of workers for feature extraction.\n4\n\n\nstreaming\nbool\nUse streaming mode.\nTrue\n\n\nsave_json\nbool\nSave results to JSON.\nTrue\n\n\nsave_msgpack\nbool\nSave results to MessagePack.\nFalse\n\n\nsave_emissions\nbool\nSave emissions.\nTrue\n\n\nreturn_alignments\nbool\nReturn alignment results.\nFalse\n\n\ndelete_emissions\nbool\nWhether to delete emissions numpy files after processing.\nFalse\n\n\noutput_vad_dir\nstr\nOutput directory for VAD.\n'output/vad'\n\n\noutput_transcriptions_dir\nstr\nOutput directory for transcriptions.\n'output/transcriptions'\n\n\noutput_emissions_dir\nstr\nOutput directory for emissions.\n'output/emissions'\n\n\noutput_alignments_dir\nstr\nOutput directory for alignments.\n'output/alignments'\n\n\ncache_dir\nstr\nCache directory for transcription and emissions models.\n'models'\n\n\nhf_token\nstr or None\nHugging Face authentication token for gated models.\nNone\n\n\ndevice\nstr\nDevice to run models on. Default is cuda.\n'cuda'",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "pipelines.pipeline"
+    ]
+  },
+  {
+    "objectID": "reference/pipelines.pipeline.html#examples",
+    "href": "reference/pipelines.pipeline.html#examples",
+    "title": "pipelines.pipeline",
+    "section": "",
+    "text": "from pathlib import Path\nfrom easyaligner.text import load_tokenizer\nfrom easytranscriber.pipelines import pipeline\nfrom easytranscriber.text.normalization import text_normalizer\n\ntokenizer = load_tokenizer(\"english\")\naudio_files = [file.name for file in Path(\"data/en\").glob(\"*.wav\")]\npipeline(\n    vad_model=\"pyannote\",\n    emissions_model=\"facebook/wav2vec2-base-960h\",\n    transcription_model=\"distil-whisper/distil-large-v3.5\",\n    audio_paths=audio_files,\n    audio_dir=\"data/en\",\n    backend=\"ct2\",\n    language=\"en\", # None to perform language detection\n    tokenizer=tokenizer,\n    text_normalizer_fn=text_normalizer,\n    cache_dir=\"models\",\n)",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "pipelines.pipeline"
+    ]
+  },
+  {
+    "objectID": "reference/pipelines.pipeline.html#returns",
+    "href": "reference/pipelines.pipeline.html#returns",
+    "title": "pipelines.pipeline",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\nlist[list[SpeechSegment]] or None\nIf return_alignments is True, returns a list of alignment mappings for each audio file. Otherwise, returns None (the alignments are saved to disk only).",
+    "crumbs": [
+      "Reference",
+      "Transcription",
+      "pipelines.pipeline"
+    ]
+  },
+  {
+    "objectID": "reference/AudioChunk.html",
+    "href": "reference/AudioChunk.html",
+    "title": "AudioChunk",
+    "section": "",
+    "text": "data.datamodel.AudioChunk()\nSegment of audio, usually created by Voice Activity Detection (VAD).\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the chunk in seconds.\n\n\nend\nfloat\nEnd time of the chunk in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription for the chunk.\n\n\nduration\n(float, optional)\nDuration of the chunk in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames a chunk spans.\n\n\nnum_logits\n(int, optional)\nNumber of model output logits for the chunk.\n\n\nlanguage\n(str, optional)\nLanguage code for the chunk.\n\n\nlanguage_prob\n(float, optional)\nProbability/confidence of the detected language.\n\n\nid\n(str or int, optional)\nOptional unique identifier for the chunk.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "AudioChunk"
+    ]
+  },
+  {
+    "objectID": "reference/AudioChunk.html#attributes",
+    "href": "reference/AudioChunk.html#attributes",
+    "title": "AudioChunk",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the chunk in seconds.\n\n\nend\nfloat\nEnd time of the chunk in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription for the chunk.\n\n\nduration\n(float, optional)\nDuration of the chunk in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames a chunk spans.\n\n\nnum_logits\n(int, optional)\nNumber of model output logits for the chunk.\n\n\nlanguage\n(str, optional)\nLanguage code for the chunk.\n\n\nlanguage_prob\n(float, optional)\nProbability/confidence of the detected language.\n\n\nid\n(str or int, optional)\nOptional unique identifier for the chunk.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "AudioChunk"
+    ]
+  },
+  {
+    "objectID": "reference/StreamingAudioFileDataset.html",
+    "href": "reference/StreamingAudioFileDataset.html",
+    "title": "StreamingAudioFileDataset",
+    "section": "",
+    "text": "data.dataset.StreamingAudioFileDataset(\n    metadata,\n    processor,\n    audio_dir='data',\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy='chunk',\n    return_raw_audio=False,\n)\nStreaming version of AudioFileDataset that reads audio chunks on-demand.\nInstead of loading entire audio files and chunking in memory, this dataset returns a StreamingAudioSliceDataset that lazily loads each chunk via ffmpeg.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nmetadata\nJSONMetadataDataset or list[AudioMetadata] or AudioMetadata\nMetadata source.\nrequired\n\n\nprocessor\ntransformers.Wav2Vec2Processor or transformers.WhisperProcessor\nProcessor for feature extraction.\nrequired\n\n\naudio_dir\nstr\nBase directory for audio files.\n'data'\n\n\nsample_rate\nint\nTarget sample rate for resampling.\n16000\n\n\nchunk_size\nint\nMaximum chunk size in seconds (for speech-based chunking).\n30\n\n\nalignment_strategy\nstr\n‘speech’ or ‘chunk’ - determines how chunks are defined.\n'chunk'\n\n\n\n\n\n\nimport torch\nfrom pathlib import Path\nfrom transformers import WhisperProcessor\nfrom easyaligner.data.collators import audiofile_collate_fn\nfrom easyaligner.data.dataset import JSONMetadataDataset\nfrom easytranscriber.data import StreamingAudioFileDataset\n\nAUDIO_DIR = \"data/en\"\njson_paths = [p.name for p in Path(\"output/vad\").glob(\"*.json\")]\n\nprocessor = WhisperProcessor.from_pretrained(\n    \"distil-whisper/distil-large-v3.5\", cache_dir=\"models\"\n)\n\njson_dataset = JSONMetadataDataset(\n    json_paths=[str(Path(\"output/vad\") / p) for p in json_paths]\n)\n\nfile_dataset = StreamingAudioFileDataset(\n    metadata=json_dataset,\n    processor=processor,\n    audio_dir=AUDIO_DIR,\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy=\"chunk\",\n)\n\nfile_dataloader = torch.utils.data.DataLoader(\n    file_dataset,\n    batch_size=1,\n    shuffle=False,\n    collate_fn=audiofile_collate_fn,\n    num_workers=2,\n    prefetch_factor=2,\n)",
+    "crumbs": [
+      "Reference",
+      "Datasets",
+      "StreamingAudioFileDataset"
+    ]
+  },
+  {
+    "objectID": "reference/StreamingAudioFileDataset.html#parameters",
+    "href": "reference/StreamingAudioFileDataset.html#parameters",
+    "title": "StreamingAudioFileDataset",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nmetadata\nJSONMetadataDataset or list[AudioMetadata] or AudioMetadata\nMetadata source.\nrequired\n\n\nprocessor\ntransformers.Wav2Vec2Processor or transformers.WhisperProcessor\nProcessor for feature extraction.\nrequired\n\n\naudio_dir\nstr\nBase directory for audio files.\n'data'\n\n\nsample_rate\nint\nTarget sample rate for resampling.\n16000\n\n\nchunk_size\nint\nMaximum chunk size in seconds (for speech-based chunking).\n30\n\n\nalignment_strategy\nstr\n‘speech’ or ‘chunk’ - determines how chunks are defined.\n'chunk'",
+    "crumbs": [
+      "Reference",
+      "Datasets",
+      "StreamingAudioFileDataset"
+    ]
+  },
+  {
+    "objectID": "reference/StreamingAudioFileDataset.html#examples",
+    "href": "reference/StreamingAudioFileDataset.html#examples",
+    "title": "StreamingAudioFileDataset",
+    "section": "",
+    "text": "import torch\nfrom pathlib import Path\nfrom transformers import WhisperProcessor\nfrom easyaligner.data.collators import audiofile_collate_fn\nfrom easyaligner.data.dataset import JSONMetadataDataset\nfrom easytranscriber.data import StreamingAudioFileDataset\n\nAUDIO_DIR = \"data/en\"\njson_paths = [p.name for p in Path(\"output/vad\").glob(\"*.json\")]\n\nprocessor = WhisperProcessor.from_pretrained(\n    \"distil-whisper/distil-large-v3.5\", cache_dir=\"models\"\n)\n\njson_dataset = JSONMetadataDataset(\n    json_paths=[str(Path(\"output/vad\") / p) for p in json_paths]\n)\n\nfile_dataset = StreamingAudioFileDataset(\n    metadata=json_dataset,\n    processor=processor,\n    audio_dir=AUDIO_DIR,\n    sample_rate=16000,\n    chunk_size=30,\n    alignment_strategy=\"chunk\",\n)\n\nfile_dataloader = torch.utils.data.DataLoader(\n    file_dataset,\n    batch_size=1,\n    shuffle=False,\n    collate_fn=audiofile_collate_fn,\n    num_workers=2,\n    prefetch_factor=2,\n)",
+    "crumbs": [
+      "Reference",
+      "Datasets",
+      "StreamingAudioFileDataset"
+    ]
+  },
+  {
+    "objectID": "reference/SpeechSegment.html",
+    "href": "reference/SpeechSegment.html",
+    "title": "SpeechSegment",
+    "section": "",
+    "text": "data.datamodel.SpeechSegment()\nA slice of the audio file that contains speech of interest to be aligned.\nA SpeechSegment may be a speech given by a single speaker, a dialogue between multiple speakers, a book chapter, or whatever unit of organisational abstraction the user prefers.\nIf no SpeechSegment is defined, one will automatically be added, treating the entire audio as a single speech.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nstart\n(float, optional)\nStart time of the speech segment in seconds.\n\n\nend\n(float, optional)\nEnd time of the speech segment in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription (manual, or created by ASR).\n\n\ntext_spans\n(list[tuple[int, int]], optional)\nOptional (start_char, end_char) indices in the text that allows for a custom segmentation of the text to be aligned to audio. Can for example be used to perform alignment on paragraph, sentence, or other optional levels of granularity.\n\n\nchunks\nlist[AudioChunk]\nAudio chunks from which we create w2v2 logits (if alignment_strategy is ‘chunk’). When ASR is used, these chunks will additionally contain the transcribed text of the chunk. The ASR output will be used for forced alignment within the chunk.\n\n\nalignments\nlist[AlignmentSegment]\nAligned text segments.\n\n\nduration\n(float, optional)\nDuration of the speech segment in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames speech segment spans.\n\n\nspeech_id\n(str or int, optional)\nOptional unique identifier for the speech segment.\n\n\nprobs_path\n(str, optional)\nPath to saved wav2vec2 emissions/probs.\n\n\nmetadata\n(dict, optional)\nOptional extra metadata such as speaker name, etc.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "SpeechSegment"
+    ]
+  },
+  {
+    "objectID": "reference/SpeechSegment.html#attributes",
+    "href": "reference/SpeechSegment.html#attributes",
+    "title": "SpeechSegment",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\nstart\n(float, optional)\nStart time of the speech segment in seconds.\n\n\nend\n(float, optional)\nEnd time of the speech segment in seconds.\n\n\ntext\n(str, optional)\nOptional text transcription (manual, or created by ASR).\n\n\ntext_spans\n(list[tuple[int, int]], optional)\nOptional (start_char, end_char) indices in the text that allows for a custom segmentation of the text to be aligned to audio. Can for example be used to perform alignment on paragraph, sentence, or other optional levels of granularity.\n\n\nchunks\nlist[AudioChunk]\nAudio chunks from which we create w2v2 logits (if alignment_strategy is ‘chunk’). When ASR is used, these chunks will additionally contain the transcribed text of the chunk. The ASR output will be used for forced alignment within the chunk.\n\n\nalignments\nlist[AlignmentSegment]\nAligned text segments.\n\n\nduration\n(float, optional)\nDuration of the speech segment in seconds.\n\n\naudio_frames\n(int, optional)\nNumber of audio frames speech segment spans.\n\n\nspeech_id\n(str or int, optional)\nOptional unique identifier for the speech segment.\n\n\nprobs_path\n(str, optional)\nPath to saved wav2vec2 emissions/probs.\n\n\nmetadata\n(dict, optional)\nOptional extra metadata such as speaker name, etc.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "SpeechSegment"
+    ]
+  },
+  {
+    "objectID": "reference/text_normalizer.html",
+    "href": "reference/text_normalizer.html",
+    "title": "text_normalizer",
+    "section": "",
+    "text": "text.normalization.text_normalizer(text)\nDefault text normalization function.\nApplies - Unicode normalization (NFKC) - Lowercasing - Normalization of whitespace - Remove parentheses and special characters\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntext\nstr\nInput text to normalize.\nrequired\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ntuple\nTuple containing (normalized_tokens, mapping).",
+    "crumbs": [
+      "Reference",
+      "Text Processing",
+      "text_normalizer"
+    ]
+  },
+  {
+    "objectID": "reference/text_normalizer.html#parameters",
+    "href": "reference/text_normalizer.html#parameters",
+    "title": "text_normalizer",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ntext\nstr\nInput text to normalize.\nrequired",
+    "crumbs": [
+      "Reference",
+      "Text Processing",
+      "text_normalizer"
+    ]
+  },
+  {
+    "objectID": "reference/text_normalizer.html#returns",
+    "href": "reference/text_normalizer.html#returns",
+    "title": "text_normalizer",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\ntuple\nTuple containing (normalized_tokens, mapping).",
+    "crumbs": [
+      "Reference",
+      "Text Processing",
+      "text_normalizer"
+    ]
+  },
+  {
+    "objectID": "reference/AlignmentSegment.html",
+    "href": "reference/AlignmentSegment.html",
+    "title": "AlignmentSegment",
+    "section": "",
+    "text": "data.datamodel.AlignmentSegment()\nA segment of aligned audio and text.\nThis can be sentence, paragraph, or any other unit of text.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the aligned segment in seconds.\n\n\nend\nfloat\nEnd time of the aligned segment in seconds.\n\n\ntext\nstr\nThe aligned text segment.\n\n\nwords\nlist[WordSegment]\nList of word-level alignment data within this segment.\n\n\nid\n(str or int, optional)\nOptional unique identifier for the alignment segment.\n\n\nduration\n(float, optional)\nDuration of the aligned segment in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the alignment.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "AlignmentSegment"
+    ]
+  },
+  {
+    "objectID": "reference/AlignmentSegment.html#attributes",
+    "href": "reference/AlignmentSegment.html#attributes",
+    "title": "AlignmentSegment",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\nstart\nfloat\nStart time of the aligned segment in seconds.\n\n\nend\nfloat\nEnd time of the aligned segment in seconds.\n\n\ntext\nstr\nThe aligned text segment.\n\n\nwords\nlist[WordSegment]\nList of word-level alignment data within this segment.\n\n\nid\n(str or int, optional)\nOptional unique identifier for the alignment segment.\n\n\nduration\n(float, optional)\nDuration of the aligned segment in seconds.\n\n\nscore\n(float, optional)\nOptional confidence score for the alignment.",
+    "crumbs": [
+      "Reference",
+      "Data Models",
+      "AlignmentSegment"
+    ]
   }
 ]
