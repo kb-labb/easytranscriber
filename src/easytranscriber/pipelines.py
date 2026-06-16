@@ -230,6 +230,9 @@ def pipeline(
     # TODO: Support msgpack throughout the pipeline
     json_paths = [Path(p).with_suffix(".json") for p in audio_paths]
 
+    # fp16 is a GPU optimization; most fp16 ops are unimplemented or slow on CPU.
+    torch_dtype = torch.float16 if "cuda" in str(device) else torch.float32
+
     if streaming:
         DatasetClass = StreamingAudioFileDataset
     else:
@@ -290,7 +293,7 @@ def pipeline(
         logger.info(f"Loading Cohere ASR model from {transcription_model}...")
         model = (
             CohereAsrForConditionalGeneration.from_pretrained(
-                transcription_model, torch_dtype=torch.float16, cache_dir=cache_dir
+                transcription_model, torch_dtype=torch_dtype, cache_dir=cache_dir
             )
             .to(device)
             .eval()
@@ -320,7 +323,7 @@ def pipeline(
         else:
             logger.info(f"Loading Hugging Face model from {transcription_model}...")
             model = WhisperForConditionalGeneration.from_pretrained(
-                transcription_model, torch_dtype=torch.float16, cache_dir=cache_dir
+                transcription_model, torch_dtype=torch_dtype, cache_dir=cache_dir
             ).to(device)
 
         processor = WhisperProcessor.from_pretrained(transcription_model, cache_dir=cache_dir)
@@ -368,7 +371,11 @@ def pipeline(
         json_paths=[str(Path(output_transcriptions_dir) / p) for p in json_paths]
     )
 
-    model = AutoModelForCTC.from_pretrained(emissions_model, cache_dir=cache_dir).to("cuda").half()
+    model = (
+        AutoModelForCTC.from_pretrained(emissions_model, cache_dir=cache_dir)
+        .to(device)
+        .to(torch_dtype)
+    )
     processor = Wav2Vec2Processor.from_pretrained(emissions_model, cache_dir=cache_dir)
 
     if blank_id is None:
@@ -394,6 +401,7 @@ def pipeline(
         save_emissions=save_emissions,
         return_emissions=False,
         output_dir=output_emissions_dir,
+        device=device,
     )
 
     # Step 4: Perform Alignment

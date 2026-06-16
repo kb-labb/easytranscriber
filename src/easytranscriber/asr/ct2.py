@@ -11,9 +11,10 @@ from pathlib import Path
 import ctranslate2
 import torch
 from easyaligner.utils import save_metadata_json
-from easytranscriber.data.collators import transcribe_collate_fn
 from tqdm import tqdm
 from transformers import WhisperProcessor
+
+from easytranscriber.data.collators import transcribe_collate_fn
 
 logger = logging.getLogger(__name__)
 
@@ -90,7 +91,7 @@ def transcribe(
             batch_size=batch_size,
             num_workers=num_workers,
             prefetch_factor=prefetch_factor,
-            pin_memory=True,
+            pin_memory=False,
             collate_fn=transcribe_collate_fn,
         )
 
@@ -198,7 +199,7 @@ def lang_detect_only(
             batch_size=batch_size,
             num_workers=num_workers,
             prefetch_factor=prefetch_factor,
-            pin_memory=True,
+            pin_memory=False,
             collate_fn=transcribe_collate_fn,
         )
 

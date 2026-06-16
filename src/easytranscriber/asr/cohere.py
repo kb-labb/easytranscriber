@@ -127,9 +127,11 @@ def transcribe(
                 transcription = processor.batch_decode(outputs, skip_special_tokens=True)
                 transcription_texts.extend(transcription)
 
-        for i, speech in enumerate(metadata.speeches):
-            for j, chunk in enumerate(speech.chunks):
-                chunk.text = transcription_texts[j].strip()
+        global_chunk_idx = 0
+        for speech in metadata.speeches:
+            for chunk in speech.chunks:
+                chunk.text = transcription_texts[global_chunk_idx].strip()
+                global_chunk_idx += 1
 
         output_path = Path(output_dir) / Path(metadata.audio_path).with_suffix(".json")
         output_path.parent.mkdir(parents=True, exist_ok=True)

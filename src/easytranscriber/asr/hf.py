@@ -76,7 +76,7 @@ def transcribe(
 
         for batch in feature_dataloader:
             with torch.inference_mode():
-                batch = batch["features"].to(device).half()
+                batch = batch["features"].to(device=device, dtype=model.dtype)
                 predicted_ids = model.generate(
                     batch,
                     return_dict_in_generate=True,
