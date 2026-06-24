@@ -361,7 +361,7 @@ def pipeline(
         file_dataloader=file_dataloader,
         batch_size=batch_size_features,
         num_workers=num_workers_features,
-        prefetch_factor=2,
+        prefetch_factor=2 if num_workers_features > 0 else None,
         **transcription_args,
         output_dir=output_transcriptions_dir,
     )
