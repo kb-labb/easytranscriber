@@ -58,6 +58,7 @@ def pipeline(
     audio_dir: str,
     backend: str = "ct2",
     speeches: list[list[SpeechSegment]] | None = None,
+    metadata: list[dict] | None = None,
     sample_rate: int = 16000,
     chunk_size: int = 30,
     alignment_strategy: str = "chunk",
@@ -115,6 +116,11 @@ def pipeline(
         Directory containing audio files.
     speeches : list[list[SpeechSegment]], optional
         Existing speech segments for alignment.
+    metadata : list[dict] or None, optional
+        Optional list of file-level metadata dicts (one per audio file, same order as
+        `audio_paths`). The metadata is attached to each file's `AudioMetadata` during VAD
+        and propagates unchanged through transcription, emissions, and alignment, so it is
+        retained in the final output.
     backend : str, optional
         Backend to use for the transcription model: "ct2", "hf", or "cohere". Default is "ct2".
         The "cohere" backend requires `transformers>=5.4.0`, `streaming=True`, and an explicit
@@ -255,6 +261,7 @@ def pipeline(
         audio_paths=audio_paths,
         audio_dir=audio_dir,
         speeches=speeches,
+        metadata=metadata,
         chunk_size=chunk_size,
         sample_rate=sample_rate,
         num_workers=num_workers_files,
