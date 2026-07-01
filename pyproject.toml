@@ -3,7 +3,7 @@ requires = ["setuptools>=67.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-version = "0.2.6"
+version = "0.3.0"
 name = "easytranscriber"
 requires-python = ">= 3.10"
 description = "Speech recognition with accurate word-level timestamps."
@@ -12,12 +12,12 @@ authors = [{ name = "Faton Rekathati" }]
 
 dependencies = [
   "transformers>=4.45.0",
-  "torch>=2.7.0,!=2.9.*",
-  "torchaudio>=2.7.0,!=2.9.*",
+  "torch>=2.7.0,<2.9.*",
+  "torchaudio>=2.7.0,<2.9.*",
   "tqdm>=4.66.1",
   "soundfile>=0.12.1",
   "nltk>=3.8.2",
-  "pyannote-audio>=3.3.1",
+  "pyannote-audio>=3.3.1,<4.0.4",
   "silero-vad~=6.0",
   "ctranslate2>=4.4.0",
   "msgspec",

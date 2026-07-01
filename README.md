@@ -25,6 +25,12 @@ pip install easytranscriber --extra-index-url https://download.pytorch.org/whl/c
 When installing with [uv](https://docs.astral.sh/uv/), it will select the appropriate PyTorch version automatically (CPU for macOS, CUDA for Linux/Windows/ARM):
 
 ```bash
+uv sync
+```
+
+or
+
+```bash
 uv pip install easytranscriber
 ```
 
