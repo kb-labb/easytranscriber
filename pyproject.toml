@@ -12,8 +12,8 @@ authors = [{ name = "Faton Rekathati" }]
 
 dependencies = [
   "transformers>=4.45.0",
-  "torch>=2.7.0,<2.9.*",
-  "torchaudio>=2.7.0,<2.9.*",
+  "torch>=2.7.0,<2.9",
+  "torchaudio>=2.7.0,<2.9",
   "tqdm>=4.66.1",
   "soundfile>=0.12.1",
   "nltk>=3.8.2",
