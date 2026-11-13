@@ -90,7 +90,7 @@ def transcribe(
             slice_dataset,
             batch_size=batch_size,
             num_workers=num_workers,
-            prefetch_factor=prefetch_factor,
+            prefetch_factor=prefetch_factor if num_workers > 0 else None,
             pin_memory=False,
             collate_fn=transcribe_collate_fn,
         )
@@ -154,7 +154,7 @@ def transcribe(
                 chunk.text = transcription_texts[global_chunk_idx].strip()
                 if len(language_detections) > 0:
                     chunk.language = language_detections[global_chunk_idx]["language"]
-                    chunk.language_prob = language_detections[global_chunk_idx]["probability"]
+                    chunk.language_probability = language_detections[global_chunk_idx]["probability"]
                 global_chunk_idx += 1
 
         # Save transcription to file
@@ -198,7 +198,7 @@ def lang_detect_only(
             slice_dataset,
             batch_size=batch_size,
             num_workers=num_workers,
-            prefetch_factor=prefetch_factor,
+            prefetch_factor=prefetch_factor if num_workers > 0 else None,
             pin_memory=False,
             collate_fn=transcribe_collate_fn,
         )

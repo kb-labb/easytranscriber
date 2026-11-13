@@ -101,7 +101,7 @@ def transcribe(
             slice_dataset,
             batch_size=batch_size,
             num_workers=num_workers,
-            prefetch_factor=prefetch_factor,
+            prefetch_factor=prefetch_factor if num_workers > 0 else None,
             collate_fn=cohere_transcribe_collate_fn,
         )
 
