@@ -154,7 +154,7 @@ def transcribe(
                 chunk.text = transcription_texts[global_chunk_idx].strip()
                 if len(language_detections) > 0:
                     chunk.language = language_detections[global_chunk_idx]["language"]
-                    chunk.language_probability = language_detections[global_chunk_idx]["probability"]
+                    chunk.language_prob = language_detections[global_chunk_idx]["probability"]
                 global_chunk_idx += 1
 
         # Save transcription to file
@@ -213,7 +213,7 @@ def lang_detect_only(
         for speech in metadata.speeches:
             for chunk in speech.chunks:
                 chunk.language = language_detections[global_chunk_idx]["language"]
-                chunk.language_probability = language_detections[global_chunk_idx]["probability"]
+                chunk.language_prob = language_detections[global_chunk_idx]["probability"]
                 global_chunk_idx += 1
 
         # Save transcription to file
