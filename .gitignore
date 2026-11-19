@@ -8,4 +8,3 @@ reference/
 
 *.egg-info/
 *.db
-*.lock
