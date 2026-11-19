@@ -265,7 +265,7 @@ def pipeline(
         chunk_size=chunk_size,
         sample_rate=sample_rate,
         num_workers=num_workers_files,
-        prefetch_factor=prefetch_factor_files,
+        prefetch_factor=prefetch_factor_files if num_workers_files > 0 else None,
         save_json=save_json,
         save_msgpack=save_msgpack,
         return_vad=False,
@@ -355,7 +355,7 @@ def pipeline(
         shuffle=False,
         collate_fn=audiofile_collate_fn,
         num_workers=num_workers_files,
-        prefetch_factor=prefetch_factor_files,
+        prefetch_factor=prefetch_factor_files if num_workers_files > 0 else None,
     )
 
     transcribe = TRANSCRIBE_BACKENDS[backend]
@@ -399,7 +399,7 @@ def pipeline(
         chunk_size=chunk_size,
         alignment_strategy=alignment_strategy,
         num_workers_files=num_workers_files,
-        prefetch_factor_files=prefetch_factor_files,
+        prefetch_factor_files=prefetch_factor_files if num_workers_files > 0 else None,
         batch_size_features=batch_size_features,
         num_workers_features=num_workers_features,
         streaming=streaming,
@@ -421,7 +421,7 @@ def pipeline(
         shuffle=False,
         collate_fn=metadata_collate_fn,
         num_workers=num_workers_files,
-        prefetch_factor=prefetch_factor_files,
+        prefetch_factor=prefetch_factor_files if num_workers_files > 0 else None,
     )
 
     alignments = alignment_pipeline(
